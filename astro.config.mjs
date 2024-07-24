@@ -10,7 +10,7 @@ import { WebsiteConfig } from "./src/config";
 
 // https://astro.build/config
 export default defineConfig({
-  site: WebsiteConfig.WEBSITE,
+  site: "https://dev.devfest.it",
   integrations: [
     mdx(),
     sitemap(),
