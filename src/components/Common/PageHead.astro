@@ -3,6 +3,7 @@ import { pwaInfo } from 'virtual:pwa-info';
 import { WebsiteConfig } from "../../config";
 
 const { DEVFEST_NAME } = WebsiteConfig;
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -38,5 +39,6 @@ const {
 <meta property="og:title" content={title ?? DEVFEST_NAME}>
 <meta property="og:description" content={description}>
 <meta property="og:image" content="/assets/images/social_thumb.webp">
+<ViewTransitions />
 
 { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
