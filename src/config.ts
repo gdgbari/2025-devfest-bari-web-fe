@@ -3,7 +3,7 @@ export class WebsiteConfig {
     |              GENERAL SETTINGS              |  
     --------------------------------------------*/
     
-    public static readonly DEVFEST_NAME: string = 'Devfest Bari 2023';
+    public static readonly DEVFEST_NAME: string = 'Devfest Bari 2024';
     public static readonly DEVFEST_LOGO_LIGHT: string = '/assets/images/logo_light.webp';
     public static readonly DEVFEST_LOGO_DARK: string = '/assets/images/logo_dark.webp';
     public static readonly DEVFEST_EVENT_LINK: string = 'https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2023/';
@@ -13,8 +13,8 @@ export class WebsiteConfig {
     |              EVENT INFO                    |  
     --------------------------------------------*/
 
-    public static readonly EVENT_START : Date = new Date('2023-12-02');
-    public static readonly EVENT_END : Date = new Date('2023-12-02');
+    public static readonly EVENT_START : Date = new Date('2024-10-26');
+    public static readonly EVENT_END : Date = new Date('2024-10-26');
     public static readonly EVENT_LOCATION_NAME : String = 'Polythecnic of Bari';
     public static readonly EVENT_LOCATION_CITY : String = 'Bari';
     public static readonly EVENT_LOCATION_ADDRESS : String = 'Via Edoardo Orabona 4';
@@ -25,8 +25,8 @@ export class WebsiteConfig {
     |              SOCIAL SHARE                  |  
     --------------------------------------------*/
 
-    public static readonly TWITTER_SOCIAL_TEXT : string = 'Devfest Bari 2023 {url}';
-    public static readonly TELEGRAM_MESSAGE_TEXT : string = 'Devfest Bari 2023';
+    public static readonly TWITTER_SOCIAL_TEXT : string = 'Devfest Bari 2024 {url}';
+    public static readonly TELEGRAM_MESSAGE_TEXT : string = 'Devfest Bari 2024';
 
     /*--------------------------------------------
     |              SOCIAL PAGES                  |  
@@ -47,7 +47,4 @@ export class WebsiteConfig {
     public static readonly NUM_SPEAKERS : number = 25;
     public static readonly NUM_TALK_CATEGORIES : number = 10;
     public static readonly NUM_TRACKS : number = 4;
-
-
-
 }

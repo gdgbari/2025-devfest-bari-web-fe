@@ -7,14 +7,7 @@ module.exports = {
     extend: {},
   },
   plugins: [
-    function ({ addComponents, theme }) {
-      addComponents({
-        '.btn': {
-          padding: theme('spacing.4'),
-          margin: 'auto',
-        },
-      });
-    },
+    require('daisyui'),
   ],
   theme: {
     extend: {
@@ -23,8 +16,27 @@ module.exports = {
       },
     },
   },
+  daisyui: {
+    themes: [
+      {
+        mytheme: {
+          "primary": "#4285F4",
+          "secondary": "#FF7DAF",
+          "accent": "#57CAFF",
+          "neutral": "#C4C4C4",
+          "base-100": "#F0F0F0",
+          "base-200": "#DDDDDD",
+          "base-300": "#BDBCBC",
+          "info": "#C3ECF6",
+          "success": "#34A853",
+          "warning": "#F9AB00",
+          "error": "#EA4335",
+        },
+      },
+    ],
+  },
   safelist: [
-	  "md:text-end",
+    "md:text-end",
     "left-0",
     "left-[-16rem]",
     "bg-black/30",
