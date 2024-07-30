@@ -1,0 +1,34 @@
+---
+interface Props {
+  "time-start": string;
+  "time-end": string;
+  "session-details": string;
+  "session-title": string;
+  "session-location": string;
+}
+
+import addCalendar from "../../../public/assets/vectors/add-calendar.svg?raw";
+
+const { "time-start": dateStart, "time-end": dateEnd, "session-details": sessionDetails, "session-title": sessionTitle, "session-location": sessionLocation }:Props = Astro.props;
+
+---
+
+<div class="add-to-calendar dropdown add-calendar-icon m-y py-2 px-4 rounded-r-sm hover:bg-amber-400/20 border border-amber-600 text-amber-600 ease-in duration-100 text-center">
+    <div style="display: flex;">
+        <div>
+            <Fragment set:html={addCalendar} class="text-amber-600" alt="add to calendar" style="width: 20px; height:20px" />
+        </div>
+        <slot />
+    </div>
+    <div class="dropdown-content">
+        <div class="calendar-dropdown-element">
+            <a href={`https://www.google.com/calendar/render?action=TEMPLATE&text=${sessionTitle}&dates=${dateStart}/${dateEnd}&details=${sessionDetails}&location=${sessionLocation}&sf=true&output=xml`} target="_blank">Google</a>
+        </div>
+        <div class="calendar-dropdown-element">
+            <a href={`https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=${dateStart}&enddt=${dateEnd}&subject=${sessionTitle}&body=${sessionDetails}&location=${sessionLocation}`} target="_blank">Outlook</a>
+        </div>
+        <div class="calendar-dropdown-element">
+            <a href={`data:text/calendar;charset=utf8, BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:${dateStart}%0ADTEND:${dateEnd}%0ASUMMARY:${sessionTitle}%0ADESCRIPTION:${sessionDetails}%0ALOCATION:${sessionLocation}%0AEND:VEVENT%0AEND:VCALENDAR`} target="_blank">Apple</a>
+        </div>
+    </div>
+</div>
