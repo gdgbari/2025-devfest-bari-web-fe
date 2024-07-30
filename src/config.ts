@@ -44,10 +44,5 @@ export class WebsiteConfig {
     --------------------------------------------*/
 
     public static readonly NUM_PARTECIPENTS : number = 500;
-    public static readonly NUM_SPEAKERS : number = 25;
-    public static readonly NUM_TALK_CATEGORIES : number = 10;
-    public static readonly NUM_TRACKS : number = 4;
-
-
 
 }
