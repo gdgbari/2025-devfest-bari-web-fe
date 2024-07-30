@@ -2,6 +2,7 @@
 import BaseLayout from "../../components/Common/BaseLayout.astro";
 import { type SessionInfo, getSessions } from "../../scripts/api/sessionize_api";
 import SessionTopic from "../../components/Sessions/SessionTopic.astro";
+import AddToCalendar from "../../components/Common/AddToCalendar.astro";
 
 interface Props {
   entry: SessionInfo;
@@ -66,8 +67,7 @@ const pageDesc = entry.description;
 
     {
       isScheduled && (
-        <div
-          class="add-to-calendar m-y py-2 px-4 rounded-r-sm hover:bg-amber-400/20 border border-amber-600 text-amber-600 ease-in duration-100 text-center"
+        <AddToCalendar
           time-start={formatDate(dateStart)}
           time-end={formatDate(dateEnd)}
           session-details={encodeURIComponent(
@@ -75,9 +75,7 @@ const pageDesc = entry.description;
           )}
           session-title={entry.title}
           session-location={entry.room}
-        >
-          Aggiungi al calendario
-        </div>
+        ></AddToCalendar>
       )
     }
   </div>
