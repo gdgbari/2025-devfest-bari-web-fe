@@ -24,43 +24,64 @@ const schedule = await getSchedule();
           <div
             class={`grid grid-flow-row xl:grid-cols-[90px_repeat(5,_minmax(0,_1fr))] xl:grid-rows-${totalScheduleRows} grid-cols-1 gap-4`}
           >
-            {s.timeSlots.map((ts,i) => {
-              const hasServiseSession = ts.rooms.some(
+            {s.timeSlots.map((ts,ts_idx) => {
+              const hasServiceSession = ts.rooms.some(
                 (tsr) => tsr.session.isServiceSession,
               );
               const sessionsInTimeSlot = ts.rooms.map((tsr) => {
-                const startDate = new Date(tsr.session.startsAt);
                 const endDate = new Date(tsr.session.endsAt);
-
-                const slots =
-                  endDate.getTime() - startDate.getTime() > 50 * 60 * 1000 &&
-                  !hasServiseSession
-                    ? 2
-                    : 1;
+                endDate.setSeconds(0)
+                endDate.setMilliseconds(0)
+                const slots = !hasServiceSession? (
+                  (()=>{
+                    //Calculate the space to take (how many timeSlot takes this session (until a service session))
+                    let session_len = 1
+                    for (let i = ts_idx+1; i < s.timeSlots.length; i++){
+                      //No sessions
+                      if (s.timeSlots[i].rooms.length == 0) continue
+                      //Take time from one of the sessions
+                      const exampleSession = s.timeSlots[i].rooms[0].session
+                      //If it's a service session, can't take this space
+                      if (exampleSession.isServiceSession){
+                        break
+                      }
+                      //Continue to get space until this session ends
+                      const next_date = new Date(exampleSession.startsAt)
+                      next_date.setSeconds(0)
+                      next_date.setMilliseconds(0)
+                      if (next_date < endDate){
+                        session_len ++
+                      }else{
+                        break
+                      }
+                    }
+                    return session_len
+                  })()
+                ) : 1;
 
                 const colspanClass = `xl:col-span-${
-                  hasServiseSession ? totalScheduleCols - 1 : 1
+                  hasServiceSession ? totalScheduleCols - 1 : 1
                 } row-span-${slots}`;
 
                 return (
+                  
                   <div class={colspanClass}>
                     <ScheduleCard value={tsr} />
                   </div>
                 );
               });
-
               sessionsInTimeSlot.unshift(
                 <div class="font-medium text-2xl">
                   <p>{ts.slotStart.substring(0, 5)}</p>
                 </div>,
               );
 
-              const deltaNumRowsWithtalk = i== 0? false : s.timeSlots[i-1].rooms.length - ts.rooms.length;
+              const deltaNumRowsWithtalk = ts_idx== 0? false : s.timeSlots[ts_idx-1].rooms.length - ts.rooms.length;
 
               if (
               deltaNumRowsWithtalk != 1 && 
                 ts.rooms.length + 1 < totalScheduleCols &&
-                !hasServiseSession
+                !hasServiceSession
               ) {
                 const placeholder = <div />;
                 sessionsInTimeSlot.push(placeholder);
@@ -74,3 +95,4 @@ const schedule = await getSchedule();
     })
   }
 </LargeBaseLayout>
+

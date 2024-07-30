@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { Speaker } from "../../scripts/api/sessionize_api";
 
 const SpeakerPreviewElement = ({ speaker }: { speaker: Speaker }) => (
@@ -13,7 +14,7 @@ const SpeakerPreviewElement = ({ speaker }: { speaker: Speaker }) => (
 
 export const RandomSpeakerList = ({ speakers }:{ speakers:Speaker[] }) => {
     return <>{speakers.sort(() => Math.random() - 0.5).slice(0, 4).map((s) => (
-        <div className="mx-auto">
+        <div className="mx-auto" key={s.id}>
             <SpeakerPreviewElement speaker={s} />
         </div>
     ))}</>
