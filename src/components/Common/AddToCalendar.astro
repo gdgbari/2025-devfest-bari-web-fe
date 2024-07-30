@@ -18,24 +18,36 @@ const easyParamCleaner = (url: string) => {
 const googleLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${easyParamCleaner(sessionTitle)}&dates=${easyParamCleaner(dateStart)}/${easyParamCleaner(dateEnd)}&details=${easyParamCleaner(sessionDetails)}&location=${easyParamCleaner(sessionLocation)}&sf=true&output=xml`
 const outlookLink = `https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=${easyParamCleaner(dateStart)}&enddt=${easyParamCleaner(dateEnd)}&subject=${easyParamCleaner(sessionTitle)}&body=${easyParamCleaner(sessionDetails)}&location=${easyParamCleaner(sessionLocation)}`
 const appleLink = `data:text/calendar;charset=utf8, BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:${dateStart}%0ADTEND:${dateEnd}%0ASUMMARY:${sessionTitle}%0ADESCRIPTION:${sessionDetails}%0ALOCATION:${sessionLocation}%0AEND:VEVENT%0AEND:VCALENDAR`
+
+const generateOnClickEvents = (url: string) => {
+    return `window.open(atob('${Buffer.from(url).toString("base64")}'), '_blank')`;
+}
+
+const googleOnClick = generateOnClickEvents(googleLink);
+const outlookOnClick = generateOnClickEvents(outlookLink);
+const appleOnClick = generateOnClickEvents(appleLink);
+
 ---
 
 <div class="add-to-calendar dropdown add-calendar-icon m-y py-2 px-4 rounded-r-sm hover:bg-amber-400/20 border border-amber-600 text-amber-600 ease-in duration-100 text-center">
     <div style="display: flex;">
-        <div>
+        <button>
             <Fragment set:html={addCalendar} class="text-amber-600" alt="add to calendar" style="width: 20px; height:20px" />
-        </div>
+        </button>
         <slot />
     </div>
-    <div class="dropdown-content">
-        <div class="calendar-dropdown-element">
-            <a href={googleLink} data-no-swup target="_blank">Google</a>
+    <div class="dropdown-content" style="float: left;">
+        <div class="calendar-dropdown-element" onclick={googleOnClick}>
+            Google
+            <!-- <a href={googleLink} data-no-swup target="_blank"></a> -->
         </div>
-        <div class="calendar-dropdown-element">
-            <a href={outlookLink} data-no-swup target="_blank">Outlook</a>
+        <div class="calendar-dropdown-element" onclick={outlookOnClick}>
+            Outlook
+            <!-- <a href={outlookLink} data-no-swup target="_blank"></a> -->
         </div>
-        <div class="calendar-dropdown-element">
-            <a href={appleLink} data-no-swup target="_blank">Apple</a>
+        <div class="calendar-dropdown-element" onclick={appleOnClick}>
+            Apple
+            <!-- <a href={appleLink} data-no-swup target="_blank"></a> -->
         </div>
     </div>
 </div>
