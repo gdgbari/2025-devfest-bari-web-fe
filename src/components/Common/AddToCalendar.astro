@@ -37,17 +37,8 @@ const appleOnClick = generateOnClickEvents(appleLink);
         <slot />
     </div>
     <div class="dropdown-content" style="float: left;">
-        <div class="calendar-dropdown-element" onclick={googleOnClick}>
-            Google
-            <!-- <a href={googleLink} data-no-swup target="_blank"></a> -->
-        </div>
-        <div class="calendar-dropdown-element" onclick={outlookOnClick}>
-            Outlook
-            <!-- <a href={outlookLink} data-no-swup target="_blank"></a> -->
-        </div>
-        <div class="calendar-dropdown-element" onclick={appleOnClick}>
-            Apple
-            <!-- <a href={appleLink} data-no-swup target="_blank"></a> -->
-        </div>
+        <div onclick={googleOnClick}>Google</div>
+        <div onclick={outlookOnClick}>Outlook</div>
+        <div onclick={appleOnClick}>Apple</div>
     </div>
 </div>

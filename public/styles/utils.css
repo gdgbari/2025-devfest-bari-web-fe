@@ -22,7 +22,7 @@
     height: 20px;
 }
 
-.calendar-dropdown-element{
+.dropdown-content > *{
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,7 +31,7 @@
     transition: 0.3s;
 }
 
-.calendar-dropdown-element:hover{
+.dropdown-content > *:hover{
     opacity: 0.4;
     transition: 0.3s;
 }
