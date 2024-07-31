@@ -1,61 +1,75 @@
 ---
-const images = [
-  "/assets/images/gallery/01.webp",
-  "/assets/images/gallery/02.webp",
-  "/assets/images/gallery/03.webp",
-  "/assets/images/gallery/04.webp",
-  "/assets/images/gallery/05.webp",
-  "/assets/images/gallery/06.webp",
-  "/assets/images/gallery/07.webp",
-  "/assets/images/gallery/08.webp",
-  "/assets/images/gallery/09.webp",
-  "/assets/images/gallery/10.webp",
-];
+import { Image } from "astro:assets";
+import img01 from "../../assets/images/gallery/01.jpg";
+import img02 from "../../assets/images/gallery/02.jpg";
+import img03 from "../../assets/images/gallery/03.jpg";
+import img04 from "../../assets/images/gallery/04.jpg";
+import img05 from "../../assets/images/gallery/05.jpg";
+import img06 from "../../assets/images/gallery/06.jpg";
+import img07 from "../../assets/images/gallery/07.jpg";
+import img09 from "../../assets/images/gallery/08.jpg";
 ---
 
 <div class="grid md:grid-cols-5 grid-cols-3 gap-2 p-2">
-  <div
-    class={`md:col-span-2 h-56 bg-[url(${images.pop()})] bg-center bg-cover`}
-  >
+  <div class={`md:col-span-2 h-56`}>
+    <Image
+      src={img01}
+      class="w-full h-full object-center object-cover"
+      alt=""
+    />
+  </div>
+  <div class={`col-span-2 h-56`}>
+    <Image
+      src={img02}
+      class="w-full h-full object-center object-cover"
+      alt=""
+    />
+  </div>
+  <div class={`row-span-2 `}>
+    <Image
+      src={img03}
+      class="w-full h-full object-center object-cover"
+      alt=""
+    />
+  </div>
+  <div class={`h-56 `}>
+    <Image
+      src={img04}
+      class="w-full h-full object-center object-cover"
+      alt=""
+    />
+  </div>
+  <div class={`h-56 `}>
+    <Image
+      src={img05}
+      class="w-full h-full object-center object-cover"
+      alt=""
+    />
   </div>
   <div
-    class={`col-span-2 h-56 bg-[url(${images.pop()})] bg-center bg-cover`}
+    class="h-56 md:col-span-2 col-span-3 flex flex-col items-center justify-center md:order-none order-last text-white bg-primary"
   >
+    <slot name="join-photos" />
   </div>
-  <div
-    class={`row-span-2 bg-[url(${images.pop()})] bg-center bg-cover`}
-  >
+  <div class={`h-56 col-span-2 `}>
+    <Image
+      src={img09}
+      class="w-full h-full object-center object-cover"
+      alt=""
+    />
   </div>
-
-  <div
-    class={`h-56 bg-[url(${images.pop()})] bg-center bg-cover`}
-  >
+  <div class={`h-56 `}>
+    <Image
+      src={img06}
+      class="w-full h-full object-center object-cover"
+      alt=""
+    />
   </div>
-  <div
-    class={`h-56 bg-[url(${images.pop()})] bg-center bg-cover`}
-  >
-  </div>
-  <div
-    class="h-56 md:col-span-2 col-span-3 flex flex-col items-center justify-center md:order-none order-last text-white bg-amber-500"
-  >
-    <p class="mb-3">Some pictures of the DevFest Bari 2022.</p>
-
-    <a
-      class={`py-1 px-4 rounded-r-sm hover:bg-white/40 border ease-in duration-100`}
-      href="https://photos.app.goo.gl/WBuDqq9dwdccEyBF9">See them</a
-    >
-  </div>
-
-  <div
-    class={`h-56 col-span-2 bg-[url(${images.pop()})] bg-center bg-cover`}
-  >
-  </div>
-  <div
-    class={`h-56 bg-[url(${images.pop()})] bg-center bg-cover`}
-  >
-  </div>
-  <div
-    class={`h-56 col-span-2 bg-[url(${images.pop()})] bg-center bg-cover`}
-  >
+  <div class={`h-56 col-span-2 `}>
+    <Image
+      src={img07}
+      class="w-full h-full object-center object-cover"
+      alt=""
+    />
   </div>
 </div>

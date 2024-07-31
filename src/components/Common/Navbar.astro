@@ -7,10 +7,6 @@ interface Props {
   transparentMode?: boolean;
 }
 
-const { transparentMode = false } = Astro.props;
-
-const initialClasses = transparentMode ? "bg-trasparent" : "bg-white shadow-md";
-
 const links = [
   { link: "/", name: "Home" },
   { link: "/schedule", name: "Schedule" },
@@ -22,229 +18,59 @@ const links = [
 ];
 ---
 
-<style>
-  .menu-icon {
-    transform: scale(-1.5, 1.5);
-    position: relative;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-  }
-
-  .menu-icon .menu-icon__cheeckbox {
-    display: block;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    z-index: 2;
-    -webkit-touch-callout: none;
-    position: absolute;
-    right: 0;
-    top: 0;
-    opacity: 0;
-  }
-
-  .menu-icon div {
-    margin: auto;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    width: 22px;
-    height: 12px;
-  }
-
-  .menu-icon span {
-    position: absolute;
-    display: block;
-    width: 100%;
-    height: 2px;
-    border-radius: 1px;
-    background: rgba(0, 0, 0, 0.9);
-    transition: all 0.2s cubic-bezier(0.1, 0.82, 0.76, 0.965);
-  }
-
-  .menu-icon span:first-of-type {
-    top: 0;
-  }
-
-  .menu-icon span:last-of-type {
-    bottom: 1px;
-  }
-  
-</style>
-<header>
-  <nav
-    class={`${
-      transparentMode ? "transparent-mode" : ""
-    } flex flex-row justify-between items-center p-4 top-0 left-0 right-0 fixed z-30 ${initialClasses} ease-in duration-150`}
-  >
-    <div class=" flex justify-between max-w-6xl lg:w-4/5 w-full m-auto">
-      <div class="flex gap-4">
-        <div class="flex items-center gap-6 md:hidden">
-          <div
-            class="menu-icon navbar-toggler"
-            role="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#main-menu"
-            aria-controls="main-menu"
-            aria-expanded="true"
-            aria-label="Toggle navigation"
-          >
-            <input class="menu-icon__cheeckbox" type="checkbox" />
-            <div>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-        </div>
-        <a href="/">
-          <img
-            src={DEVFEST_LOGO_DARK}
-            alt={DEVFEST_NAME}
-            class="nav-logo max-h-12"
-          />
-        </a>
-      </div>
-
-      <div
-        class="nav-links top-[-32rem] md:static md:bg-transparent bg-white md:min-h-fit md:w-auto md:flex hidden items-center md:p-0 p-5"
-      >
-        <div
-          id="navMenuLinks"
-          class="flex md:flex-row flex-col md:items-center lg:gap-5 gap-[0.85rem] items-stretch"
+<div class="drawer">
+  <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content flex flex-col">
+    <!-- Navbar -->
+    <div class="navbar bg-base-100 w-full fixed top-0 z-30">
+      <div class="flex-none lg:hidden">
+        <label
+          for="my-drawer-3"
+          aria-label="open sidebar"
+          class="btn btn-square btn-ghost"
         >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            class="inline-block h-6 w-6 stroke-current"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </label>
+      </div>
+      <div class="mx-2 flex-1 px-2">
+        <img src="/assets/vectors/logo_full.svg" alt="Devfest Logo" class="h-6" />
+      </div>
+      <div class="hidden flex-none lg:block">
+        <ul class="menu menu-horizontal">
+          <!-- Navbar menu content here -->
           {
-            links.map((l) => (
-              <a class="hover:text-gray-500" class="p-3" href={l.link}>
-                {l.name}
-              </a>
+            links.map((item) => (
+              <li>
+                <a href={item.link}>{item.name}</a>
+              </li>
             ))
           }
-          <a
-            class="py-2 px-4 rounded-r-sm bg-amber-500 hover:bg-amber-600 text-white ease-in duration-100"
-            href={WebsiteConfig.DEVFEST_EVENT_LINK}>GET TICKET</a
-          >
-        </div>
+        </ul>
       </div>
     </div>
-
-    <div
-      id="navMobileMenu"
-      class="fixed ease-in duration-100 top-0 left-0 right-0 bottom-0 bg-black/0 pointer-events-none"
-    >
-      <div
-        class="absolute ease-in duration-100 top-0 bottom-0 left-[-16rem] w-64 bg-white flex flex-col justify-start items-stretch"
-      >
-        <a href="/" class="flex justify-start pl-2 pt-3">
-          <img src={DEVFEST_LOGO_DARK} alt={DEVFEST_NAME} class="max-h-14" />
-        </a>
-
-        <div class="my-4 pl-3 flex flex-col">
-          <p class="text-2xl font-medium">2nd December 2023</p>
-          <p>Polytechnic of Bari</p>
-        </div>
-
-        <div class="flex flex-col items-stretch">
-          {
-            links.map((l) => (
-              <a class="p-3" href={l.link}>
-                {l.name}
-              </a>
-            ))
-          }
-        </div>
-        <a
-          class="mt-auto text-center p-3 bg-amber-500 hover:bg-amber-600 text-white ease-in duration-100"
-          href={WebsiteConfig.DEVFEST_EVENT_LINK}>GET TICKET</a
-        >
-      </div>
-    </div>
-  </nav>
-
-  <script>
-    import { WebsiteConfig } from "../../config";
-    const { DEVFEST_NAME, DEVFEST_LOGO_LIGHT, DEVFEST_LOGO_DARK } =
-      WebsiteConfig;
-
-    const navLogo = document.querySelector(".nav-logo");
-    const navLinks = document.querySelector("#navMenuLinks");
-    const navMobileMenu = document.querySelector("#navMobileMenu");
-    const navMobileMenuContainer = document.querySelector(
-      "#navMobileMenu .absolute"
-    );
-
-    const toggler = document.querySelector(".navbar-toggler");
-    const nav = document.querySelector("nav");
-    const w = window as any;
-
-    toggler?.addEventListener("click", openMenu);
-    navMobileMenu?.addEventListener("click", closeMenu);
-
-    function openMenu() {
-      navMobileMenu?.classList.remove("pointer-events-none");
-
-      setTimeout(() => {
-        navMobileMenu?.classList.remove("bg-black/0");
-        navMobileMenu?.classList.add("bg-black/30");
-
-        navMobileMenuContainer?.classList.remove("left-[-16rem]");
-        navMobileMenuContainer?.classList.add("left-0");
-      }, 50);
-    }
-
-    function closeMenu() {
-      navMobileMenu?.classList.remove("bg-black/30");
-      navMobileMenu?.classList.add("bg-black/0");
-
-      navMobileMenuContainer?.classList.remove("left-0");
-      navMobileMenuContainer?.classList.add("left-[-16rem]");
-
-      setTimeout(() => {
-        navMobileMenu?.classList.add("pointer-events-none");
-      }, 110);
-    }
-
-    w.resetNavbar = () => {
-      navLogo?.setAttribute("src", DEVFEST_LOGO_DARK);
-      window.removeEventListener("scroll", checkNav);
-    };
-
-    w.intitializeNav = () => {
-      window.addEventListener("scroll", checkNav);
-      checkNav();
-    };
-
-    w.navSetWhiteBg = () => {
-      navLinks?.classList.remove("text-white");
-      nav?.classList.remove("bg-trasparent");
-      nav?.classList.add("bg-white");
-      nav?.classList.add("shadow-md");
-    };
-
-    function checkNav() {
-      if (window.scrollY > 100) {
-        navLogo?.setAttribute("src", DEVFEST_LOGO_DARK);
-        w.navSetWhiteBg();
-      } else {
-        navLogo?.setAttribute("src", DEVFEST_LOGO_LIGHT);
-        nav?.classList.add("bg-trasparent");
-        navLinks?.classList.add("text-white");
-
-        nav?.classList.remove("bg-white");
-        nav?.classList.remove("shadow-md");
+  </div>
+  <div class="drawer-side z-40">
+    <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"
+    ></label>
+    <ul class="menu bg-base-200 min-h-full w-80 p-4">
+      {
+        links.map((item) => (
+          <li>
+            <a href={item.link}>{item.name}</a>
+          </li>
+        ))
       }
-    }
-
-    window.addEventListener("resize", (e) => {
-      if (document.body.clientWidth > 751) {
-        closeMenu();
-      }
-    });
-
-    if (nav?.classList.contains("transparent-mode")) {
-      w.intitializeNav();
-    }
-  </script>
-</header>
+    </ul>
+  </div>
+</div>

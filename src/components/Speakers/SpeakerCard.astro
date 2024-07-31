@@ -1,12 +1,11 @@
 ---
 import { type Speaker } from "../../scripts/api/sessionize_api";
-import SpeakersLinks from "./SpeakersLinks.astro";
 
 interface Props {
   speaker: Speaker;
 }
 
-const { speaker }:Props = Astro.props;
+const { speaker }: Props = Astro.props;
 
 const words = speaker.bio ? speaker.bio.split(" ") : [];
 let body = words.slice(0, 20).join(" ");
@@ -14,24 +13,20 @@ let body = words.slice(0, 20).join(" ");
 if (words.length > 15) {
   body += "...";
 }
-
 ---
 
 <a
   href={`/speakers/${speaker.slug}`}
-  class="bg-white p-3 h-full w-full shadow-md hover:shadow-lg flex flex-col items-center text-center duration-150 ease-in"
+  class="card border-black border-4 bg-base-200 hover:bg-base-300 h-full w-full shadow-md hover:shadow-lg flex flex-col items-center text-center duration-150 ease-in"
 >
-  <img
-    src={speaker.profilePicture}
-    alt={speaker.fullName}
-    class="w-32 h-32 rounded-full"
-  />
-  <p class="my-2 font-medium">{speaker.fullName}</p>
-  <p class="mb-4">{speaker.tagLine}</p>
-
-  <p class="text-sm mb-2">{body}</p>
-
-  <div class="mt-auto">
-    <SpeakersLinks links={speaker.links} />
+  <figure>
+    <img
+      src={speaker.profilePicture}
+      alt={speaker.fullName}
+    />
+  </figure>
+  <div class="card-body p-4">
+    <p class="my-2 font-medium text-lg">{speaker.fullName}</p>
+    <p class="max-h-12 text-ellipsis overflow-hidden">{speaker.tagLine}</p>
   </div>
 </a>
