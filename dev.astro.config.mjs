@@ -9,10 +9,12 @@ import { WebsiteConfig } from "./src/config";
 export default defineConfig({
   integrations: [
     mdx(),
-    tailwind(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
     react(),
     AstroPWA({
-      mode: import.meta.env.DEV?'development':'production',
+      mode: import.meta.env.DEV ? 'development' : 'production',
       base: '/',
       scope: '/',
       includeAssets: ['favicon.svg'],
@@ -44,8 +46,8 @@ export default defineConfig({
           }
         ],
       },
-     
-    
+
+
     }),
   ],
 });
