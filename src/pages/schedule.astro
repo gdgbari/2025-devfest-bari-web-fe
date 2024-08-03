@@ -1,12 +1,12 @@
 ---
-import LargeBaseLayout from "../components/Common/LargeBaseLayout.astro";
+import BaseLayout from "../components/Common/BaseLayout.astro";
 import ScheduleCard from "../components/Schedule/ScheduleCard.astro";
 import { getSchedule } from "../scripts/api/sessionize_api";
 
 const schedule = await getSchedule();
 ---
 
-<LargeBaseLayout pageTitle="Schedule">
+<BaseLayout pageTitle="Schedule">
   {
     schedule.map((s) => {
       const totalScheduleCols = s.rooms.length + 1;

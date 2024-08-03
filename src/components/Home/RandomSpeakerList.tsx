@@ -20,7 +20,7 @@ const SpeakerPreviewElement = ({ speaker }: { speaker: Speaker }) => (
 
 export const RandomSpeakerList = ({ speakers }:{ speakers:Speaker[] }) => {
     return <>{speakers.sort(() => Math.random() - 0.5).slice(0, 4).map((s) => (
-        <div className="mx-auto flex gap-8">
+        <div className="mx-auto">
             <SpeakerPreviewElement speaker={s} />
         </div>
     ))}</>

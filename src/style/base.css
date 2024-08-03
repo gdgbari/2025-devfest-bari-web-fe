@@ -4,3 +4,18 @@
  @tailwind variants;
 
 
+ @layer utilities{
+    .max-w-8xl { max-width: 88rem; }
+
+    .rounded-3xl {
+        border-radius: 1.25rem;
+    }
+ }
+
+.category-item {
+    @apply bg-white shadow-md rounded-lg p-4;
+}
+
+.main-container{
+  @apply max-w-8xl lg:w-4/5 w-full m-auto
+}

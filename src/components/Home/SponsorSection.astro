@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import SponsorItem from "./SponsorItem.astro";
 
 const external = await getCollection("externals");
 
@@ -19,8 +20,8 @@ const bronzeSponsors = external.filter((ext) =>
 const partners = external.filter((ext) => ext.data.type === "partner");
 ---
 
-<div class="py-6 max-w-6xl lg:w-4/5 w-full m-auto px-4">
-<h2 class="text-6xl mb-10 font-bold">Sponsors</h2>
+<div class="py-6 max-w-6xl lg:w-4/5 w-full m-auto px-4 text-primary-content">
+  <h2 class="text-6xl mb-10 font-bold">Sponsors</h2>
 
   {
     platinumSponsors.length > 0 && (
@@ -28,16 +29,7 @@ const partners = external.filter((ext) => ext.data.type === "partner");
         <h3 class="text-4xl mb-10 font-bold">Platinum</h3>
         <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
           {platinumSponsors.map((sponsor) => (
-            <a
-              href={sponsor.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={sponsor.data.image}
-                alt={sponsor.data.name}
-              />
-            </a>
+            <SponsorItem value={sponsor} />
           ))}
         </div>
       </>
@@ -49,16 +41,7 @@ const partners = external.filter((ext) => ext.data.type === "partner");
         <h3 class="text-4xl mb-10 font-bold">Gold</h3>
         <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
           {goldSponsors.map((sponsor) => (
-            <a
-              href={sponsor.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={sponsor.data.image}
-                alt={sponsor.data.name}
-              />
-            </a>
+             <SponsorItem value={sponsor} />
           ))}
         </div>
       </>
@@ -70,16 +53,7 @@ const partners = external.filter((ext) => ext.data.type === "partner");
         <h3 class="text-4xl mb-10 font-bold">Silver</h3>
         <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
           {silverSponsors.map((sponsor) => (
-            <a
-              href={sponsor.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={sponsor.data.image}
-                alt={sponsor.data.name}
-              />
-            </a>
+             <SponsorItem value={sponsor} />
           ))}
         </div>
       </>
@@ -91,16 +65,7 @@ const partners = external.filter((ext) => ext.data.type === "partner");
         <h3 class="text-4xl mb-10 font-bold">Bronze</h3>
         <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
           {bronzeSponsors.map((sponsor) => (
-            <a
-              href={sponsor.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={sponsor.data.image}
-                alt={sponsor.data.name}
-              />
-            </a>
+             <SponsorItem value={sponsor} />
           ))}
         </div>
       </>
@@ -112,16 +77,7 @@ const partners = external.filter((ext) => ext.data.type === "partner");
         <h2 class="text-6xl mb-10 font-bold">Partner</h2>
         <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
           {partners.map((partner) => (
-            <a
-              href={partner.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={partner.data.image}
-                alt={partner.data.name}
-              />
-            </a>
+            <SponsorItem value={partner} />
           ))}
         </div>
       </>

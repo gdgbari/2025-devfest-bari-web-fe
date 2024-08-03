@@ -6,7 +6,7 @@ import { WebsiteConfig } from "../../config";
   <div
     class="absolute top-0 left-0 right-0 h-screen"
   >
-    <div class="absolute top-36 left-0 right-0 p-10 text-center flex flex-col align-center">
+    <div class="absolute top-10 md:top-20 left-0 right-0 p-10 text-center text-primary-content flex flex-col align-center z-20">
       <img src="/assets/vectors/logo_big.svg" class="h-36 m-12" />
       <p class="text-3xl font-semibold">
         {
@@ -19,9 +19,10 @@ import { WebsiteConfig } from "../../config";
       </p>
       <p class="text-3xl font-semibold">{WebsiteConfig.EVENT_LOCATION_NAME}</p>
       <div class="mt-8 flex gap-4 justify-center flex-col md:flex-row">
-        <a class="btn btn-primary" href={WebsiteConfig.DEVFEST_EVENT_LINK}
-          >GET TICKET</a
+        <a class="btn btn-primary border-primary-content border-4 text-xl px-8 py-2 h-auto" href={WebsiteConfig.DEVFEST_EVENT_LINK}
+          >TICKET AVAILABLE</a
         >
+        
       </div>
       
     </div>

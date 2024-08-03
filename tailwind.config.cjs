@@ -13,6 +13,7 @@ module.exports = {
     extend: {
       spacing: {
         128: "32rem",
+        "8xl": "88rem",
       },
     },
   },
@@ -20,14 +21,15 @@ module.exports = {
     themes: [
       {
         mytheme: {
-          "primary": "#4285F4",
+          "primary": "#EA4335",
           "primary-content": "#ffffff",
           "secondary": "#FF7DAF",
           "accent": "#57CAFF",
           "neutral": "#C4C4C4",
-          "base-100": "#F0F0F0",
-          "base-200": "#DDDDDD",
-          "base-300": "#BDBCBC",
+          "base-100": "#1e1e1e",
+          "base-200": "#BDBCBC",
+          "base-300": "#DDDDDD",
+          "base-content": "#1e1e1e",
           "info": "#C3ECF6",
           "success": "#34A853",
           "warning": "#F9AB00",
