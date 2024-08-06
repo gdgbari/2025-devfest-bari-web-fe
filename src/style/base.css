@@ -12,10 +12,30 @@
     }
  }
 
+
+
+@layer components {
+    .card{
+        @apply rounded-lg;
+    }
+}
+
+/*------------------------------------
+    CUSTOM COMPONENTS
+------------------------------------*/
+
+.btn-content{
+ @apply btn  bg-white text-lg px-8 py-2 h-auto rounded-lg;
+}
+
 .category-item {
     @apply bg-white shadow-md rounded-lg p-4;
 }
 
 .main-container{
   @apply max-w-8xl lg:w-4/5 w-full m-auto
+}
+
+.speaker-card {
+    @apply card bg-blue-pastel hover:scale-110 h-full w-full items-center text-center duration-150 ease-in;
 }

@@ -22,7 +22,7 @@ const links = [
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col">
     <!-- Navbar -->
-    <div class="navbar bg-base-100 w-full fixed top-0 z-30 border-b-4 border-b-white">
+    <div class="navbar bg-base-100 w-full fixed top-0 z-30 border-b-4 border-b-red">
       <div class="flex-none lg:hidden">
         <label
           for="my-drawer-3"
@@ -47,7 +47,7 @@ const links = [
         <img src="/assets/vectors/logo_full.svg" alt="Devfest Logo" class="h-6" />
       </div>
       <div class="hidden flex-none lg:block">
-        <ul class="menu menu-horizontal">
+        <ul class="menu menu-horizontal text-white">
           <!-- Navbar menu content here -->
           {
             links.map((item) => (

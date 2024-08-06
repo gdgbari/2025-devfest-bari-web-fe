@@ -10,7 +10,35 @@ module.exports = {
     require('daisyui'),
   ],
   theme: {
+
     extend: {
+      colors: {
+        black: "#1e1e1e",
+        red: {
+          dark: "#8C2820",
+          DEFAULT: "#EA4335",
+          half: "#FF7DAF",
+          pastel: "#F8D8D8",
+        },
+        blue: {
+          dark: "#285092",
+          DEFAULT: "#4285F4",
+          half: "#57CAFF",
+          pastel: "#C3ECF6",
+        },
+        green: {
+          dark: "#1F6532",
+          DEFAULT: "#34A853",
+          half: "#5CDB6D",
+          pastel: "#CCF6C5",
+        },
+        yellow: {
+          dark: "#956700",
+          DEFAULT: "#F9AB00",
+          half: "#FFD427",
+          pastel: "#FFE7A5",
+        },
+      },
       spacing: {
         128: "32rem",
         "8xl": "88rem",
