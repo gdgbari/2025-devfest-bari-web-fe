@@ -2,13 +2,13 @@
 import { WebsiteConfig } from "../../config";
 ---
 
-<div class="jumbo h-screen flex flex-col">
+<div class="jumbo h-192 lg:h-220  flex flex-col">
   <div
-    class="absolute top-0 left-0 right-0 h-screen"
+    class="absolute top-0 left-0 right-0 h-192 lg:h-220"
   >
     <div class="absolute top-10 md:top-20 left-0 right-0 p-10 text-center text-primary-content flex flex-col align-center z-20">
       <img src="/assets/vectors/logo_big.svg" class="h-36 m-12" />
-      <p class="text-3xl font-semibold">
+      <p class="text-3xl md:text-4xl font-semibold">
         {
           WebsiteConfig.EVENT_START.toLocaleDateString("en-US", {
             day: "numeric",
@@ -17,7 +17,7 @@ import { WebsiteConfig } from "../../config";
           })
         }
       </p>
-      <p class="text-3xl font-semibold">{WebsiteConfig.EVENT_LOCATION_NAME}</p>
+      <p class="text-3xl md:text-4xl font-semibold">{WebsiteConfig.EVENT_LOCATION_NAME}</p>
       <div class="mt-8 flex gap-4 justify-center flex-col md:flex-row">
         <a class="btn-content text-xl" href={WebsiteConfig.DEVFEST_EVENT_LINK}
           >TICKET AVAILABLE</a

@@ -6,7 +6,7 @@ const speakers = await getSpeakers();
 
 ---
 
-<div class="py-6 main-container px-4" >
+<div class="py-14 main-container px-4" >
   <h2 class="text-6xl mb-10 font-bold text-white">Speakers</h2>
   <div class="grid md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-10 mt-5 mb-7">
     <RandomSpeakerList client:only="react" speakers={speakers??[]} />

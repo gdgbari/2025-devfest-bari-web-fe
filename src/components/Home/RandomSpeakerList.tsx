@@ -14,7 +14,7 @@ const SpeakerPreviewElement = ({ speaker }: { speaker: Speaker }) => (
       />
     </figure>
     <div className="card-body p-4">
-      <p className="my-2 font-medium text-xl">{speaker.fullName}</p>
+      <p className="font-medium text-xl">{speaker.fullName}</p>
       <p className="max-h-12 text-ellipsis overflow-hidden">{speaker.tagLine}</p>
     </div>
   </a>

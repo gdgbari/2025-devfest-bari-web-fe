@@ -6,6 +6,7 @@
 
  @layer utilities{
     .max-w-8xl { max-width: 88rem; }
+    .max-w-7xl { max-width: 78rem; }
 
     .rounded-3xl {
         border-radius: 1.25rem;
@@ -26,6 +27,10 @@
 
 .btn-content{
  @apply btn  bg-white text-lg px-8 py-2 h-auto rounded-lg;
+}
+
+.btn.btn-primary{
+    @apply bg-red text-white btn-ghost hover:bg-red-dark border-0;
 }
 
 .category-item {
