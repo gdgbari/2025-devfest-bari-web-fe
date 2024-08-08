@@ -1,6 +1,6 @@
 ---
 name: "Anna Labellarte"
-tagline: "Nextome"
+tagline: "Mobile Engineer @ YAZIO"
 role: "organizer"
 image: "anna.webp"
 links:
