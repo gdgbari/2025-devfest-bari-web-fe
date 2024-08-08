@@ -52,7 +52,7 @@ const links = [
           {
             links.map((item) => (
               <li>
-                <a href={item.link}>{item.name}</a>
+                <a class="hover:bg-red-pastel hover:text-black" href={item.link}>{item.name}</a>
               </li>
             ))
           }
@@ -60,10 +60,10 @@ const links = [
       </div>
     </div>
   </div>
-  <div class="drawer-side z-40">
+  <div class="drawer-side z-40 ">
     <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"
     ></label>
-    <ul class="menu bg-base-200 min-h-full w-80 p-4">
+    <ul class="menu min-h-full w-80 p-4 bg-red-pastel">
       {
         links.map((item) => (
           <li>
