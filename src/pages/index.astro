@@ -37,9 +37,21 @@ import "../style/base.css";
 
       <ReasonsToJoin />
 
+      <div class="pt-2"></div>
+      
       <Location />
 
-      <Gallery />
+      <Gallery >
+        <p  slot="join-photos-text">
+          Alcune foto della DevFest Bari 2023.
+        </p>
+
+        <a
+          slot="join-photos-btn"
+          class="btn-content"
+          href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">See them</a
+        >
+      </Gallery>
 
       <TicketSection />
 

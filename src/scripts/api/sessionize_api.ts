@@ -79,7 +79,7 @@ export interface Speaker {
 
 // GLOBAL VARS
 
-const API_ID = "vfsf0scu"
+const API_ID = "1rh747m6"
 const API_ENDPOINT = `https://sessionize.com/api/v2/${API_ID}`;
 const defaultProfileImage = "/assets/vectors/user_circle.svg"
 
@@ -113,7 +113,6 @@ export async function getSchedule(): Promise<Promise<ScheduleDay[]>> {
 export async function getSessions(includeSpeakers: boolean = false): Promise<SessionInfo[]> {
     const sessionResult: any[] = await SessionizeGET('Sessions');
     const speakers = includeSpeakers ? await getSpeakers() : null;
-
     const sessionsRaw: any[] = sessionResult[0].sessions;
 
     const sessions = sessionsRaw.map(s => parseSession(s, speakers));
@@ -126,7 +125,7 @@ function parseSession(sessionRaw: any, speakers: Speaker[] | null): SessionInfo 
         .replaceAll(' ', '-')
         .replaceAll(/[.'/":*+?^${}()|[\]\\,“”!]/g, '')
         .replaceAll(/-{2,}/g, '-');
-        
+
     const session: SessionInfo = {
         id: sessionRaw.id,
         slug: sessionSlug,
@@ -142,6 +141,7 @@ function parseSession(sessionRaw: any, speakers: Speaker[] | null): SessionInfo 
         language: ""
     };
 
+
     const additionalProperties = sessionRaw.categories.map(c => {
         const categoryField = {};
         const categoryKey = c.name.replace(' ', '_').toLowerCase();
@@ -149,6 +149,7 @@ function parseSession(sessionRaw: any, speakers: Speaker[] | null): SessionInfo 
 
         return categoryField;
     }).reduce((props, cf) => Object.assign(props, cf), {});
+
 
     session.language = additionalProperties.language[0];
     session.topics = additionalProperties.topic;
@@ -167,7 +168,6 @@ function parseSession(sessionRaw: any, speakers: Speaker[] | null): SessionInfo 
 export async function getSpeakers(includeSessions: boolean = false): Promise<Speaker[]> {
     const speakersResult: any[] = await SessionizeGET('Speakers');
     const sessions = includeSessions ? await getSessions() : null;
-
     const speakers: Speaker[] = speakersResult.map(s => parseSpeaker(s, sessions));
 
     return speakers;
@@ -175,6 +175,7 @@ export async function getSpeakers(includeSessions: boolean = false): Promise<Spe
 
 
 function parseSpeaker(speakerRaw: any, sessions: SessionInfo[] | null) {
+
     const speakerSlug = `${speakerRaw.firstName.toLowerCase()}-${speakerRaw.lastName.toLowerCase()}`
         .replaceAll(' ', '-')
         .replaceAll(/[.'/":*+?^${}()|[\]\\,“”!]/g, '')

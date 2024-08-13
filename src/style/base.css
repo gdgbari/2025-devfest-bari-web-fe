@@ -25,8 +25,10 @@
     CUSTOM COMPONENTS
 ------------------------------------*/
 
+
+
 .btn-content{
- @apply btn  bg-white text-lg px-8 py-2 h-auto rounded-lg;
+ @apply btn  bg-white text-2xl px-10 py-3 h-auto rounded-lg;
 }
 
 .btn.btn-primary{
@@ -42,5 +44,5 @@
 }
 
 .speaker-card {
-    @apply card bg-blue-pastel hover:scale-110 h-full w-full items-center text-center duration-150 ease-in;
+    @apply card bg-red-pastel hover:scale-110 h-full w-full items-center text-center duration-150 ease-in;
 }
