@@ -1,86 +1,140 @@
 ---
 import BaseLayout from "../components/Common/BaseLayout.astro";
+
+const faq = [
+  {
+    group: "Generali",
+    questions: [
+      {
+        question: "Come posso arrivarci?",
+        answer:
+          "Puoi facilmente raggiungere il Politecnico di Bari con i mezzi pubblici o semplicemente a piedi. Controlla la pagina delle indicazioni per ulteriori dettagli.",
+      },
+      {
+        question: "Ho bisogno di un biglietto per partecipare al DevFest Bari?",
+        answer:
+          "Sì, la partecipazione al DevFest è gratuita, ma la registrazione è obbligatoria. Essere in lista d'attesa non è sufficiente per partecipare alla conferenza.",
+      },
+      {
+        question: "Non posso partecipare al DevFest, cosa devo fare?",
+        answer:
+          "Se non puoi partecipare, ti chiediamo gentilmente di cancellare il tuo ordine tramite la piattaforma GDG, oppure inviaci un'email (possiamo farlo per te).",
+      },
+      {
+        question: "Devo stampare i miei biglietti?",
+        answer:
+          "No, puoi utilizzare il tuo smartphone per mostrarci il biglietto. Mostrare l'email con il QR code del biglietto è sufficiente. Assicurati di avere il biglietto pronto per non rallentare il processo di check-in.",
+      },
+      {
+        question: "Dovrei venire anche se sono ancora in lista d'attesa?",
+        answer:
+          "Puoi venire anche se sei in lista d'attesa, ma non possiamo assicurarti che avrai un posto. Rilasceremo i biglietti delle persone che non si presentano durante la giornata, quindi potresti avere una possibilità di entrare, ma questo è fuori dal nostro controllo e non possiamo dirti in anticipo se otterrai un posto.",
+      },
+      {
+        question: "Posso dare il mio biglietto a un amico?",
+        answer:
+          "Purtroppo, questo non è possibile. Se non hai intenzione di venire, per favore cancella il tuo biglietto e chiedi al tuo amico di registrarsi per un nuovo biglietto.",
+      },
+      {
+        question: "Posso lasciare la conferenza e tornare più tardi?",
+        answer:
+          "Sì, puoi sempre lasciare la conferenza e tornare quando vuoi. Per entrare nella sede avrai comunque sempre bisogno del tuo badge (che riceverai all'ingresso).",
+      },
+      {
+        question: "Cosa devo portare alla conferenza?",
+        answer:
+          "Il tuo biglietto. Questa è l'unica cosa necessaria che non dovresti dimenticare.",
+      },
+      {
+        question: "Le sessioni vengono registrate?",
+        answer:
+          "No, non stiamo registrando/trasmettendo in diretta le sessioni.",
+      },
+    ],
+  },
+  {
+    group: "Scuole",
+    questions: [
+      {
+        question: "Sono uno studente e voglio partecipare. Come posso fare?",
+        answer:
+          "Se sei uno studente, parlane con i tuoi professori e facci contattare da loro. Se invece vuoi partecipare in autonomia, contattaci e ti aiuteremo noi.",
+      },
+      {
+        question: "Cosa devo fare se ho problemi con i biglietti?",
+        answer:
+          "Se hai qualsiasi tipo di problema con i biglietti, non esitare a contattarci in privato.",
+      },
+      {
+        question: "I biglietti sono a disponibilità limitata?",
+        answer:
+          "Sì, i biglietti sono in numero limitato, quindi consigliamo a tutta la classe di iscriversi contemporaneamente in modo da evitare che qualcuno rimanga senza biglietto.",
+      },
+      {
+        question: "Con quale email devo iscrivermi?",
+        answer:
+          "E' importante registrarsi per il biglietto scuola utilizzando la tua email istituzionale.",
+      },
+      {
+        question: "Cosa devo fare se non posso più partecipare?",
+        answer:
+          "Se non puoi più partecipare, ti chiediamo di annullare l'iscrizione all’evento, in modo da poter permettere a qualcun altro di partecipare!",
+      },
+      {
+        question: "Sono un docente, devo iscrivermi anche io?",
+        answer:
+          "Sì, se sei un docente devi comunque iscriverti come i tuoi studenti, usando la mail istituzionale.",
+      },
+      {
+        question:
+          "Sono uno studente delle scuole superiori, la mia classe si è registrata per partecipare alle DevFest, devo prendere il biglietto?",
+        answer: "Si, ricordati di prendere il biglietto scuola.",
+      },
+      {
+        question: "Sono un docente, come posso registrare la classe?",
+        answer:
+          "Per registrare la classe occorre compilare il form scuole@devfest bari 2024. Il form è una manifestazione di interesse che ci permette di avere una visione migliore delle classi che vogliono partecipare. E' comunque necessario che ogni alunno prenda singolarmente il biglietto per partecipare. I posti sono limitati, consigliamo di farlo quanto prima.",
+      },
+      {
+        question:
+          "Sono uno studente delle scuole superiori, la mia classe non è registrata per partecipare alle devfest ma voglio comunque partecipare in autonomia, come posso partecipare?",
+        answer:
+          "Certo! Se stai venendo in autonomia puoi comunque partecipare alla DevFest! Ricorda di prendere il biglietto ordinario in questo caso.",
+      },
+      {
+        question:
+          "Ho il biglietto scuola, è obbligatorio seguire la track di talk dedicata agli studenti?",
+        answer:
+          "Seguire la track di talk dedicata agli studenti non è obbligatorio, ma è fortemente consigliato.",
+      },
+      {
+        question: "Cosa comprende il ticket scuola?",
+        answer:
+          "Il ticket scuola permette l'accesso a tutta l'area dell'evento e la partecipazione a tutte le track e workshop. Inoltre permette l'accesso prioritario alla track studenti, appositamente pensata per studenti della scuola superiore/neo diplomati. La track durerà metà mattinata perchè pensata per coprire l'orario scolastico. Per la medesima ragione il biglietto scuola non prevede la launch box.",
+      },
+    ],
+  },
+];
 ---
 
 <BaseLayout pageTitle="Faq">
-  <div class="grid md:grid-cols-2 grid-flow-row gap-4 text-white">
-    <div class="flex flex-col justify-start">
-      <h2 class="font-medium text-4xl">General</h2>
-    </div>
-    <div>
-      <p>
-        We know that you could have some questions so we prepared for you a list
-        of FAQs that may can help you 💪<br />
-
-         Anyway we are alway open to solve any other doubt you could have, feel free
-        to contact us in that case.
-      </p>
-      <p>
-        <h3 class="font-medium text-lg my-2">How do I get there?</h3>
-        <p>
-          You can easily reach Polytechnic of Bari with public transportation or
-          just by walking. Please check the location page where you can find
-          further details.
-        </p>
-        <h3 class="font-medium text-lg my-2">
-          Do I need a ticket to join DevFest Bari?
-        </h3>
-
-        <p>
-          Yes, participation to the DevFest is free, but registration is
-          mandatory. Being in the waiting list is not sufficient to participate
-          to the conference.
-        </p>
-
-        <h3 class="font-medium text-lg my-2">
-          I can't attend the DevFest, what should I do?
-        </h3>
-
-        <p>
-          If you can't attend we kindly ask you to cancel your order via the GDG
-          platform, or either send us an email (we can do it for you).
-        </p>
-        <h3 class="font-medium text-lg my-2">Do I need to print my tickets?</h3>
-
-        <p>
-          No, you can use your smartphone to show us the ticket. Showing the
-          ticket email with the QR code is also enough. Please make sure to have
-          your ticket ready to do not slow down the check-in process. Should I
-          come even if I'm still on the waiting list? You can come even if
-          you're in the waiting list, but we can't assure you will get a spot :(
-          We will release tickets of people that don't show up during day so you
-          may have a chance to get in, but this is out of our control, and we
-          can't tell you in advance if you'll get a place.
-        </p>
-
-        <h3 class="font-medium text-lg my-2">
-          Can I give my ticket to a friend?
-        </h3>
-
-        <p>
-          Sadly this is not possible. If you're not planning to come, please
-          cancel your ticket and ask your friend to register themselves for a
-          new ticket.
-        </p>
-
-        <h3 class="font-medium text-lg my-2">
-          Can I leave the conference and come back later?
-        </h3>
-
-        <p>
-          Yes, you can always leave the conference and come back whenever you
-          want. To enter the venue you anyway always need your badge (you will
-          get it at the entrance).
-        </p>
-        <h3 class="font-medium text-lg my-2">
-          What should I carry on to the conference?
-        </h3>
-        <p>
-          Your ticket. That's the only necessary thing you shouldn't forget.
-        </p>
-        <h3 class="font-medium text-lg my-2">Are the sessions recorded?</h3>
-        <p>No, we are not recording/live-streaming the sessions.</p>
-      </p>
-    </div>
+  <div class="flex flex-col gap-10">
+    {
+      faq.map((group) => (
+        <div class="grid md:grid-cols-2 grid-flow-row gap-4 text-white">
+          <div class="flex flex-col justify-start">
+            <h2 class="font-semibold text-4xl">{group.group}</h2>
+          </div>
+          <div>
+            {group.questions.map((q) => (
+              <p>
+                <h3 class="font-medium text-2xl my-2">{q.question}</h3>
+                <p class="text-md">{q.answer}</p>
+              </p>
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </div>
 </BaseLayout>

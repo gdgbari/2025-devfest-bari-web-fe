@@ -18,11 +18,13 @@ export const ui = {
         'nav.team': 'Team',
         'footer.share': 'Share',
         'footer.followUs': 'Follow us',
+        'info.locationName': 'Polythecnic of Bari',
+        
     },
     it: {
         'nav.home': 'Home',
         'nav.schedule': 'Schedule',
-        'nav.sessions': 'Session',
+        'nav.sessions': 'Sessioni',
         'nav.speakers': 'Speaker',
         'nav.location': 'Location',
         'nav.lang': 'Lingua',
@@ -30,5 +32,6 @@ export const ui = {
         'nav.team': 'Team',
         'footer.share': 'Condividi',
         'footer.followUs': 'Seguici su',
+        'info.locationName': 'Politecnico of Bari',
     },
 } as const;
