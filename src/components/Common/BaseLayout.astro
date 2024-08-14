@@ -5,6 +5,7 @@ import Footer from "./Footer.astro";
 import Navbar from "./Navbar.astro";
 import PageHead from "./PageHead.astro";
 import PageTitle from "./PageTitle.astro";
+import { getLangFromUrl } from "../../i18n/utils";
 import "../../style/base.css";
 
 interface Props {
@@ -17,11 +18,13 @@ interface Props {
 
 const { pageTitle, pageUiTitle, pageDescription, navbarTrasparent, subtitle } =
   Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <!-- Below is your "component template." It's just HTML, but with
      some magic sprinkled in to help you build great templates. -->
-<html lang="en" class="scroll-smooth flex flex-col min-h-screen">
+<html lang={lang} class="scroll-smooth flex flex-col min-h-screen">
   <PageHead title={pageTitle} description={pageDescription} />
 
   <body class="flex-1 flex flex-col">

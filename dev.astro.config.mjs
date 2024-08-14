@@ -7,6 +7,13 @@ import { WebsiteConfig } from "./src/config";
 
 // https://astro.build/config
 export default defineConfig({
+  i18n: {
+    defaultLocale: "it",
+    locales: ["it", "en"],
+    routing:{
+      prefixDefaultLocale: false,
+    }
+  },
   integrations: [
     mdx(),
     tailwind({

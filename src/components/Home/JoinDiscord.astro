@@ -1,20 +1,18 @@
 <div class="flex md:flex-row flex-col py-14 bg-red-pastel text-black">
-    <div class="flex main-container">
-      <div class="flex-1 md:w-64 flex flex-col justify-center text-center">
-        <p class="text-5xl font-bold mb-4">Join the Community</p>
-        <p class="text-lg">
-          in us to be part of a growing community, improve your knowledge and
-          skills, and find a welcoming space to be yourself. We offer a
-          supportive environment, stimulating discussions, fun events, resource
-          sharing, and networking opportunities.
-        </p>
-        <div class="h-8"></div>
-        <a
-          class="btn  mx-auto px-8"
-          href="https://gdg.community.dev/gdg-bari/"
-          target="_blank">Join</a
-        >
-      </div>
+  <div class="flex main-container">
+    <div class="flex-1 md:w-64 flex flex-col justify-center text-center">
+      <p class="text-5xl font-bold mb-4">
+        <slot name="join-title" />
+      </p>
+      <p class="text-lg">
+        <slot name="join-desc" />
+      </p>
+      <div class="h-8"></div>
+      <a
+        class="btn mx-auto px-8"
+        href="https://gdg.community.dev/gdg-bari/"
+        target="_blank">Join</a
+      >
     </div>
   </div>
-  
+</div>

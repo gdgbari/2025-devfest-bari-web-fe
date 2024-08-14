@@ -22,29 +22,56 @@ import "../style/base.css";
   <PageHead />
 
   <body class="flex flex-col flex-1">
-    <Navbar transparentMode={true} />
+    <Navbar />
 
-    <main
-      id="swup"
-      class="main-content transition-fade flex flex-col"
-      data-swup="0"
-    >
+    <main class="flex flex-col">
       <Jumbo />
 
-      <InfoContainer />
+      <InfoContainer>
+        <span slot="info-title"> Cos'è la DevFest Bari?</span>
+        <span slot="info-body">
+          La <b>DevFest Bari 2024</b> è un evento annuale organizzato dal Google
+          Developers Group di Bari, destinato a sviluppatori, tecnologi e appassionati
+          del mondo Google. L'evento si terrà a fine ottobre e comprende due giorni
+          di ispirazione, apprendimento e networking. Gli partecipanti potranno esplorare
+          le ultime innovazioni tecnologiche, con un focus su Android, Web e Cloud
+          technologies, AI, tra gli altri.
+        </span>
+      </InfoContainer>
 
       <SpeakerPreview />
 
-      <ReasonsToJoin />
+      <ReasonsToJoin>
+        <span slot="reasons-title">Perché partecipare alla DevFest?</span>
+        <span slot="reason-learning-title">Imparare</span>
+        <span slot="reason-learning-desc">
+          Impara direttamente dalle menti più brillanti del tech e ascolta gli
+          esperti del settore Google e delle tecnologie emergenti.</span
+        >
+        <span slot="reason-workshops-title">Workshop Pratici</span>
+        <span slot="reason-workshops-desc">
+          Metti le mani in pasta con workshop pratici e porta a casa nuove
+          competenze.</span
+        >
+        <span slot="reason-networking-title">Networking</span>
+        <span slot="reason-networking-desc">
+          Create vital connections by expanding your network with professionals
+          and enthusiasts like you.</span
+        >
+      </ReasonsToJoin>
 
       <div class="pt-2"></div>
-      
-      <Location />
 
-      <Gallery >
-        <p  slot="join-photos-text">
-          Alcune foto della DevFest Bari 2023.
-        </p>
+      <Location>
+        <span slot="location-title">The venue</span>
+        <span slot="location-desc"
+          >Located on the Bari University campus, it is known for its innovative
+          and industry-oriented research.
+        </span>
+      </Location>
+
+      <Gallery>
+        <p slot="join-photos-text">Alcune foto della DevFest Bari 2023.</p>
 
         <a
           slot="join-photos-btn"
@@ -55,7 +82,15 @@ import "../style/base.css";
 
       <TicketSection />
 
-      <JoinDiscord />
+      <JoinDiscord>
+        <span slot="join-title">Join the Community</span>
+        <span slot="join-desc">
+          in us to be part of a growing community, improve your knowledge and
+          skills, and find a welcoming space to be yourself. We offer a
+          supportive environment, stimulating discussions, fun events, resource
+          sharing, and networking opportunities.</span
+        >
+      </JoinDiscord>
 
       <SponsorSection />
     </main>

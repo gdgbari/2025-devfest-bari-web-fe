@@ -21,6 +21,10 @@
     }
 }
 
+html{
+    scrollbar-color: white #1e1e1e!important;
+}
+
 /*------------------------------------
     CUSTOM COMPONENTS
 ------------------------------------*/

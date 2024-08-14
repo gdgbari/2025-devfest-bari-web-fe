@@ -1,28 +1,41 @@
 ---
-import { WebsiteConfig } from "../../config";
+import { ImportSvg } from "../../helpers/svgimport";
 
-const { DEVFEST_NAME, DEVFEST_LOGO_LIGHT, DEVFEST_LOGO_DARK } = WebsiteConfig;
+import {
+  getLangFromUrl,
+  getUrlPathWithoutLang,
+  useTranslatedPath,
+  useTranslations,
+} from "../../i18n/utils";
 
-interface Props {
-  transparentMode?: boolean;
-}
+import { languages } from "../../i18n/ui";
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+const t = useTranslations(lang);
+
+const translationIcon = await ImportSvg("translation");
 
 const links = [
-  { link: "/", name: "Home" },
-  { link: "/schedule", name: "Schedule" },
-  { link: "/sessions", name: "Sessions" },
-  { link: "/speakers", name: "Speakers" },
-  { link: "/location", name: "Location" },
-  { link: "/faq", name: "Faq" },
-  { link: "/team", name: "Team" },
+  { link: translatePath(""), name: t("nav.home") },
+  //{ link: translatePath("/schedule"), name: t("nav.schedule") },
+  { link: translatePath("/sessions"), name: t("nav.sessions") },
+  { link: translatePath("/speakers"), name: t("nav.speakers") },
+  { link: translatePath("/location"), name: t("nav.location") },
+  { link: translatePath("/faq"), name: t("nav.faq") },
+  { link: translatePath("/team"), name: t("nav.team") },
 ];
+
+const currentPath = getUrlPathWithoutLang(lang, Astro.url);
 ---
 
 <div class="drawer">
   <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col">
     <!-- Navbar -->
-    <div class="navbar bg-base-100 w-full fixed top-0 z-30 border-b-4 border-b-red">
+    <div
+      class="navbar bg-base-100 w-full fixed top-0 z-30 border-b-4 border-b-red"
+    >
       <div class="flex-none lg:hidden">
         <label
           for="my-drawer-3"
@@ -44,7 +57,11 @@ const links = [
         </label>
       </div>
       <div class="mx-2 flex-1 px-2">
-        <img src="/assets/vectors/logo_full.svg" alt="Devfest Logo" class="h-6" />
+        <img
+          src="/assets/vectors/logo_full.svg"
+          alt="Devfest Logo"
+          class="h-6"
+        />
       </div>
       <div class="hidden flex-none lg:block">
         <ul class="menu menu-horizontal text-white">
@@ -52,25 +69,80 @@ const links = [
           {
             links.map((item) => (
               <li>
-                <a class="hover:bg-red-pastel hover:text-black" href={item.link}>{item.name}</a>
+                <a
+                  class="btn btn-ghost hover:bg-red-pastel hover:text-black"
+                  href={item.link}
+                >
+                  {item.name}
+                </a>
               </li>
             ))
           }
+
+          <li>
+            <div class="dropdown dropdown-end p-0">
+              <div
+                tabindex="0"
+                role="button"
+                class="btn btn-ghost hover:bg-red-pastel hover:text-black"
+              >
+                <svg class="fill-current h-6 w-6" set:html={translationIcon} />
+              </div>
+              <ul
+                tabindex="0"
+                class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow top-12"
+              >
+                {
+                  Object.keys(languages).map((lang) => (
+                    <li>
+                      <a
+                        class=" hover:bg-red-pastel hover:text-black"
+                        href={translatePath(currentPath, lang)}
+                      >
+                        {languages[lang]}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="drawer-side z-40 ">
+  <div class="drawer-side z-40">
     <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"
     ></label>
     <ul class="menu min-h-full w-80 p-4 bg-red-pastel">
       {
         links.map((item) => (
-          <li>
+          <li class="hover:bg-black/10">
             <a href={item.link}>{item.name}</a>
           </li>
         ))
       }
+      <div class="collapse hover:bg-black/10">
+        <input type="checkbox" class="min-h-0" />
+        <div class="min-h-0 collapse-title px-4 py-2 flex gap-4 items-center">
+          <svg class="fill-current h-6 w-6" set:html={translationIcon} />
+          {t('nav.lang')}
+        </div>
+        <div class="px-0 collapse-content">
+          <div class="flex flex-col">
+            {
+              Object.keys(languages).map((lang) => (
+                <a
+                  class="px-4 py-2 hover:bg-black/15"
+                  href={translatePath(currentPath, lang)}
+                >
+                  {languages[lang]}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </div>
     </ul>
   </div>
 </div>

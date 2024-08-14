@@ -1,5 +1,7 @@
 ---
 import { WebsiteConfig } from "../../config";
+import { getLangFromUrl } from "../../i18n/utils";
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <div class="jumbo h-192 lg:h-220  flex flex-col">
@@ -10,7 +12,7 @@ import { WebsiteConfig } from "../../config";
       <img src="/assets/vectors/logo_big.svg" class="h-36 m-12" />
       <p class="text-3xl md:text-4xl font-semibold">
         {
-          WebsiteConfig.EVENT_START.toLocaleDateString("en-US", {
+          WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
             day: "numeric",
             month: "long",
             year: "numeric",

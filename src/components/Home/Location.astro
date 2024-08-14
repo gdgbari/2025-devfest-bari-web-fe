@@ -1,7 +1,7 @@
 ---
 import { WebsiteConfig } from "../../config";
-
 ---
+
 <div class="relative flex flex-col">
   <div class="h-128 bg-[url(/assets/images/location.webp)] bg-center bg-cover">
   </div>
@@ -9,10 +9,12 @@ import { WebsiteConfig } from "../../config";
     <div
       class="md:absolute md:flex-none md:card bottom-16 left-4 md:w-72 p-6 bg-red-pastel text-black"
     >
-      <p class="text-3xl mb-3">The venue</p>
+      <p class="text-3xl mb-3">
+        <slot name="location-title" />
+      </p>
       <p class="mb-3">{WebsiteConfig.EVENT_LOCATION_NAME}</p>
       <p>
-        Located on the Bari University campus, it is known for its innovative and industry-oriented research.
+        <slot name="location-desc" />
       </p>
       <div class="flex flex-row mt-4 items-center">
         <div class="flex-1">{WebsiteConfig.EVENT_LOCATION_FULL_ADDRESS}</div>

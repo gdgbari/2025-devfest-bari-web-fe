@@ -1,0 +1,97 @@
+---
+import Footer from "../../components/Common/Footer.astro";
+import Navbar from "../../components/Common/Navbar.astro";
+import PageHead from "../../components/Common/PageHead.astro";
+import Gallery from "../../components/Home/Gallery.astro";
+import InfoContainer from "../../components/Home/InfoContainer.astro";
+import JoinDiscord from "../../components/Home/JoinDiscord.astro";
+import Jumbo from "../../components/Home/Jumbo.astro";
+import Location from "../../components/Home/Location.astro";
+import SpeakerPreview from "../../components/Home/SpeakerPreview.astro";
+import SponsorSection from "../../components/Home/SponsorSection.astro";
+import ReasonsToJoin from "../../components/Home/ReasonsToJoin.astro";
+import TicketSection from "../../components/Home/TicketSection.astro";
+import "../../style/base.css";
+---
+
+<!-- Below is your "component template." It's just HTML, but with
+     some magic sprinkled in to help you build great templates. -->
+<html lang="en" class="scroll-smooth flex flex-col min-h-screen">
+  <PageHead />
+
+  <body class="flex flex-col flex-1">
+    <Navbar />
+
+    <main class="flex flex-col">
+      <Jumbo />
+
+      <InfoContainer>
+        <span slot="info-title">What is Devfest Bari?</span>
+        <span slot="info-body">
+          <b>DevFest Bari 2024</b> is an annual event organized by the Google Developers
+          Group of Bari, aimed at developers, technologists, and Google enthusiasts.
+          The event will take place at the end of October and includes two days of
+          inspiration, learning, and networking. Participants will be able to explore
+          the latest technological innovations, with a focus on Android, Web and
+          Cloud technologies, AI, among others.</span
+        >
+      </InfoContainer>
+
+      <SpeakerPreview />
+
+      <ReasonsToJoin>
+        <span slot="reasons-title">Why attend the DevFest?</span>
+        <span slot="reason-learning-title">Learning</span>
+        <span slot="reason-learning-desc">
+          Learn directly from the brightest minds in tech and listen to experts
+          from Google and emerging technologies.</span
+        >
+        <span slot="reason-workshops-title">Workshop Pratici</span>
+        <span slot="reason-workshops-desc">
+          Get hands-on with practical workshops and take home new skills.</span
+        >
+        <span slot="reason-networking-title">Networking</span>
+        <span slot="reason-networking-desc">
+          Create vital connections by expanding your network with professionals
+          and enthusiasts like you.</span
+        >
+      </ReasonsToJoin>
+
+      <div class="pt-2"></div>
+
+      <Location>
+        <span slot="location-title">The venue</span>
+        <span slot="location-desc"
+          >Located on the Bari University campus, it is known for its innovative
+          and industry-oriented research.
+        </span>
+      </Location>
+
+      <Gallery>
+        <p slot="join-photos-text">Some photos from DevFest Bari 2023.</p>
+
+        <a
+          slot="join-photos-btn"
+          class="btn-content"
+          href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">See them</a
+        >
+      </Gallery>
+
+      <TicketSection />
+
+      <JoinDiscord>
+        <span slot="join-title">Join the Community</span>
+        <span slot="join-desc">
+          in us to be part of a growing community, improve your knowledge and
+          skills, and find a welcoming space to be yourself. We offer a
+          supportive environment, stimulating discussions, fun events, resource
+          sharing, and networking opportunities.</span
+        >
+      </JoinDiscord>
+
+      <SponsorSection />
+    </main>
+
+    <Footer />
+  </body>
+</html>

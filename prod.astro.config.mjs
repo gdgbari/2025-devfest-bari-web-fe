@@ -11,6 +11,13 @@ import { WebsiteConfig } from "./src/config";
 // https://astro.build/config
 export default defineConfig({
   site: "https://dev.devfest.it",
+  i18n: {
+    defaultLocale: "it",
+    locales: ["it", "en"],
+    routing:{
+      prefixDefaultLocale: false,
+    }
+  },
   integrations: [
     mdx(),
     sitemap(),
