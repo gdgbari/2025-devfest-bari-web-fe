@@ -5,11 +5,11 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<div class="jumbo h-192 lg:h-220  flex flex-col">
-  <div
-    class="absolute top-0 left-0 right-0 h-192 lg:h-220"
-  >
-    <div class="absolute top-10 md:top-20 left-0 right-0 p-10 text-center text-primary-content flex flex-col align-center z-20">
+<div class="jumbo h-192 lg:h-220 flex flex-col">
+  <div class="absolute top-0 left-0 right-0 h-192 lg:h-220">
+    <div
+      class="absolute top-10 md:top-20 left-0 right-0 p-10 text-center text-primary-content flex flex-col align-center z-20"
+    >
       <img src="/assets/vectors/logo_big.svg" class="h-36 m-12" />
       <p class="text-3xl md:text-4xl font-semibold">
         {
@@ -20,15 +20,17 @@ const t = useTranslations(lang);
           })
         }
       </p>
-      <p class="text-3xl md:text-4xl font-semibold">{WebsiteConfig.EVENT_LOCATION_NAME}</p>
+      <p class="text-3xl md:text-4xl font-semibold">{t("info.locationName")}</p>
       <div class="mt-12 flex gap-4 justify-center flex-col md:flex-row">
-        <a class="btn-content text-xl" href={WebsiteConfig.DEVFEST_EVENT_LINK}
-          >{t('hero.ticketsAvailable')}</a
+        <a class="btn-content text-xl" href="#tickets"
+          >{t("hero.ticketsAvailable")}</a
         >
-        
       </div>
-      
     </div>
-    <img src="/assets/vectors/skyline.svg" alt="" class="mt-auto absolute bottom-0 left-0 right-0 w-full" />
+    <img
+      src="/assets/vectors/skyline.svg"
+      alt=""
+      class="mt-auto absolute bottom-0 left-0 right-0 w-full"
+    />
   </div>
 </div>

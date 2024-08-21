@@ -43,7 +43,42 @@ const getPath = useTranslatedPath(lang);
         </span>
       </InfoContainer>
 
-      <SpeakerPreview />
+      <!-- <SpeakerPreview /> -->
+      <TicketSection>
+        <div slot="ticket-desc">
+          <p>
+            Riserva il tuo posto per la DevFest Bari 2024 ed avrai accesso alla
+            conferenza comprensiva di tutti i talk e i workshop.
+          </p>
+
+          <p class="mt-4 text-3xl mb-2 font-medium">
+            Sei una scuola superiore?
+          </p>
+          <p>
+            <a
+              href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2023/#QeHcv97kND"
+              class="text-red hover:text-red-pastel">Scrivici</a
+            > per organizzare la vostra partecipazione.
+          </p>
+          <p class="mt-4 text-3xl font-medium mb-2">
+            Sei uno studente delle scuole superiori?
+          </p>
+          <p>
+            Parlane con con i tuoi professori e facci contattare da loro. Se
+            invece vuoi partecipare in autonomia, <a
+              href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2023/#QeHcv97kND"
+              class="text-red hover:text-red-pastel">Contattaci</a
+            > e ti aiuteremo noi.
+          </p>
+          <p class="mt-10">
+            Consulta le <a
+              class="text-red hover:text-red-pastel"
+              href={getPath("/faq", lang)}
+              >FAQ
+            </a> per saperne di più.
+          </p>
+        </div>
+      </TicketSection>
 
       <ReasonsToJoin>
         <span slot="reasons-title">Perché partecipare alla DevFest?</span>
@@ -73,39 +108,6 @@ const getPath = useTranslatedPath(lang);
       </Location>
 
       <div class="h-2"></div>
-
-      <TicketSection>
-        <div slot="ticket-desc">
-          <p>
-            Riserva il tuo posto per la DevFest Bari 2024 ed avrai accesso alla
-            conferenza comprensiva di tutti i talk e i workshop.
-          </p>
-
-          <p class="mt-4 text-3xl mb-2 font-medium">
-            Sei una scuola superiore?
-          </p>
-          <p>
-            <a
-              href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2023/#QeHcv97kND"
-              class="text-red hover:text-red-pastel">Scrivici</a
-            > per organizzare la vostra partecipazione.
-          </p>
-          <p class="mt-4 text-3xl font-medium mb-2">
-            Sei uno studente delle scuole superiori?
-          </p>
-          <p>
-            Parlane con con i tuoi professori e facci contattare da loro. Se
-            invece vuoi partecipare in autonomia, <a
-              href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2023/#QeHcv97kND"
-              class="text-red hover:text-red-pastel">Contattaci</a
-            > e ti aiuteremo noi.
-          </p>
-          <p class="mt-10">
-            Consulta le <a class="text-red hover:text-red-pastel" href={getPath("/faq", lang)}>FAQ </a> per saperne di
-            più.
-          </p>
-        </div>
-      </TicketSection>
 
       <Gallery>
         <p slot="join-photos-text">Alcune foto della DevFest Bari 2023.</p>
