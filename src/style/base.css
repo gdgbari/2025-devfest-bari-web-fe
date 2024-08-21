@@ -5,6 +5,10 @@
 
 
  @layer utilities{
+    .animated{
+        @apply duration-150 ease-in;
+    }
+
     .max-w-8xl { max-width: 88rem; }
     .max-w-7xl { max-width: 78rem; }
 
@@ -36,7 +40,7 @@ html{
 }
 
 .btn.btn-primary{
-    @apply bg-red text-white btn-ghost hover:bg-red-dark border-0;
+    @apply bg-red text-white text-2xl px-10 py-3 h-auto rounded-lg hover:bg-red-dark border-0;
 }
 
 .category-item {
@@ -48,5 +52,5 @@ html{
 }
 
 .speaker-card {
-    @apply card bg-red-pastel hover:scale-110 h-full w-full items-center text-center duration-150 ease-in;
+    @apply flex flex-col card items-stretch bg-red-pastel md:hover:scale-110 h-full w-full text-center animated max-w-[400px];
 }

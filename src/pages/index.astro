@@ -14,6 +14,10 @@ import SponsorSection from "../components/Home/SponsorSection.astro";
 import ReasonsToJoin from "../components/Home/ReasonsToJoin.astro";
 import TicketSection from "../components/Home/TicketSection.astro";
 import "../style/base.css";
+import { getLangFromUrl, useTranslatedPath } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const getPath = useTranslatedPath(lang);
 ---
 
 <!-- Below is your "component template." It's just HTML, but with
@@ -55,40 +59,72 @@ import "../style/base.css";
         >
         <span slot="reason-networking-title">Networking</span>
         <span slot="reason-networking-desc">
-          Create vital connections by expanding your network with professionals
-          and enthusiasts like you.</span
+          Crea connessioni vitali espandendo la tua rete con professionisti e
+          appassionati come te.</span
         >
       </ReasonsToJoin>
 
-      <div class="pt-2"></div>
-
       <Location>
-        <span slot="location-title">The venue</span>
+        <span slot="location-title">La sede</span>
         <span slot="location-desc"
-          >Located on the Bari University campus, it is known for its innovative
-          and industry-oriented research.
+          >Situato nel campus dell'Università di Bari, è noto per la sua ricerca
+          innovativa e orientata all'industria.
         </span>
       </Location>
+
+      <div class="h-2"></div>
+
+      <TicketSection>
+        <div slot="ticket-desc">
+          <p>
+            Riserva il tuo posto per la DevFest Bari 2024 ed avrai accesso alla
+            conferenza comprensiva di tutti i talk e i workshop.
+          </p>
+
+          <p class="mt-4 text-3xl mb-2 font-medium">
+            Sei una scuola superiore?
+          </p>
+          <p>
+            <a
+              href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2023/#QeHcv97kND"
+              class="text-red hover:text-red-pastel">Scrivici</a
+            > per organizzare la vostra partecipazione.
+          </p>
+          <p class="mt-4 text-3xl font-medium mb-2">
+            Sei uno studente delle scuole superiori?
+          </p>
+          <p>
+            Parlane con con i tuoi professori e facci contattare da loro. Se
+            invece vuoi partecipare in autonomia, <a
+              href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2023/#QeHcv97kND"
+              class="text-red hover:text-red-pastel">Contattaci</a
+            > e ti aiuteremo noi.
+          </p>
+          <p class="mt-10">
+            Consulta le <a class="text-red hover:text-red-pastel" href={getPath("/faq", lang)}>FAQ </a> per saperne di
+            più.
+          </p>
+        </div>
+      </TicketSection>
 
       <Gallery>
         <p slot="join-photos-text">Alcune foto della DevFest Bari 2023.</p>
 
         <a
           slot="join-photos-btn"
-          class="btn-content"
-          href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">See them</a
+          class="btn btn-ghost border-2 border-black/20 text-2xl px-10 py-3 h-auto"
+          href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">Album</a
         >
       </Gallery>
 
-      <TicketSection />
-
       <JoinDiscord>
-        <span slot="join-title">Join the Community</span>
+        <span slot="join-title">Entra nella Community</span>
         <span slot="join-desc">
-          in us to be part of a growing community, improve your knowledge and
-          skills, and find a welcoming space to be yourself. We offer a
-          supportive environment, stimulating discussions, fun events, resource
-          sharing, and networking opportunities.</span
+          Unisciti a noi per far parte di una comunità in crescita, migliorare
+          la tua conoscenza e le tue competenze e trovare uno spazio accogliente
+          per essere te stesso. Offriamo un ambiente di supporto, discussioni
+          stimolanti, eventi divertenti, condivisione di risorse e opportunità
+          di networking.</span
         >
       </JoinDiscord>
 

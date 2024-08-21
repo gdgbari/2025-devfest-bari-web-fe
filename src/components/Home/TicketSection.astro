@@ -1,18 +1,27 @@
-<div class="flex md:flex-row flex-col pb-14 pt-12">
-    <div class="flex-1 md:flex md:items-center text-center justify-center">
-        <p class="text-5xl mb-4 md:mb-0 font-semibold text-white">Ticket</p>
+---
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div class="relative main-container px-4 flex md:flex-row flex-col pb-14 pt-12">
+   
+    <div class="flex-1 flex flex-col justify-start items-start text-white text-2xl text-start">
+        <p
+        class="text-6xl mb-10 font-semibold text-white"
+    >
+        Ticket
+    </p>
+        <slot name="ticket-desc" />
     </div>
 
-    <div class="flex-1 flex justify-center items-center">
-        <div class="card p-4 items-stretch text-center bg-red-pastel">
-            <p>Regular</p>
-            <p class="text-6xl font-medium my-8">FREE</p>
-            <div class="my-4"></div>
-            <p>26 Ottobre 2024</p>
-            <p> Accesso alla conferenza, workshop pratici, after party</p>
-            <div class="my-10"></div>
-            <a class="btn-content" href="/">JOIN</a>
+    <div class="flex-1 flex mt-14 md:mt-0 justify-center md:justify-end items-center ">
+        <div class="card px-10 py-8 items-stretch text-center bg-white ">
+            <p class="text-3xl font-medium">{t('ticket.title')}</p>
+            <p class="text-6xl font-bold my-8 text-red">{t('ticket.free')}</p>
+            
+            <a class="btn btn-primary" href="/">{t('ticket.cta')}</a>
         </div>
     </div>
-  </div>
-  
+</div>

@@ -16,10 +16,20 @@ export const ui = {
         'nav.lang': 'Language',
         'nav.faq': 'Faq',
         'nav.team': 'Team',
+        'hero.ticketsAvailable': 'TICKETS AVAILABLE',
         'footer.share': 'Share',
         'footer.followUs': 'Follow us',
         'info.locationName': 'Polythecnic of Bari',
-        
+        'info.partecipants': 'Participants',
+        'info.speakers': 'Speakers',
+        'info.tracks': 'Tracks',
+        'info.categories': 'Categories',
+        'speaker.seeAll': 'See all speakers',
+        'ticket.title': 'Book your ticket now',
+        'ticket.free': 'FREE',
+        'ticket.cta': 'Get your ticket',
+        'community.cta': 'Join us',
+
     },
     it: {
         'nav.home': 'Home',
@@ -33,5 +43,16 @@ export const ui = {
         'footer.share': 'Condividi',
         'footer.followUs': 'Seguici su',
         'info.locationName': 'Politecnico of Bari',
+        'info.partecipants': 'Partecipanti',
+        'info.speakers': 'Speaker',
+        'info.tracks': 'Track',
+        'info.categories': 'Categorie',
+        'speaker.seeAll': 'Vedi tutti gli speaker',
+        'hero.ticketsAvailable': 'BIGLIETTI DISPONIBILI',
+        'ticket.title': 'Prenota ora il tuo biglietto',
+        'ticket.free': 'GRATIS',
+        'ticket.cta': 'Iscriviti',
+
+        'community.cta': 'Unisciti',
     },
 } as const;

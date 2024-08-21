@@ -8,7 +8,7 @@ const SpeakerPreviewElement = ({ speaker }: { speaker: Speaker }) => (
   >
     <figure>
       <img
-        className="rounded-none"
+        className="rounded-none w-full aspect-square"
         src={speaker.profilePicture}
         alt={speaker.fullName}
       />

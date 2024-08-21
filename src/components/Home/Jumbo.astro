@@ -1,7 +1,8 @@
 ---
 import { WebsiteConfig } from "../../config";
-import { getLangFromUrl } from "../../i18n/utils";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div class="jumbo h-192 lg:h-220  flex flex-col">
@@ -22,7 +23,7 @@ const lang = getLangFromUrl(Astro.url);
       <p class="text-3xl md:text-4xl font-semibold">{WebsiteConfig.EVENT_LOCATION_NAME}</p>
       <div class="mt-12 flex gap-4 justify-center flex-col md:flex-row">
         <a class="btn-content text-xl" href={WebsiteConfig.DEVFEST_EVENT_LINK}
-          >TICKET AVAILABLE</a
+          >{t('hero.ticketsAvailable')}</a
         >
         
       </div>

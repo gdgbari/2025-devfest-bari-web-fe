@@ -1,5 +1,9 @@
 ---
 import { WebsiteConfig } from "../../config";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
 <div class="flex md:flex-row flex-col py-14 bg-red-pastel">
@@ -19,10 +23,10 @@ import { WebsiteConfig } from "../../config";
     >
       {
         [
-          ["Participants", "community", WebsiteConfig.NUM_PARTECIPENTS],
-          ["Speakers", "speakers", WebsiteConfig.NUM_SPEAKERS],
-          ["Categories", "categories", WebsiteConfig.NUM_TALK_CATEGORIES],
-          ["Tracks", "tracks", WebsiteConfig.NUM_TRACKS],
+          [t('info.partecipants'), "community", WebsiteConfig.NUM_PARTECIPENTS],
+          [t('info.speakers'), "speakers", WebsiteConfig.NUM_SPEAKERS],
+          [t('info.categories'), "categories", WebsiteConfig.NUM_TALK_CATEGORIES],
+          [t('info.tracks'), "tracks", WebsiteConfig.NUM_TRACKS],
         ].map(([name, icon, num]: [string, string, number]) => {
           return (
             <div class="flex text-xl items-center justify-center flex-col">

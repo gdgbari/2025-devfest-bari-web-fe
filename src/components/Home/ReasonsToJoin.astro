@@ -1,42 +1,53 @@
 <div class="bg-red-pastel">
-    <div class="flex flex-col py-14 main-container ">
+    <div class="flex flex-col py-14 main-container text-center md:text-start">
         <h2 class="text-6xl font-bold mb-10">
             <slot name="reasons-title" />
         </h2>
-        <div class="grid grid-cols-3 gap-8">
-            <div class="card items-center text-center">
-                <img class="w-40" src="/assets/vectors/learning.svg" alt="Imparare">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="flex flex-col items-center text-center">
+                <img
+                    class="w-40"
+                    src="/assets/vectors/learning.svg"
+                    alt="Imparare"
+                />
 
-                <div class="card-body p-4">
+                <div class="p-4">
                     <p class="my-2 text-3xl font-semibold">
                         <slot name="reason-learning-title" />
                     </p>
-                    <p class="max-h-12 text-xl text-ellipsis overflow-hidden">
+                    <p class="text-xl">
                         <slot name="reason-learning-desc" />
                     </p>
                 </div>
             </div>
-            <div class="card items-center text-center">
-                <img class="w-40" src="/assets/vectors/workshop.svg" alt="Workshop">
+            <div class="flex flex-col items-center text-center">
+                <img
+                    class="w-40"
+                    src="/assets/vectors/workshop.svg"
+                    alt="Workshop"
+                />
 
-
-                <div class="card-body p-4">
-                    <p class="my-2  text-3xl font-semibold">
+                <div class="p-4">
+                    <p class="my-2 text-3xl font-semibold">
                         <slot name="reason-workshops-title" />
                     </p>
-                    <p class="max-h-12 text-xl text-ellipsis overflow-hidden">
+                    <p class="text-xl">
                         <slot name="reason-workshops-desc" />
                     </p>
                 </div>
             </div>
-            <div class="card items-center text-center">
-                <img class="w-40" src="/assets/vectors/networking.svg" alt="Networking">
+            <div class="flex flex-col items-center text-center">
+                <img
+                    class="w-40"
+                    src="/assets/vectors/networking.svg"
+                    alt="Networking"
+                />
 
-                <div class="card-body p-4">
+                <div class="p-4">
                     <p class="my-2 text-3xl font-semibold">
                         <slot name="reason-networking-title" />
                     </p>
-                    <p class="max-h-12 text-xl text-ellipsis overflow-hidden">
+                    <p class="text-xl">
                         <slot name="reason-networking-desc" />
                     </p>
                 </div>
