@@ -43,6 +43,6 @@ export class WebsiteConfig {
     |              NUMBERS INFO                  |  
     --------------------------------------------*/
 
-    public static readonly NUM_PARTECIPENTS : number = 500;
+    public static readonly NUM_PARTECIPENTS : number = 700;
 
 }
