@@ -44,5 +44,6 @@ export class WebsiteConfig {
     --------------------------------------------*/
 
     public static readonly NUM_PARTECIPENTS : number = 700;
+    public static readonly NUM_TRACKS_FALLBACK : number = 7;
 
 }

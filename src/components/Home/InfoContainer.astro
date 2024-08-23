@@ -14,7 +14,11 @@ const categories = sessions.map(s => s.topics).flat()
                     .filter((value, index, array) => array.indexOf(value) === index)
 const tracks = schedule.map(s => s.rooms.length).reduce((a, b) => a + b, 0)
 
-const showIfNotZero = (num: number) => num > 0 ? num : "?"
+const showIfNotZero = (num: number, fallback:number = 0) => {
+  if (num > 0) return num
+  if (fallback > 0) return fallback
+  return "?"
+}
 
 ---
 
@@ -38,7 +42,7 @@ const showIfNotZero = (num: number) => num > 0 ? num : "?"
           [t('info.partecipants'), "community", showIfNotZero(WebsiteConfig.NUM_PARTECIPENTS)],
           [t('info.speakers'), "speakers", showIfNotZero(speakers.length)],
           [t('info.categories'), "categories", showIfNotZero(categories.length)],
-          [t('info.tracks'), "tracks", showIfNotZero(tracks)],
+          [t('info.tracks'), "tracks", showIfNotZero(tracks, WebsiteConfig.NUM_TRACKS_FALLBACK)],
         ].map(([name, icon, num]: [string, string, number]) => {
           return (
             <div class="flex text-xl items-center justify-center flex-col">
