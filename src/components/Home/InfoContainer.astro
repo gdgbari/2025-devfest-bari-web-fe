@@ -1,9 +1,19 @@
 ---
 import { WebsiteConfig } from "../../config";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { getSchedule, getSessions, getSpeakers } from "../../scripts/api/sessionize_api";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const speakers = await getSpeakers();
+const schedule = await getSchedule();
+const sessions = await getSessions();
+const categories = sessions.map(s => s.topics).flat()
+                    .map(ele => ele.toLocaleLowerCase())
+                    .filter((value, index, array) => array.indexOf(value) === index)
+const tracks = schedule.map(s => s.rooms.length).reduce((a, b) => a + b, 0)
+
 ---
 
 <div class="flex md:flex-row flex-col py-14 bg-red-pastel">
@@ -24,9 +34,9 @@ const t = useTranslations(lang);
       {
         [
           [t('info.partecipants'), "community", WebsiteConfig.NUM_PARTECIPENTS],
-          [t('info.speakers'), "speakers", WebsiteConfig.NUM_SPEAKERS],
-          [t('info.categories'), "categories", WebsiteConfig.NUM_TALK_CATEGORIES],
-          [t('info.tracks'), "tracks", WebsiteConfig.NUM_TRACKS],
+          [t('info.speakers'), "speakers", speakers.length],
+          [t('info.categories'), "categories", categories.length],
+          [t('info.tracks'), "tracks", tracks],
         ].map(([name, icon, num]: [string, string, number]) => {
           return (
             <div class="flex text-xl items-center justify-center flex-col">
