@@ -19,17 +19,17 @@ const durationMinutes = duration / 60000;
 
 <a
   href={`/sessions/${session.slug}`}
-  class="p-3 hover:shadow-lg shadow-md duration-150 ease-in flex flex-col h-80"
+  class="p-3 card bg-white text-base-content md:hover:scale-110 rounded-lg animated flex flex-col h-80"
 >
   <div class="flex justify-between gap-4">
     <p class="text-xl font-medium mb-3">{session.title}</p>
   </div>
   <div class="flex flex-wrap gap-2">
-    <div class="py-1 px-2 rounded-md bg-green-600 text-white">
+    <div class="py-1 px-2 rounded-md bg-red text-white flex items-center">
       <span class="text-sm">{session.sessionLevel}</span>
     </div>
 
-    {session.topics.map((t) => <SessionTopic topic={t} />)}
+    {session.topics.map((t) => <SessionTopic topic={t} brightness="light"/>)}
   </div>
   <div class="flex mt-auto">
     <div class="flex-flex-col gap-2">

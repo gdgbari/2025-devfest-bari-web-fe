@@ -2,62 +2,72 @@
 import BaseLayout from "../components/Common/BaseLayout.astro";
 import { WebsiteConfig } from "../config";
 
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
 const locationDesc = `
-        The conference will take place at the ${WebsiteConfig.EVENT_LOCATION_NAME}. ${WebsiteConfig.EVENT_LOCATION_CITY} is a
-        small town, and you can easily walk around or rely on public
-        transportation if you're coming from far away. The address of the venue
-        is: ${WebsiteConfig.EVENT_LOCATION_FULL_ADDRESS}
+La conferenza si svolgerà presso ${t("info.locationName")}. 
+${WebsiteConfig.EVENT_LOCATION_CITY} è unapiccola città, e puoi 
+facilmente spostarti a piedi o affidarti ai mezzi pubblici se 
+vieni da lontano. L'indirizzo del luogo dell'evento è: 
+${WebsiteConfig.EVENT_LOCATION_FULL_ADDRESS}
 `;
 ---
 
 <BaseLayout pageTitle="Location" pageDescription={locationDesc}>
-  <div class="grid md:grid-cols-2 grid-flow-row gap-4">
+  <div class="grid md:grid-cols-2 grid-flow-row gap-4 text-white">
     <div class="flex flex-col justify-start">
-      <h2 class="font-medium text-4xl">How to get there 🚶‍♂️</h2>
+      <h2 class="font-medium text-4xl">Come raggiungerci 🚶‍♂️</h2>
     </div>
     <div>
       <p>{locationDesc}</p>
     </div>
     <div class="flex flex-col justify-start">
-      <h2 class="font-medium text-4xl">By train 🚄</h2>
+      <h2 class="font-medium text-4xl">Treno 🚄</h2>
     </div>
     <div>
       <p>
-        Bari's railway station (Bari Centrale) is directly connected with Turin,
-        Rome, Genova and Milan. There are connections that you can reach with a
-        high-speed train (Freccia Rossa). The train schedule is available at the
-        site of Trenitalia. Recall that in Italy, before getting on the train,
-        you must stamp your ticket by using those small yellow machines
-        available within the station. To reach the venue, you can take the city
-        bus number 21 and get off at the bus stop in via Re David (stop called
-        Re David (Politecnico)). Here you can find the directions on Google maps. As an
-        alternative, the University is at walking distance from the railway
-        station (approximately 20-30 minutes).
+        La stazione ferroviaria di Bari (Bari Centrale) è direttamente collegata
+        con Torino, Roma, Genova e Milano. Ci sono collegamenti che puoi
+        raggiungere con un treno ad alta velocità (Freccia Rossa). L'orario dei
+        treni è disponibile sul sito di Trenitalia. Ricorda che in Italia, prima
+        di salire sul treno, devi convalidare il tuo biglietto utilizzando
+        quelle piccole macchine gialle disponibili all'interno della stazione.
+        Per raggiungere il luogo dell'evento, puoi prendere l'autobus cittadino
+        numero 21 e scendere alla fermata in via Re David (fermata chiamata Re
+        David (Politecnico)). Qui puoi trovare le indicazioni su Google maps. In
+        alternativa, l'Università si trova a pochi passi dalla stazione
+        ferroviaria (circa 20-30 minuti a piedi).
       </p>
     </div>
     <div class="flex flex-col justify-start">
-      <h2 class="font-medium text-4xl">By car 🚗</h2>
+      <h2 class="font-medium text-4xl">Auto 🚗</h2>
     </div>
     <div>
       <p>
-        Bari is near the intersection of two highways: A14 Adriatica (Bologna -
-        Taranto). Parking is a bit of a problem and most parking areas are with pay-meters. The
-        nearest free parking to the venue is the Park & Ride LARGO 2 GIUGNO (8 minutes walk).
+        Bari si trova vicino all'incrocio di due autostrade: A14 Adriatica
+        (Bologna - Taranto). Il parcheggio è un po' problematico e la maggior
+        parte delle aree di parcheggio sono a pagamento. Il parcheggio gratuito
+        più vicino al luogo dell'evento è il Park & Ride LARGO 2 GIUGNO (8
+        minuti a piedi).
       </p>
     </div>
     <div class="flex flex-col justify-start">
-      <h2 class="font-medium text-4xl">By plane ✈️</h2>
+      <h2 class="font-medium text-4xl">Aereo ✈️</h2>
     </div>
     <div>
       <p>
-        Bari has an international airport with daily flights to London and
-        Munich, as well as to Rome, Milan, and other important Italian cities.
-        The timetable of incoming and outgoing flights is available at the site
-        of Bari airport. The airport is approximately 27 km from the center. The
-        most convenient way to reach the center is probably by metro. You can take 
-        the Ferrotramviaria Bari, a city train that connects Bari Airport to Bari 
-        Railway Station (Bari Centrale), then take the city bus number 21 and get 
-        off at the bus stop in via Re David.
+        Bari ha un aeroporto internazionale con voli giornalieri per Londra e
+        Monaco, così come per Roma, Milano e altre importanti città italiane.
+        L'orario dei voli in arrivo e in partenza è disponibile sul sito
+        dell'aeroporto di Bari. L'aeroporto si trova a circa 27 km dal centro.
+        Il modo più comodo per raggiungere il centro è probabilmente in
+        metropolitana. Puoi prendere il Ferrotramviaria Bari, un treno cittadino
+        che collega l'aeroporto di Bari alla stazione ferroviaria di Bari (Bari
+        Centrale), quindi prendere l'autobus cittadino numero 21 e scendere alla
+        fermata dell'autobus in via Re David.
       </p>
     </div>
   </div>

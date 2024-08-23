@@ -1,0 +1,16 @@
+---
+import { type CollectionEntry } from "astro:content";
+
+type Props = {
+    value: CollectionEntry<"externals">;
+};
+
+const { value }: Props = Astro.props;
+---
+
+<a
+    href={value.data.url}
+    class="p-3 border-4 card border-base-content bg-white duration-100 ease-in h-28 flex items-center justify-center"
+>
+    <img class="max-h-full" src={value.data.image} alt={value.data.name} />
+</a>

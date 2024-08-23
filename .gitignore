@@ -2,6 +2,7 @@ node_modules/
 dist/
 .vscode/
 .firebaserc
+.firebase
 firebase.json
 .firebase/hosting.ZGlzdA.cache
 copy/template.txt

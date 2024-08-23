@@ -1,130 +1,53 @@
 ---
 import { getCollection } from "astro:content";
+import SponsorItem from "./SponsorItem.astro";
 
 const external = await getCollection("externals");
 
-const platinumSponsors = external.filter((ext) =>
-  ext.data.type.startsWith("sponsor_platinum"),
-);
-const goldSponsors = external.filter((ext) =>
-  ext.data.type.startsWith("sponsor_gold"),
-);
-const silverSponsors = external.filter((ext) =>
-  ext.data.type.startsWith("sponsor_silver"),
-);
-const bronzeSponsors = external.filter((ext) =>
-  ext.data.type.startsWith("sponsor_bronze"),
-);
+let sponsorship = [
+  {
+    name: "Platinum",
+    values: external.filter((ext) =>
+      ext.data.type.startsWith("sponsor_platinum"),
+    ),
+  },
+  {
+    name: "Gold",
+    values: external.filter((ext) => ext.data.type.startsWith("sponsor_gold")),
+  },
+  {
+    name: "Silver",
+    values: external.filter((ext) =>
+      ext.data.type.startsWith("sponsor_silver"),
+    ),
+  },
+  {
+    name: "Bronze",
+    values: external.filter((ext) =>
+      ext.data.type.startsWith("sponsor_bronze"),
+    ),
+  },
+  {
+    name: "Partner",
+    values: external.filter((ext) => ext.data.type === "partner"),
+  },
+];
 
-const partners = external.filter((ext) => ext.data.type === "partner");
+sponsorship = sponsorship.filter((sp) => sp.values.length > 0);
 ---
 
-<div class="py-6 max-w-6xl lg:w-4/5 w-full m-auto px-4">
-<h2 class="text-6xl mb-10 font-bold">Sponsors</h2>
-
+<div class="py-14 main-container text-primary-content">
+  <h2 class="text-6xl mb-10 font-bold">Sponsors</h2>
   {
-    platinumSponsors.length > 0 && (
-      <>
-        <h3 class="text-4xl mb-10 font-bold">Platinum</h3>
+    sponsorship.map((sponsor) => (
+      <div>
+        <h3 class="text-4xl mb-10 font-bold">{sponsor.name}</h3>
         <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
-          {platinumSponsors.map((sponsor) => (
-            <a
-              href={sponsor.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={sponsor.data.image}
-                alt={sponsor.data.name}
-              />
-            </a>
+          {sponsor.values.map((sponsor) => (
+            <SponsorItem value={sponsor} />
           ))}
         </div>
-      </>
-    )
-  }
-  {
-    goldSponsors.length > 0 && (
-      <>
-        <h3 class="text-4xl mb-10 font-bold">Gold</h3>
-        <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
-          {goldSponsors.map((sponsor) => (
-            <a
-              href={sponsor.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={sponsor.data.image}
-                alt={sponsor.data.name}
-              />
-            </a>
-          ))}
-        </div>
-      </>
-    )
-  }
-  {
-    silverSponsors.length > 0 && (
-      <>
-        <h3 class="text-4xl mb-10 font-bold">Silver</h3>
-        <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
-          {silverSponsors.map((sponsor) => (
-            <a
-              href={sponsor.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={sponsor.data.image}
-                alt={sponsor.data.name}
-              />
-            </a>
-          ))}
-        </div>
-      </>
-    )
-  }
-  {
-    bronzeSponsors.length > 0 && (
-      <>
-        <h3 class="text-4xl mb-10 font-bold">Bronze</h3>
-        <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
-          {bronzeSponsors.map((sponsor) => (
-            <a
-              href={sponsor.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={sponsor.data.image}
-                alt={sponsor.data.name}
-              />
-            </a>
-          ))}
-        </div>
-      </>
-    )
-  }
-  {
-    partners.length > 0 && (
-      <>
-        <h2 class="text-6xl mb-10 font-bold">Partner</h2>
-        <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-4 mb-10">
-          {partners.map((partner) => (
-            <a
-              href={partner.data.url}
-              class="p-3 shadow-md hover:shadow-lg duration-100 ease-in h-28 flex items-center justify-center"
-            >
-              <img
-                class="max-h-full"
-                src={partner.data.image}
-                alt={partner.data.name}
-              />
-            </a>
-          ))}
-        </div>
-      </>
-    )
+      </div>
+    ))
   }
 </div>

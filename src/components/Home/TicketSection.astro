@@ -1,0 +1,29 @@
+---
+import { WebsiteConfig } from "../../config";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<div  class="relative main-container px-4 flex md:flex-row flex-col pb-14 pt-12">
+   <div class="absolute top-[-100px]" id="tickets"></div>
+
+    <div class="flex-1 flex flex-col justify-start items-start text-white text-2xl text-start">
+        <p
+        class="text-6xl mb-10 font-semibold text-white"
+    >
+        Ticket
+    </p>
+        <slot name="ticket-desc" />
+    </div>
+
+    <div class="flex-1 flex mt-14 md:mt-0 justify-center md:justify-end items-center ">
+        <div class="card px-10 py-8 items-stretch text-center bg-white ">
+            <p class="text-3xl font-medium">{t('ticket.title')}</p>
+            <p class="text-6xl font-bold my-8 text-red">{t('ticket.free')}</p>
+            
+            <a class="btn btn-primary" href={WebsiteConfig.DEVFEST_EVENT_LINK}>{t('ticket.cta')}</a>
+        </div>
+    </div>
+</div>

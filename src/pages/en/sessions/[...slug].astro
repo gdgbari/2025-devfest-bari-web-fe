@@ -1,0 +1,148 @@
+---
+import BaseLayout from "../../../components/Common/BaseLayout.astro";
+import { type SessionInfo, getSessions } from "../../../scripts/api/sessionize_api";
+import SessionTopic from "../../../components/Sessions/SessionTopic.astro";
+
+interface Props {
+  entry: SessionInfo;
+}
+
+export async function getStaticPaths() {
+  const sessions = await getSessions(true);
+  return sessions.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+// 2. When it's time to render, you can get the entry directly from the prop
+const { entry } = Astro.props;
+
+const dateStart = new Date(entry.startsAt);
+const dateEnd = new Date(entry.endsAt);
+
+const isScheduled = dateStart.getTime() != 0;
+
+var date = dateStart.toLocaleDateString("en-US", {
+  day: "numeric",
+  month: "short",
+});
+
+const start = dateStart.toLocaleTimeString("en-US", {
+  hour: "numeric",
+  minute: "numeric",
+});
+
+const end = dateEnd.toLocaleTimeString("en-US", {
+  hour: "numeric",
+  minute: "numeric",
+});
+
+function formatDate(date: Date) {
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate();
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+
+  return `${year}${month}${day > 9 ? day : "0" + day}T${
+    hours > 9 ? hours : "0" + hours
+  }${minutes > 9 ? minutes : "0" + minutes}00Z`;
+}
+
+const pageTitle = entry.title;
+const pageDesc = entry.description;
+---
+
+<BaseLayout
+  pageUiTitle="Session"
+  pageTitle={pageTitle}
+  pageDescription={pageDesc}
+>
+  <div class="text-white">
+    <div
+    class="flex md:flex-row flex-col justify-between md:items-center items-start gap-2 mb-6 text-white"
+  >
+    <h2 class="text-4xl mb-3">{entry.title}</h2>
+
+    {
+      isScheduled && (
+        <div
+          class="add-to-calendar m-y py-2 px-4 rounded-r-sm hover:bg-amber-400/20 border border-amber-600 text-amber-600 ease-in duration-100 text-center"
+          time-start={formatDate(dateStart)}
+          time-end={formatDate(dateEnd)}
+          session-details={encodeURIComponent(
+            `Speaker: ${entry.speakers?.map((ele) => ele.fullName).join(", ")} \nTopics: ${entry.topics.join(" ")}`
+          )}
+          session-title={entry.title}
+          session-location={entry.room}
+        >
+          Aggiungi al calendario
+        </div>
+      )
+    }
+  </div>
+  <div class="flex flex-wrap gap-2 mb-6">
+    <div class="py-1 px-2 rounded-md bg-green-600 text-white">
+      <span class="text-sm">{entry.sessionLevel}</span>
+    </div>
+
+    {entry.topics.map((t) => <SessionTopic topic={t} />)}
+  </div>
+  <div class="mb-6">
+    <p class="text-lg">{entry.room}</p>
+    {
+      isScheduled && (
+        <p class="text-lg">
+          {date}, {start} - {end}
+        </p>
+      )
+    }
+  </div>
+
+  <p>{entry.description}</p>
+
+  <div class="mt-10">
+    <p class="text-3xl mb-6">Speakers</p>
+    {
+      entry.speakers?.map((speaker) => (
+        <a
+          href={`/speakers/${speaker.slug}`}
+          class="flex md:flex-row flex-col items-center mb-6"
+        >
+          <div class="flex-none w-24 mb-2">
+            <img
+              src={speaker.profilePicture}
+              alt={speaker.fullName}
+              class="rounded-full"
+            />
+          </div>
+          <div class="flex-1 pl-6 flex flex-col md:items-start items-center">
+            <h2 class="text-4xl mb-1">{speaker.fullName}</h2>
+            <p class="text-lg mb-3">{speaker.tagLine}</p>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const pageUrl = window.location.href;
+
+  const addToCalendar = document.querySelector(".add-to-calendar");
+
+  addToCalendar?.addEventListener("click", () => {
+    const timeStart = addToCalendar.getAttribute("time-start");
+    const timeEnd = addToCalendar.getAttribute("time-end");
+    const details =
+      addToCalendar.getAttribute("session-details") + `%0APage: ${pageUrl}`;
+    const location = addToCalendar.getAttribute("session-location");
+    const title = addToCalendar.getAttribute("session-title");
+
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${timeStart}Z%2F${timeEnd}Z&details=${details}&location=${location}&text=${title}%201`;
+
+    return open(url, "_blank");
+  });
+</script>

@@ -1,29 +1,36 @@
 ---
 import { WebsiteConfig } from "../../config";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
 ---
 
-<div class="text-white jumbo h-screen flex flex-col">
-  <img class="object-cover h-full" src="/assets/images/bari.webp" alt="" />
-  <div class="bg-amber-700/50 flex flex-col justify-center content-center absolute top-0 left-0 right-0 h-screen">
-    <div class="p-10 text-center">
-      <h1 class="text-6xl font-medium mb-4">Devfest Bari 2023</h1>
-      <p class="text-3xl">
+<div class="jumbo h-192 lg:h-220 flex flex-col">
+  <div class="absolute top-0 left-0 right-0 h-192 lg:h-220">
+    <div
+      class="absolute top-10 md:top-20 left-0 right-0 p-10 text-center text-primary-content flex flex-col align-center z-20"
+    >
+      <img src="/assets/vectors/logo_big.svg" class="h-36 m-12" />
+      <p class="text-3xl md:text-4xl font-semibold">
         {
-          WebsiteConfig.EVENT_START.toLocaleDateString("en-US", {
+          WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
             day: "numeric",
             month: "long",
             year: "numeric",
           })
         }
       </p>
-      <p class="text-3xl">{WebsiteConfig.EVENT_LOCATION_NAME}</p>
-      <div class="mt-8 flex gap-4 justify-center flex-col md:flex-row">
-       
-      <a
-          class="mt-auto text-center py-3 px-8 bg-amber-500 hover:bg-amber-600 text-white ease-in duration-100"
-          href={WebsiteConfig.DEVFEST_EVENT_LINK}>GET TICKET</a
+      <p class="text-3xl md:text-4xl font-semibold">{t("info.locationName")}</p>
+      <div class="mt-12 flex gap-4 justify-center flex-col md:flex-row">
+        <a class="btn-content text-xl" href="#tickets"
+          >{t("hero.ticketsAvailable")}</a
         >
       </div>
     </div>
+    <img
+      src="/assets/vectors/skyline.svg"
+      alt=""
+      class="mt-auto absolute bottom-0 left-0 right-0 w-full"
+    />
   </div>
 </div>

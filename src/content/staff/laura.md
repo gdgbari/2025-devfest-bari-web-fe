@@ -1,6 +1,6 @@
 ---
 name: "Laura Loperfido"
-tagline: "Studentessa"
+tagline: "AI Engineer @ PwC"
 role: "organizer"
 image: "laura.webp"
 links:

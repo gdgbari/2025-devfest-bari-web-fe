@@ -1,14 +1,17 @@
 ---
 interface Props {
     topic: string;
+    brightness: "light" | "dark";
 }
 
-const { topic } = Astro.props;
+const { topic , brightness} = Astro.props;
 const topicSlug = topic.replaceAll(" ", "-").toLocaleLowerCase();
+const textColor = brightness === "dark" ? "text-white" : "text-black";
+
 ---
 
 <div
-    class="py-1 px-2 rounded-md bg-gray-200 text-gray-800 cursor-pointer"
+    class={`py-1 px-2 rounded-md ${textColor} border-2 border-red cursor-pointer`}
     role="link"
     data-href={`/sessions/topics/${topicSlug}`}
 >
