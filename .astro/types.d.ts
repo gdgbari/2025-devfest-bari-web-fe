@@ -136,34 +136,6 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"externals": {
-"ass_coach.md": {
-	id: "ass_coach.md";
-  slug: "ass_coach";
-  body: string;
-  collection: "externals";
-  data: InferEntrySchema<"externals">
-} & { render(): Render[".md"] };
-"aup.md": {
-	id: "aup.md";
-  slug: "aup";
-  body: string;
-  collection: "externals";
-  data: InferEntrySchema<"externals">
-} & { render(): Render[".md"] };
-"codemotion.md": {
-	id: "codemotion.md";
-  slug: "codemotion";
-  body: string;
-  collection: "externals";
-  data: InferEntrySchema<"externals">
-} & { render(): Render[".md"] };
-"e80.md": {
-	id: "e80.md";
-  slug: "e80";
-  body: string;
-  collection: "externals";
-  data: InferEntrySchema<"externals">
-} & { render(): Render[".md"] };
 "google.md": {
 	id: "google.md";
   slug: "google";
@@ -174,34 +146,6 @@ declare module 'astro:content' {
 "jeba.md": {
 	id: "jeba.md";
   slug: "jeba";
-  body: string;
-  collection: "externals";
-  data: InferEntrySchema<"externals">
-} & { render(): Render[".md"] };
-"link.md": {
-	id: "link.md";
-  slug: "link";
-  body: string;
-  collection: "externals";
-  data: InferEntrySchema<"externals">
-} & { render(): Render[".md"] };
-"nextome.md": {
-	id: "nextome.md";
-  slug: "nextome";
-  body: string;
-  collection: "externals";
-  data: InferEntrySchema<"externals">
-} & { render(): Render[".md"] };
-"wib_puglia.md": {
-	id: "wib_puglia.md";
-  slug: "wib_puglia";
-  body: string;
-  collection: "externals";
-  data: InferEntrySchema<"externals">
-} & { render(): Render[".md"] };
-"wideverse.md": {
-	id: "wideverse.md";
-  slug: "wideverse";
   body: string;
   collection: "externals";
   data: InferEntrySchema<"externals">

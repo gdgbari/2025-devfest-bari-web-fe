@@ -12,6 +12,11 @@ import SponsorSection from "../../components/Home/SponsorSection.astro";
 import ReasonsToJoin from "../../components/Home/ReasonsToJoin.astro";
 import TicketSection from "../../components/Home/TicketSection.astro";
 import "../../style/base.css";
+
+import { getLangFromUrl, useTranslatedPath } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const getPath = useTranslatedPath(lang);
 ---
 
 <!-- Below is your "component template." It's just HTML, but with
@@ -38,7 +43,40 @@ import "../../style/base.css";
       </InfoContainer>
 
       <!-- <SpeakerPreview /> -->
+      <TicketSection>
+        <div slot="ticket-desc">
+          <p>
+            Reserve your spot for DevFest Bari 2024 and gain access to the
+            conference including all talks and workshops.
+          </p>
 
+          <p class="mt-4 text-3xl mb-2 font-medium">Are you a high school?</p>
+          <p>
+            <a
+              href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2024/#QeHcv97kND"
+              class="text-red hover:text-red-pastel">Contact us</a
+            > to organize your participation.
+          </p>
+          <p class="mt-4 text-3xl font-medium mb-2">
+            Are you a high school student?
+          </p>
+          <p>
+            Talk to your teachers and have them contact us. If you want to
+            participate independently, <a
+              href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2024/#QeHcv97kND"
+              class="text-red hover:text-red-pastel">Contact us</a
+            > and we will assist you.
+          </p>
+          <p class="mt-10">
+            Check out the <a
+              class="text-red hover:text-red-pastel"
+              href={getPath("/faq", lang)}
+              >FAQ
+            </a> for more information.
+          </p>
+        </div>
+      </TicketSection>
+      
       <ReasonsToJoin>
         <span slot="reasons-title">Why attend the DevFest?</span>
         <span slot="reason-learning-title">Learning</span>
@@ -65,13 +103,6 @@ import "../../style/base.css";
         </span>
       </Location>
 
-      <TicketSection>
-        <p slot="ticket-desc">
-          Riserva il tuo posto per la DevFest Bari 2024 ed avrai accesso alla
-          conferenza comprensiva di tutti i talk e i workshop, nonché ...
-        </p>
-      </TicketSection>
-
       <Gallery>
         <p slot="join-photos-text">Some photos from DevFest Bari 2023.</p>
 
@@ -81,7 +112,6 @@ import "../../style/base.css";
           href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">See them</a
         >
       </Gallery>
-
 
       <JoinDiscord>
         <span slot="join-title">Join the Community</span>

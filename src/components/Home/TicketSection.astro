@@ -1,4 +1,5 @@
 ---
+import { WebsiteConfig } from "../../config";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
@@ -22,7 +23,7 @@ const t = useTranslations(lang);
             <p class="text-3xl font-medium">{t('ticket.title')}</p>
             <p class="text-6xl font-bold my-8 text-red">{t('ticket.free')}</p>
             
-            <a class="btn btn-primary" href="/">{t('ticket.cta')}</a>
+            <a class="btn btn-primary" href={WebsiteConfig.DEVFEST_EVENT_LINK}>{t('ticket.cta')}</a>
         </div>
     </div>
 </div>
