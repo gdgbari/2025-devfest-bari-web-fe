@@ -42,7 +42,7 @@ export const ui = {
         'nav.team': 'Team',
         'footer.share': 'Condividi',
         'footer.followUs': 'Seguici su',
-        'info.locationName': 'Politecnico of Bari',
+        'info.locationName': 'Politecnico di Bari',
         'info.partecipants': 'Partecipanti',
         'info.speakers': 'Speaker',
         'info.tracks': 'Track',
