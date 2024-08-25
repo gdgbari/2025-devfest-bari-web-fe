@@ -43,7 +43,7 @@
 
 .wheel-rotate-animation {
     animation: spin 26s linear infinite;
-    transform-origin: 16.531809320989645% 48.992475271294616%;/* Calculated using public/assets/vectors/skyline-parts/getcoord.html */
+    transform-origin: 16.532217264175415% 48.99247921303165%;/* Calculated using public/assets/vectors/skyline-parts/getcoord.html */
 }
         
 @keyframes spin {

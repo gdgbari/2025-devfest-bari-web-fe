@@ -2,7 +2,6 @@
 <html>
     <body>
         <div id="outer">
-            <div id="pointer"></div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 545" fill="none">
                 <mask id="mask0_357_6" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="-2" y="0" width="1443" height="546">
                   <mask id="path-1-inside-1_357_6" fill="white">
@@ -63,12 +62,6 @@
             #outer {
                 position: relative;
             }
-            #pointer {
-                position: absolute;
-                padding: 5px;
-                background-color: red;
-                border-radius: 50%;
-            }
             body, html {
                 margin: 0;
                 padding: 0;
@@ -78,7 +71,6 @@
         <script>
             let image = document.getElementsByTagName("svg")[0]
             let wheelgroup = document.getElementById("inner-wheel")
-            let pointer = document.getElementById("pointer");
             const wheelWidth = wheelgroup.getBoundingClientRect().width
             const wheelHeight = wheelgroup.getBoundingClientRect().height
             const wheelPosX = wheelgroup.getBoundingClientRect().left
@@ -86,8 +78,6 @@
             const centerXPos = wheelPosX + wheelWidth / 2
             const centerYPos = wheelPosY + wheelHeight / 2
             console.log("wheel width", wheelWidth, "wheel height", wheelHeight, "wheel pos x", wheelPosX, "wheel pos y", wheelPosY, "center x", centerXPos, "center y", centerYPos);
-            pointer.style.left = (centerXPos-10)+"px"
-            pointer.style.top = (centerYPos-10)+"px"
             const percX = centerXPos * 100 / image.getBoundingClientRect().width
             const percY = centerYPos * 100 / image.getBoundingClientRect().height
             document.getElementById("result").innerText = `center x: ${centerXPos}, center y: ${centerYPos}, perc x: ${percX}, perc y: ${percY}`
