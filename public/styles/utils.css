@@ -42,9 +42,8 @@
 
 
 .wheel-rotate-animation {
-    transform-box: fill-box;
-    transform-origin: 50% 50%;
-    animation: spin 28s linear infinite;
+    animation: spin 26s linear infinite;
+    transform-origin: 16.531809320989645% 48.992475271294616%;/* Calculated using public/assets/vectors/skyline-parts/getcoord.html */
 }
         
 @keyframes spin {
