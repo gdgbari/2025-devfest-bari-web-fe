@@ -1,44 +1,41 @@
 ---
 interface Props {
-  "time-start": string;
-  "time-end": string;
-  "session-details": string;
-  "session-title": string;
-  "session-location": string;
+  dateStart: Date;
+  dateEnd: Date;
+  sessionDetails: string;
+  sessionTitle: string;
+  sessionLocation: string;
 }
 
-import addCalendar from "../../../public/assets/vectors/add-calendar.svg?raw";
+const {
+    dateStart, dateEnd,
+    sessionDetails, sessionTitle, sessionLocation
+}:Props = Astro.props;
 
-const { "time-start": dateStart, "time-end": dateEnd, "session-details": sessionDetails, "session-title": sessionTitle, "session-location": sessionLocation }:Props = Astro.props;
+function formatDate(date: Date) {
+  const year = date.getUTCFullYear();
+  const month = date.getUTCMonth() + 1;
+  const day = date.getUTCDate();
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
 
-const easyParamCleaner = (url: string) => {
-    return url.replace(/&/g, "%26").replace(/=/g, "%3D");
+  return `${year}${month.toString().padStart(2, "0")}${day.toString().padStart(2, "0")}T${hours.toString().padStart(2, "0")}${minutes.toString().padStart(2, "0")}00Z`;
 }
 
-const googleLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${easyParamCleaner(sessionTitle)}&dates=${easyParamCleaner(dateStart)}/${easyParamCleaner(dateEnd)}&details=${easyParamCleaner(sessionDetails)}&location=${easyParamCleaner(sessionLocation)}&sf=true&output=xml`
-const outlookLink = `https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=${easyParamCleaner(dateStart)}&enddt=${easyParamCleaner(dateEnd)}&subject=${easyParamCleaner(sessionTitle)}&body=${easyParamCleaner(sessionDetails)}&location=${easyParamCleaner(sessionLocation)}`
-const appleLink = `data:text/calendar;charset=utf8, BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:${dateStart}%0ADTEND:${dateEnd}%0ASUMMARY:${sessionTitle}%0ADESCRIPTION:${sessionDetails}%0ALOCATION:${sessionLocation}%0AEND:VEVENT%0AEND:VCALENDAR`
-
-const generateOnClickEvents = (url: string) => {
-    return `window.open(atob('${Buffer.from(url).toString("base64")}'), '_blank')`;
-}
-
-const googleOnClick = generateOnClickEvents(googleLink);
-const outlookOnClick = generateOnClickEvents(outlookLink);
-const appleOnClick = generateOnClickEvents(appleLink);
+const googleLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(sessionTitle)}&dates=${formatDate(dateStart)}/${formatDate(dateEnd)}&details=${encodeURIComponent(sessionDetails)}&location=${encodeURIComponent(sessionLocation)}&sf=true&output=xml`
+const outlookLink = `https://outlook.live.com/owa/?path=/calendar/action/compose&rru=addevent&startdt=${encodeURIComponent(dateStart.toISOString())}&enddt=${encodeURIComponent(dateEnd.toISOString())}&subject=${encodeURIComponent(sessionTitle)}&body=${encodeURIComponent(sessionDetails)}&location=${encodeURIComponent(sessionLocation)}`
+const appleLink = `data:text/calendar;charset=utf8, BEGIN:VCALENDAR%0AVERSION:2.0%0ABEGIN:VEVENT%0ADTSTART:${formatDate(dateStart)}%0ADTEND:${formatDate(dateEnd)}%0ASUMMARY:${sessionTitle}%0ADESCRIPTION:${sessionDetails}%0ALOCATION:${sessionLocation}%0AEND:VEVENT%0AEND:VCALENDAR`
 
 ---
 
-<div class="add-to-calendar dropdown add-calendar-icon m-y py-2 px-4 rounded-r-sm hover:bg-amber-400/20 border border-amber-600 text-amber-600 ease-in duration-100 text-center">
-    <div style="display: flex;">
-        <button>
-            <Fragment set:html={addCalendar} class="text-amber-600" alt="add to calendar" style="width: 20px; height:20px" />
-        </button>
+<div class="dropdown dropdown-end">
+    <div tabindex="0" role="button" class="btn m-1 text-red  rounded-md hover:bg-red/20 text-center border-2 border-red bg-white p-3 flex" style="width: 50px; height: 50px;">
+        <img src="/assets/vectors/add-calendar.svg" alt="add to calendar"/>
         <slot />
     </div>
-    <div class="dropdown-content" style="float: left;">
-        <div onclick={googleOnClick}>Google</div>
-        <div onclick={outlookOnClick}>Outlook</div>
-        <div onclick={appleOnClick}>Apple</div>
-    </div>
-</div>
+    <ul tabindex="0" class="menu dropdown-content bg-base-100 z-[1] w-52 p-2 shadow float-left rounded-md border-2 border-red">
+        <li><a href={googleLink} target="_blank" class="focus:text-red">Google</a></li>
+        <li><a href={outlookLink} target="_blank" class="focus:text-red">Outlook</a></li>
+        <li><a href={appleLink} target="_blank" class="focus:text-red">Apple</a></li>
+    </ul>
+</details>

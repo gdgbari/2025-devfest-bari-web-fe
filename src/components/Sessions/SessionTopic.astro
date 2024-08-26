@@ -1,19 +1,21 @@
 ---
+import { getLangFromUrl, useTranslatedPath } from '../../i18n/utils';
+
 interface Props {
     topic: string;
     brightness: "light" | "dark";
 }
 
-const { topic , brightness} = Astro.props;
+const { topic , brightness } = Astro.props;
 const topicSlug = topic.replaceAll(" ", "-").toLocaleLowerCase();
-const textColor = brightness === "dark" ? "text-white" : "text-black";
+
+const lang = getLangFromUrl(Astro.url);
+const getPath = useTranslatedPath(lang);
 
 ---
-
 <div
-    class={`py-1 px-2 rounded-md ${textColor} border-2 border-red cursor-pointer`}
-    role="link"
-    data-href={`/sessions/topics/${topicSlug}`}
+    class={`block py-1 px-2 rounded-md text-black border-2 border-red cursor-pointer bg-white`}
+    onclick={`event.stopPropagation(); window.location.href = '${getPath("/sessions/topics/"+topicSlug)}'`}
 >
     <span class="text-sm">{topic}</span>
 </div>

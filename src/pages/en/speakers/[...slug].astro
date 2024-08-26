@@ -1,94 +1,11 @@
 ---
-import BaseLayout from "../../../components/Common/BaseLayout.astro";
-import SessionTopic from "../../../components/Sessions/SessionTopic.astro";
-import SpeakersLinks from "../../../components/Speakers/SpeakersLinks.astro";
-import { type Speaker, getSpeakers } from "../../../scripts/api/sessionize_api";
-import { formatTime } from "../../../scripts/time_utils";
-// 1. Generate a new path for every collection speaker
+import SpeakerDetail from '../../../components/Speakers/Pages/SpeakerDetail.astro';
+import { getSpeakerPaths } from '../../../components/Speakers/Pages/SpeakerDetail.astro';
 
-interface Props {
-  speaker: Speaker;
-}
+export const getStaticPaths = getSpeakerPaths
 
-export async function getStaticPaths() {
-  const speakerEntries = await getSpeakers(true);
-  return speakerEntries.map((speaker) => ({
-    params: { slug: speaker.slug },
-    props: { speaker },
-  }));
-}
+const { speaker } = Astro.props;
 
-// 2. When it's time to render, you can get the speaker directly from the prop
-const { speaker }: Props = Astro.props;
-const pageTitle = `${speaker.fullName} @ Devfest Bari 2023`;
 ---
 
-<BaseLayout
-  pageTitle={pageTitle}
-  pageUiTitle="Speaker"
-  pageDescription={speaker.bio}
->
-  <div class="flex flex-col text-white">
-    <div class="flex md:flex-row flex-col items-center mb-10">
-      <div class="flex-none w-40 mb-2">
-        <img
-          src={speaker.profilePicture}
-          alt={speaker.fullName}
-          class="rounded-full"
-        />
-      </div>
-      <div class="flex-1 pl-6 flex flex-col md:items-start items-center">
-        <h2 class="text-4xl mb-1">{speaker.fullName}</h2>
-        <p class="text-lg mb-3">{speaker.tagLine}</p>
-        <!-- 
-        {
-          speaker.data.community != null && (
-            <div class="py-1 px-2 rounded-sm bg-green-600 text-white">
-              {speaker.data.community}
-            </div>
-          )
-        } -->
-        <div class="py-2"></div>
-        <SpeakersLinks links={speaker.links} />
-      </div>
-    </div>
-    <p>{speaker.bio}</p>
-
-    <div class="mt-5">
-      <h3 class="text-3xl font-bold mb-4">Sessions</h3>
-      <ul class="flex flex-col gap-2">
-        {
-          speaker.sessions &&
-            speaker.sessions!.map((session) => {
-              const dateStart = new Date(session.startsAt);
-              const dateEnd = new Date(session.endsAt);
-
-              const date = dateStart.toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-              });
-              const startTime = formatTime(dateStart);
-              const endTime = formatTime(dateEnd);
-              const isScheduled = dateStart.getTime() > 0;
-              return (
-                <a class="flex flex-col" href={`/sessions/${session.slug}`}>
-                  <p class="text-xl font-medium"> {session.title}</p>
-                  {isScheduled && (
-                    <p>
-                      {date}, {startTime} - {endTime}
-                    </p>
-                  )}
-                  <p>{session.room}</p>
-                  <div class="flex gap-3 mt-3">
-                    {session.topics.map((t) => (
-                      <SessionTopic topic={t} />
-                    ))}
-                  </div>
-                </a>
-              );
-            })
-        }
-      </ul>
-    </div>
-  </div>
-</BaseLayout>
+<SpeakerDetail speaker={speaker} />

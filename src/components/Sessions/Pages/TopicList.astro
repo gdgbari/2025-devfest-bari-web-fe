@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../../../components/Common/BaseLayout.astro";
+import SessionTopic from "../../../components/Sessions/SessionTopic.astro";
+import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
+import { getSessions } from "../../../scripts/api/sessionize_api";
+
+// is your "component frontmatter". It never runs in the browser.
+
+const sessions = await getSessions(true);
+const topics = [...new Set(sessions.map((s) => s.topics).flat())]
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout pageTitle={t("session.topics.listTitle")}>
+  <div class="grid lg:grid-cols-6 md:grid-cols-4 grid-flow-row gap-4 mt-2 mb-2">
+    {topics.map((t) => <SessionTopic brightness="dark" topic={t} />)}
+  </div>
+</BaseLayout>

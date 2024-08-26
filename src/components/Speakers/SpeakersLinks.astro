@@ -8,7 +8,6 @@ interface Props {
 const { links:{ websites, ...known_links} }:Props = Astro.props;
 
 
-
 ---
 
 <div class="flex flex-row items-center">
@@ -16,26 +15,24 @@ const { links:{ websites, ...known_links} }:Props = Astro.props;
     const link = known_links[k];
     if (link && typeof link === 'string') {
       return (
-        <div
+        <a
           class="p-1 mr-2 cursor-pointer hover:opacity-75 transition-opacity"
-          role="link"
-          data-href={link}
+          href={link}
         >
           <img class="w-6" src={`/assets/vectors/${k}_logo.svg`} /> {/*TODO custom logo for companyWebsite*/}
-        </div>
+        </a>
       );
     }
   })}
   {
     websites &&
       websites.map((website:string) => (
-        <div
+        <a
           class="p-1 mr-2 cursor-pointer hover:opacity-75 transition-opacity"
-          speaker-href={website}
-          role="button"
+          href={website}
         >
           <img class="w-6" src="/assets/vectors/web_logo.svg" />
-        </div>
+        </a>
       ))
   }
 </div>

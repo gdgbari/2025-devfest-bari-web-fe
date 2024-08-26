@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import { type Speaker } from "../../scripts/api/sessionize_api";
+import { getLangFromUrl, useTranslatedPath } from "../../i18n/utils";
 
 interface Props {
   speaker: Speaker;
@@ -14,9 +15,12 @@ let body = words.slice(0, 20).join(" ");
 if (words.length > 15) {
   body += "...";
 }
+const lang = getLangFromUrl(Astro.url);
+const getPath = useTranslatedPath(lang);
+
 ---
 
-<a href={`/speakers/${speaker.slug}`} class="speaker-card">
+<a href={getPath(`/speakers/${speaker.slug}`)} class="speaker-card">
   <figure>
     <Image
       class="rounded-none"

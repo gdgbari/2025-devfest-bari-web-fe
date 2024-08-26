@@ -1,17 +1,6 @@
 ---
-// Welcome to Astro! Everything between these triple-dash code fences
+import SpeakerList from "../../../components/Speakers/Pages/SpeakerList.astro";
 
-import BaseLayout from "../../../components/Common/BaseLayout.astro";
-import SpeakerCard from "../../../components/Speakers/SpeakerCard.astro";
-import { getSpeakers } from "../../../scripts/api/sessionize_api";
-
-let speakers = await getSpeakers();
 ---
 
-<BaseLayout pageTitle="Speakers" >
-  <div
-    class="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-flow-row gap-8 mt-5 mb-7"
-  >
-    {speakers.map((s) => <SpeakerCard speaker={s} />)}
-  </div>
-</BaseLayout>
+<SpeakerList />

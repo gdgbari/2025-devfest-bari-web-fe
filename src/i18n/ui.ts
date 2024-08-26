@@ -2,7 +2,7 @@ export const languages = {
     en: 'English',
     it: 'Italiano',
 };
-
+export type LanguageCode = keyof typeof languages;
 export const defaultLang = 'it';
 export const showDefaultLang = false;
 
@@ -29,7 +29,16 @@ export const ui = {
         'ticket.free': 'FREE',
         'ticket.cta': 'Get your ticket',
         'community.cta': 'Join us',
-
+        'sessions.listTitle': 'Sessions',
+        'sessions.shortMinutes': 'mins',
+        'sessions.toBeAnnunced': 'To be annunced',
+        'session.detailTitle': 'Session details',
+        'session.speakers': 'Speakers',
+        'session.topics.listTitle': 'Topics',
+        'session.topics.topicSessionList': '$topic$\'s sessions',
+        'speakers.listTitle': 'Speakers',
+        'speakers.detailTitle': 'Speaker details',
+        'speakers.sessionList': 'Sessions',
     },
     it: {
         'nav.home': 'Home',
@@ -52,7 +61,16 @@ export const ui = {
         'ticket.title': 'Prenota ora il tuo biglietto',
         'ticket.free': 'GRATIS',
         'ticket.cta': 'Iscriviti',
-
         'community.cta': 'Unisciti',
+        'sessions.listTitle': 'Sessioni',
+        'sessions.shortMinutes': 'min',
+        'sessions.toBeAnnunced': 'Da annuncare',
+        'session.detailTitle': 'Dettagli sessione',
+        'session.speakers': 'Speaker',
+        'session.topics.listTitle': 'Topic',
+        'session.topics.topicSessionList': 'Sessioni su \'$topic$\'',
+        'speakers.listTitle': 'Speaker',
+        'speakers.detailTitle': 'Dettagli speaker',
+        'speakers.sessionList': 'Sessioni',
     },
 } as const;

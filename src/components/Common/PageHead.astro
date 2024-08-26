@@ -4,6 +4,7 @@ import { WebsiteConfig } from "../../config";
 
 const { DEVFEST_NAME } = WebsiteConfig;
 import { ViewTransitions } from 'astro:transitions';
+import GlobalScripts from './GlobalScripts.astro';
 
 interface Props {
   title?: string;
@@ -40,5 +41,6 @@ const {
 <meta property="og:description" content={description}>
 <meta property="og:image" content="/assets/images/social_thumb.webp">
 <ViewTransitions />
+<GlobalScripts />
 
 { pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
