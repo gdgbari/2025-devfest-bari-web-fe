@@ -4,7 +4,7 @@ tagline: "Website Team"
 role: "collaborator"
 image: "domingo.jpg"
 links:
-    twitter: "https://twitter.com/domy_sh"
+    twitter: "https://x.com/domy_sh"
     instagram: "https://instagram.com/domy.sh"
     websites:
         - "https://domy.sh"
