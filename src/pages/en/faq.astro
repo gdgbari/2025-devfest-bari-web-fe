@@ -55,61 +55,51 @@ const faq = [
     group: "Schools",
     questions: [
       {
-        question: "I am a student and I want to participate. How can I do it?",
-        answer:
-          "If you are a student, talk to your teachers and have them contact us. If you want to participate independently, contact us and we will help you.",
-      },
-      {
-        question: "What should I do if I have problems with the tickets?",
-        answer:
-          "If you have any problems with the tickets, do not hesitate to contact us privately.",
-      },
-      {
-        question: "Are the tickets limited in availability?",
-        answer:
-          "Yes, tickets are limited in number, so we recommend that the entire class registers simultaneously to avoid anyone being left without a ticket.",
-      },
-      {
-        question: "Which email should I use to register?",
-        answer:
-          "It is important to register for the school ticket using your institutional email.",
-      },
-      {
-        question: "What should I do if I can no longer participate?",
-        answer:
-          "If you can no longer participate, we ask you to cancel your event registration so that someone else can attend!",
-      },
-      {
-        question: "I am a teacher, do I need to register as well?",
-        answer:
-          "Yes, if you are a teacher you still need to register like your students, using your institutional email.",
-      },
-      {
         question:
-          "I am a high school student, my class is registered to attend the DevFest, do I need to get a ticket?",
+          "I am a high school student, and my class has registered to participate in the Devfest. Do I need to get a ticket?",
         answer: "Yes, remember to get the school ticket.",
       },
       {
-        question: "I am a teacher, how can I register the class?",
+        question:
+          "I am a high school student, and my class is not registered to participate in the Devfest, but I still want to participate on my own. How can I join?",
         answer:
-          "To register the class, you need to fill out the schools@devfest bari 2024 form. The form is an expression of interest that allows us to have a better view of the classes that want to participate. However, it is necessary that each student individually gets a ticket to participate. Seats are limited, so we recommend doing it as soon as possible.",
+          "If you are coming on your own, you can still participate in the Devfest! In this case, remember to get a regular ticket.",
       },
       {
         question:
-          "I am a high school student, my class is not registered to attend the DevFest but I still want to participate independently, how can I participate?",
-        answer:
-          "Sure! If you are coming independently, you can still participate in the DevFest! Remember to get the regular ticket in this case.",
-      },
-      {
-        question:
-          "I have the school ticket, is it mandatory to follow the track of talks dedicated to students?",
+          "I have a school ticket. Is it mandatory to follow the track of talks dedicated to students?",
         answer:
           "Following the track of talks dedicated to students is not mandatory, but it is highly recommended.",
       },
       {
         question: "What does the school ticket include?",
         answer:
-          "The school ticket allows access to the entire event area and participation in all tracks and workshops. It also grants priority access to the student track, specifically designed for high school students/recent graduates. The track will last half a morning as it is designed to cover school hours. For the same reason, the school ticket does not include the lunch box.",
+          "The school ticket grants access to the entire event area and allows participation in all tracks and workshops. It also provides priority access to the student track, specifically designed for high school students/new graduates. The track will last for half the morning to cover school hours. For the same reason, the school ticket does not include a lunch box.",
+      },
+      {
+        question: "What should I do if I have problems with the tickets?",
+        answer:
+          "If you have any issues with the tickets, please do not hesitate to contact us privately.",
+      },
+      {
+        question: "Are the tickets available in limited quantities?",
+        answer:
+          "Yes, tickets are limited in number, so we recommend that the entire class registers at the same time to avoid anyone missing out on a ticket.",
+      },
+      {
+        question: "What should I do if I can no longer participate?",
+        answer:
+          "If you can no longer participate, please cancel your registration for the event so that someone else can attend!",
+      },
+      {
+        question: "I am a teacher; do I also need to register?",
+        answer:
+          'Yes, if you are a teacher, you must still register using the school ticket. Remember to use your institutional email. Also, remember to register the class by filling out the form <a href="https://forms.gle/NM2boABkkXr4R3N96">schools@devfest bari 2024</a>.',
+      },
+      {
+        question: "I am a teacher; how can I register the class?",
+        answer:
+          'To register the class, you need to fill out the form <a href="https://forms.gle/NM2boABkkXr4R3N96">schools@devfest bari 2024</a>. The form is an expression of interest that allows us to have a better view of the classes that want to participate. It is still necessary for each student to individually get a ticket to participate. The spots are limited, so we recommend doing it as soon as possible.',
       },
     ],
   },
@@ -117,7 +107,7 @@ const faq = [
 ---
 
 <BaseLayout pageTitle="Faq">
-  <div class="flex flex-col gap-10">
+  <div class="faq-page flex flex-col gap-10">
     {
       faq.map((group) => (
         <div class="grid md:grid-cols-2 grid-flow-row gap-4 text-white">
@@ -128,7 +118,9 @@ const faq = [
             {group.questions.map((q) => (
               <p>
                 <h3 class="font-medium text-2xl my-2">{q.question}</h3>
-                <p class="text-md">{q.answer}</p>
+                <p class="text-md">
+                  <Fragment set:html={q.answer} />
+                </p>
               </p>
             ))}
           </div>

@@ -54,3 +54,7 @@ html{
 .speaker-card {
     @apply flex flex-col card items-stretch bg-red-pastel md:hover:scale-110 h-full w-full text-center animated max-w-[400px];
 }
+
+.faq-page a {
+    @apply text-red hover:text-red-pastel;
+}
