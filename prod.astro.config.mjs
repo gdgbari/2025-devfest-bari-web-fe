@@ -1,4 +1,5 @@
 import mdx from "@astrojs/mdx";
+import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import AstroPWA from "@vite-pwa/astro";
@@ -19,6 +20,11 @@ export default defineConfig({
     }
   },
   integrations: [
+    partytown({
+      config: {
+        forward: ["dataLayer.push"],
+      },
+    }),
     mdx(),
     sitemap(),
     tailwind(),
