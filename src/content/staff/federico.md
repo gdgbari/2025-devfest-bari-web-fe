@@ -4,5 +4,5 @@ tagline: "Engagement, App, Design and Marketing Team"
 role: "collaborator"
 image: "federico.png"
 links:
-    twitter: "https://twitter.com/anna_labe"
+    linkedin: "https://www.linkedin.com/in/fedecarroz/"
 ---

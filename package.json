@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "astro dev --host --config dev.astro.config.mjs",
     "start": "astro dev --config dev.astro.config.mjs",
-    "build": "astro build --config prod.astro.config.mjs",
-    "preview": "astro preview --port 8080 --config prod.astro.config.mjs"
+    "build": "astro build",
+    "preview": "astro preview --port 8080"
   },
   "keywords": [],
   "author": "",

@@ -4,5 +4,5 @@ tagline: "Engagement Team"
 role: "collaborator"
 image: "piernicola.png"
 links:
-    twitter: "https://twitter.com/anna_labe"
+    linkedin: "www.linkedin.com/in/piernicola-gervasi-172062253"
 ---
