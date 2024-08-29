@@ -3,44 +3,59 @@ import { WebsiteConfig } from "../../config";
 import LinkButton from "./LinkButton.astro";
 import ReloadPrompt from "./ReloadPrompt.astro";
 
+const shareLinks = [
+  ["Facebook", "facebook"],
+  ["Telegram", "telegram"],
+  ["Twitter", "twitter"],
+];
+
+const pagesLinks = [
+            [WebsiteConfig.FACEBOOK_PAGE, "facebook"],
+            [WebsiteConfig.INSTAGRAM_PAGE, "instagram"],
+            [WebsiteConfig.MEETUP_PAGE, "web"],
+            [WebsiteConfig.LINKEDIN_PAGE, "linkedin"],
+            [WebsiteConfig.WEBSITE, "web"],
+          ];
+
 const year = new Date().getFullYear();
 ---
 
 <div class="p-4 bg-base-100 text-white">
+  <div class="border mb-4 border-white"></div>
+
   <div class="flex flex-col gap-4">
-    <div class="flex md:flex-row flex-col md:gap-24 gap-4 justify-between">
-      <div class="flex gap-4 items-center">
-        <span class="text-lg font-medium">Share</span>
+    <div class="flex flex-col md:flex-row justify-between">
+      <div class="flex flex-col items-start gap-1">
+        <p class="text-xl font-medium mb-1">Share</p>
         {
-          [
-            ["Facebook", "facebook"],
-            ["Telegram", "telegram"],
-            ["Twitter", "twitter"],
-          ].map(([type, logo]) => {
+          shareLinks.map(([type, logo]) => {
             return (
-              <button class="share cursor-pointer hover:opacity-75 transition-opacity" data-share-type={type}>
-                <img class="w-6 fill-current text-white" src={`/assets/vectors/${logo}_logo.svg`} />
+              <button
+                class="share cursor-pointer hover:opacity-75 transition-opacity"
+                data-share-type={type}
+              >
+                {type}
               </button>
-            )
+            );
           })
         }
       </div>
-      <div class="flex gap-4 items-center">
-        <span class="text-lg font-medium">Follow Us</span>
-        {[
-          [WebsiteConfig.FACEBOOK_PAGE, "facebook"],
-          [WebsiteConfig.INSTAGRAM_PAGE, "instagram"],
-          [WebsiteConfig.MEETUP_PAGE, "web"],
-          [WebsiteConfig.LINKEDIN_PAGE, "linkedin"],
-          [WebsiteConfig.WEBSITE, "web"],
-        ].map(([url, type]) => {
-          return url.length > 0 && (
-            <LinkButton href={url} logo={type} />
-          )
-        })}
+      <div class="flex flex-col gap-1 items-start">
+        <span class="text-lg font-medium mb-1">Follow Us</span>
+        {
+          pagesLinks.map(([url, type]) => {
+            return url.length > 0 && <LinkButton href={url} logo={type} />;
+          })
+        }
+      </div>
+      <div class="flex flex-col gap-1 items-start">
+        <span class="text-lg font-medium mb-1">Policies</span>
+        <a target="_blank" href="https://www.iubenda.com/privacy-policy/86405163" class="cursor-pointer hover:opacity-75 transition-opacity">Privacy Policy</a>
+        <a href="https://www.iubenda.com/privacy-policy/86405163/cookie-policy" class="cursor-pointer hover:opacity-75 transition-opacity">Cookie Policy</a>
       </div>
     </div>
-    <div class="border border-white"></div>
+    
+    <div class="border border-white" />
 
     <div class="flex justify-between">
       <span>GDG Bari</span>

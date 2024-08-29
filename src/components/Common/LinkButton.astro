@@ -13,5 +13,6 @@ const { href, logo }:Props = Astro.props;
     rel="noopener"
     class="cursor-pointer hover:opacity-75 transition-opacity"
 >
-    <img class="w-6" src={`/assets/vectors/${logo}_logo.svg`} />
+    { logo.charAt(0).toUpperCase() + logo.slice(1)}
+    <!-- <img class="w-6" src={`/assets/vectors/${logo}_logo.svg`} /> -->
 </a>
