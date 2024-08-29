@@ -7,7 +7,7 @@ topics:
 - "Flutter"
 image: "simone_bonfrate.webp"
 links:
-    twitter: "https://twitter.com/bonfry_dev"
+    twitter: "https://x.com/bonfry_dev"
     instagram: "https://instagram.com/bonfry"
     facebook: "https://facebook.com/GDGBari"
     websites:

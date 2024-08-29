@@ -4,6 +4,6 @@ tagline: "CTO @ Wideverse"
 role: "organizer"
 image: "mike.webp"
 links:
-    twitter: "https://twitter.com/mik3lantoni0"
+    twitter: "https://x.com/mik3lantoni0"
     linkedin: "https://www.linkedin.com/in/michelantoniotrizio/"
 ---

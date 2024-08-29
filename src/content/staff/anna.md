@@ -4,5 +4,5 @@ tagline: "Mobile Engineer @ YAZIO"
 role: "organizer"
 image: "anna.webp"
 links:
-    twitter: "https://twitter.com/anna_labe"
+    twitter: "https://x.com/anna_labe"
 ---

@@ -22,7 +22,7 @@ import { WebsiteConfig } from "../config";
         );
         break;
       case "Twitter":
-        window.open(`https://twitter.com/intent/tweet?text=${fullTweet}`);
+        window.open(`https://x.com/intent/tweet?text=${fullTweet}`);
         break;
       case "Telegram":
         window.open(
