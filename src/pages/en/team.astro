@@ -1,18 +1,6 @@
 ---
-// Welcome to Astro! Everything between these triple-dash code fences
-import { getCollection } from "astro:content";
-
 import BaseLayout from "../../components/Common/BaseLayout.astro";
-import StaffMemberCard from "../../components/Staff/StaffMemberCard.astro";
-
-const staffCollection = await getCollection("staff");
-
-const organizers = staffCollection.filter(
-  (staff) => staff.data.role === "organizer",
-);
-const collaborators = staffCollection.filter(
-  (staff) => staff.data.role === "collaborator",
-);
+import StaffView from "../../components/Staff/StaffView.astro";
 ---
 
 <BaseLayout pageTitle="Team">
@@ -32,24 +20,5 @@ const collaborators = staffCollection.filter(
     </p>
   </div>
 
-  <div class="my-3 text-white">
-    <h2 class="text-4xl font-medium mb-10">Organizers</h2>
-
-    <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
-      {organizers.map((staff) => <StaffMemberCard value={staff} />)}
-    </div>
-  </div>
-
-  {
-    collaborators.length > 0 && (
-      <div class="my-3">
-        <h2 class="text-4xl font-medium mb-10">Collaborators</h2>
-        <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
-          {collaborators.map((staff) => (
-            <StaffMemberCard value={staff} />
-          ))}
-        </div>
-      </div>
-    )
-  }
+  <StaffView />
 </BaseLayout>
