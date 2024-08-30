@@ -19,6 +19,8 @@ const {
   keywords = "android, mobile, flutter, ai, conference, developer, machine learning, web, back-end, front-end, soft skills",
   author = "Google Developer Group Bari",
 } = Astro.props;
+
+Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=600");
 ---
 
 <!-- Google tag (gtag.js) -->
