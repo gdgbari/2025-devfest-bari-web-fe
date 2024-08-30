@@ -1,0 +1,41 @@
+{
+  "hosting": {
+    "source": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=300, s-maxage=600"
+          },
+          {
+            "key": "Clear-Site-Data",
+            "value": "cache, cookies, storage"
+          }
+        ]
+      },
+      {
+        "source": "**/*.html",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=300, s-maxage=600"
+          },
+          {
+            "key": "Clear-Site-Data",
+            "value": "cache, cookies, storage"
+          }
+        ]
+      }
+    ],
+    "frameworksBackend": {
+      "region": "europe-west1"
+    }
+  }
+}
