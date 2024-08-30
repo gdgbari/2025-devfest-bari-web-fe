@@ -32,7 +32,7 @@ export default defineConfig({
     react(),
     AstroPWA({
       workbox: { navigateFallback: "/404" },
-      mode: import.meta.env.DEV?'development':'production',
+      mode: 'production',
       base: '/',
       scope: '/',
       includeAssets: ['favicon.svg'],
@@ -68,10 +68,6 @@ export default defineConfig({
       workbox: {
         navigateFallback: '/',
         globPatterns: ['**/*.{css,js,html,svg,png,ico,txt}'],
-      },
-      devOptions: {
-        enabled: true,
-        navigateFallbackAllowlist: [/^\//],
       },
       experimental: {
         directoryAndTrailingSlashHandler: true,

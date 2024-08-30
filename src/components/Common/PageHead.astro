@@ -21,6 +21,7 @@ const {
 } = Astro.props;
 
 Astro.response.headers.set("Cache-Control", "public, max-age=300, s-maxage=600");
+Astro.response.headers.set("Clear-Site-Data", "*");
 ---
 
 <!-- Google tag (gtag.js) -->
