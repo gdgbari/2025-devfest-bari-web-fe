@@ -56,6 +56,8 @@ Astro.response.headers.set("Clear-Site-Data", "*");
 <link rel="mask-icon" href="/favicon.svg" color="#FFFFFF" />
 <meta name="msapplication-TileColor" content="#FFFFFF" />
 <meta name="theme-color" content="#ffffff" />
+<meta http-equiv="Cache-Control" content="public, max-age=300, s-maxage=600" />
+<meta http-equiv="Clear-Site-Data" content="*" />
 
 <meta property="og:title" content={title ?? DEVFEST_NAME}>
 <meta property="og:description" content={description}>
