@@ -1,4 +1,4 @@
 # Cache fix:
 /*
 	Cache-Control: public, max-age=300, s-maxage=600
-	Clear-Site-Data: "*"
+	Clear-Site-Data: "storage"
