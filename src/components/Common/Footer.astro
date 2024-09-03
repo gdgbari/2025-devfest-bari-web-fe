@@ -26,7 +26,7 @@ const year = new Date().getFullYear();
   <div class="flex flex-col gap-4">
     <div class="flex flex-col md:flex-row justify-between">
       <div class="flex flex-col items-start gap-1">
-        <p class="text-xl font-medium mb-1">Share</p>
+        <p class="text-xl font-medium mb-1 underline">Share</p>
         {
           shareLinks.map(([type, logo]) => {
             return (
@@ -40,16 +40,16 @@ const year = new Date().getFullYear();
           })
         }
       </div>
-      <div class="flex flex-col gap-1 items-start">
-        <span class="text-lg font-medium mb-1">Follow Us</span>
+      <div class="flex flex-col gap-1 items-start md:pt-0 pt-4">
+        <span class="text-lg font-medium mb-1 underline">Follow Us</span>
         {
           pagesLinks.map(([url, type]) => {
             return url.length > 0 && <LinkButton href={url} logo={type} />;
           })
         }
       </div>
-      <div class="flex flex-col gap-1 items-start">
-        <span class="text-lg font-medium mb-1">Policies</span>
+      <div class="flex flex-col gap-1 items-start md:pt-0 pt-4">
+        <span class="text-lg font-medium mb-1 underline">Policies</span>
         <a target="_blank" href="https://www.iubenda.com/privacy-policy/86405163" class="cursor-pointer hover:opacity-75 transition-opacity">Privacy Policy</a>
         <a href="https://www.iubenda.com/privacy-policy/86405163/cookie-policy" class="cursor-pointer hover:opacity-75 transition-opacity">Cookie Policy</a>
       </div>
