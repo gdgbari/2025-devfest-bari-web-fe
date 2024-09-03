@@ -27,7 +27,6 @@
     "tailwindcss": "^3.3.5"
   },
   "devDependencies": {
-    "@vite-pwa/astro": "^0.4.0",
     "daisyui": "^4.12.10",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1"

@@ -1,5 +1,4 @@
 ---
-import { pwaInfo } from 'virtual:pwa-info';
 import { WebsiteConfig } from "../../config";
 
 const { DEVFEST_NAME } = WebsiteConfig;
@@ -60,5 +59,3 @@ const {
 <meta property="og:image" content="/assets/images/social_thumb.webp">
 <ViewTransitions />
 <GlobalScripts />
-
-{ pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} /> }
