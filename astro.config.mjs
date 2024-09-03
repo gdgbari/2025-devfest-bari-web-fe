@@ -2,12 +2,9 @@ import mdx from "@astrojs/mdx";
 import partytown from "@astrojs/partytown";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
-
 import robotsTxt from "astro-robots-txt";
-import { WebsiteConfig } from "./src/config";
 
 // https://astro.build/config
 export default defineConfig({
