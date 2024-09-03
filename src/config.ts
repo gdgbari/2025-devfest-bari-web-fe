@@ -9,6 +9,11 @@ export class WebsiteConfig {
     public static readonly DEVFEST_LOGO_LIGHT: string = '/assets/images/logo_light.webp';
     public static readonly DEVFEST_LOGO_DARK: string = '/assets/images/logo_dark.webp';
     public static readonly DEVFEST_EVENT_LINK: string = redirectUrl('https://gdg.community.dev/e/mnr6ek/');
+    public static readonly ALLOWED_REDIRECT_HOSTS = [
+        "bari.devfest.it",
+        "dev.devfest.it",
+        "gdg.community.dev"
+    ]
     public static readonly DEVFEST_THEME_COLOR: string = '#f59e0b';
 
     /*--------------------------------------------

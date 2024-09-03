@@ -1,15 +1,19 @@
 ---
+import { WebsiteConfig } from "../../config";
 export const prerender = false;
 
 const request = Astro.request;
-const ALLOWED_HOSTS = [
-    "bari.devfest.it",
-    "dev.devfest.it",
-    "gdg.community.dev"
-]
+let toUrl = "";
 
-const toUrl = atob(new URL(request.url).pathname.replace(/^\/redirect\/?/, "").replace(/_/g, '/').replace(/-/g, '+'))
-if (!ALLOWED_HOSTS.includes(new URL(toUrl).hostname)){
+try{
+    toUrl = atob(new URL(request.url).pathname.replace(/^\/redirect\/?/, "").replace(/_/g, '/').replace(/-/g, '+'))
+}catch(e){
+    return new Response("Invalid URL", {
+        status: 400
+    });
+}
+
+if (!WebsiteConfig.ALLOWED_REDIRECT_HOSTS.includes(new URL(toUrl).hostname)){
     return new Response("Host not allowed!", {
         status: 400
     });
