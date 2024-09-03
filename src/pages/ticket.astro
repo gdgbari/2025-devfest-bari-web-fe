@@ -20,7 +20,10 @@ const t = useTranslations(lang);
 import { WebsiteConfig } from "../config"
 
             document.addEventListener('DOMContentLoaded', () => {
-                document.getElementById('ticket-click')?.addEventListener('click', () => {
+                document.getElementById('ticket-click')?.addEventListener('click', () => {  
+                    if (navigator.userAgent.toLowerCase().match(/instagram/)){
+                        return
+                    }
                     window.open(WebsiteConfig.DEVFEST_EVENT_LINK, '_blank')
                     document.location.href = '/'
                 })
