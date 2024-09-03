@@ -1,0 +1,66 @@
+@mixin dots($count, $color) {
+    $text-shadow: ();
+    @for $i from 0 through $count {
+        $text-shadow: $text-shadow,
+                    (-.5+(random()) * 3) + em
+                    (-.5+(random()) * 3) + em
+                    14px
+                    $color
+    }
+    text-shadow: $text-shadow;
+}
+  html.multicolored-bg{
+    head{
+        display: block;
+        color: transparent;
+    }
+    head::before, head::after,
+    body::before, body::after {
+        display: block;
+        font-size: 250px;
+        color: transparent;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 3em;
+        height: 3em;
+        content: '.';
+        mix-blend-mode: screen;
+        animation: 44s -27s move infinite ease-in-out alternate;
+    }
+    
+    
+    body::before {
+        @include dots(200, #34A853);
+        animation-duration: 10s;
+        animation-delay: -27s;
+    }
+    
+    body::after {
+        @include dots(200, #4285F4);
+        animation-duration: 20s;
+        animation-delay: -32s;
+    }
+    
+    head::before {
+        @include dots(300, #EA4335);
+        animation-duration: 40s;
+        animation-delay: -23s;
+    }
+    
+    head::after {
+        @include dots(100, #F9AB00);
+        animation-duration: 30s;
+        animation-delay: -19s;
+    }
+    
+    
+    @keyframes move {
+        from {
+        transform: rotate(0deg) scale(12) translateX(-40px);
+        }
+        to {
+        transform: rotate(180deg) scale(18) translateX(40px);
+        }
+    }   
+}
