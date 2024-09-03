@@ -39,6 +39,7 @@ export const ui = {
         'speakers.listTitle': 'Speakers',
         'speakers.detailTitle': 'Speaker details',
         'speakers.sessionList': 'Sessions',
+        'scheduling.noschedule': 'Schedule not available',
     },
     it: {
         'nav.home': 'Home',
@@ -72,5 +73,6 @@ export const ui = {
         'speakers.listTitle': 'Speaker',
         'speakers.detailTitle': 'Dettagli speaker',
         'speakers.sessionList': 'Sessioni',
+        'scheduling.noschedule': 'Schedule non disponibile',
     },
 } as const;

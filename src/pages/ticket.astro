@@ -1,0 +1,59 @@
+---
+
+import PageHead from "../components/Common/PageHead.astro";
+import "../style/base.css";
+import { useTranslations } from "../i18n/utils";
+import { WebsiteConfig } from "../config";
+
+const lang = "it"
+const t = useTranslations(lang);
+---
+
+<!-- Below is your "component template." It's just HTML, but with
+     some magic sprinkled in to help you build great templates. -->
+<html lang="en" class="scroll-smooth flex flex-col min-h-screen multicolored-bg">
+  <PageHead />
+  <body class="flex flex-col flex-1" style="width: 100vw; height:100vh">
+
+    <main class="flex flex-col justify-center items-center" style="width: 100vw; height:100vh">
+        <script>
+import { WebsiteConfig } from "../config"
+
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('ticket-click')?.addEventListener('click', () => {  
+                    if (navigator.userAgent.toLowerCase().match(/instagram/)){
+                        return
+                    }
+                    window.open(WebsiteConfig.DEVFEST_EVENT_LINK, '_blank')
+                    document.location.href = '/'
+                })
+                
+            })
+        </script>
+        <div class="jumbo h-192 lg:h-220 p-10 text-center text-primary-content flex flex-col align-center z-20 justify-center" style="width: 100%; height: 100%;">
+            <img src="/assets/vectors/logo_big.svg" class="h-36 m-12" />
+            <p class="text-3xl md:text-4xl font-semibold">
+                {
+                WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                })
+                }
+            </p>
+            <p class="text-3xl md:text-4xl font-semibold">{t("info.locationName")}</p>
+            
+            <div class="my-12 flex gap-4 justify-center flex-col md:flex-row">
+                <a
+                class="btn-content text-xl"
+                target="_blank"
+                id="ticket-click"
+                href={WebsiteConfig.DEVFEST_EVENT_LINK}
+                >{t("ticket.title")}</a
+                >
+            </div>
+        </div>
+          
+    </main>
+  </body>
+</html>

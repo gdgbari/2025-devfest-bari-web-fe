@@ -1,7 +1,7 @@
 ---
 import { WebsiteConfig } from "../../config";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
-import Skyline from "../../assets/vectors/skyline.svg?raw";
+
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
@@ -28,16 +28,18 @@ const t = useTranslations(lang);
         >
       </div>
     </div>
-    <img
-      src="/assets/vectors/skyline-parts/skyline-base.svg"
-      alt=""
-      class="mt-auto absolute bottom-0 left-0 right-0 w-full"
-    />
-    <img
-      src="/assets/vectors/skyline-parts/skyline-inner-wheel.svg"
-      alt=""
-      class="mt-auto absolute bottom-0 left-0 right-0 w-full wheel-rotate-animation"
-    />
+    <div class="overflow-hidden">
+      <img
+        src="/assets/vectors/skyline-parts/skyline-base.png"
+        alt=""
+        class="mt-auto absolute bottom-0 left-0 right-0 w-full"
+      />
+      <img
+        src="/assets/vectors/skyline-parts/skyline-inner-wheel.png"
+        alt=""
+        class="mt-auto absolute bottom-0 left-0 right-0 w-full wheel-rotate-animation"
+      />
+    </div>
 
   </div>
 </div>
