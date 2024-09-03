@@ -1,6 +1,6 @@
 ---
 name: "Paolo Rotolo"
-tagline: "Android Developer @ Blinklist"
+tagline: "Android Developer @ Blinkist"
 role: "organizer"
 image: "paolo.webp"
 links:
