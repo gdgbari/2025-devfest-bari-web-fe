@@ -1,3 +1,5 @@
+import { redirectUrl } from "./scripts/utils";
+
 export class WebsiteConfig {
     /*--------------------------------------------
     |              GENERAL SETTINGS              |  
@@ -6,7 +8,7 @@ export class WebsiteConfig {
     public static readonly DEVFEST_NAME: string = 'Devfest Bari 2024';
     public static readonly DEVFEST_LOGO_LIGHT: string = '/assets/images/logo_light.webp';
     public static readonly DEVFEST_LOGO_DARK: string = '/assets/images/logo_dark.webp';
-    public static readonly DEVFEST_EVENT_LINK: string = 'https://gdg.community.dev/e/mnr6ek/';
+    public static readonly DEVFEST_EVENT_LINK: string = redirectUrl('https://gdg.community.dev/e/mnr6ek/');
     public static readonly DEVFEST_THEME_COLOR: string = '#f59e0b';
 
     /*--------------------------------------------

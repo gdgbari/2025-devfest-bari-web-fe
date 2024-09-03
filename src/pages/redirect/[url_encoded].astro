@@ -1,0 +1,38 @@
+---
+export const prerender = false;
+
+const request = Astro.request;
+const ALLOWED_HOSTS = [
+    "bari.devfest.it",
+    "dev.devfest.it",
+    "gdg.community.dev"
+]
+
+const toUrl = atob(new URL(request.url).pathname.replace(/^\/redirect\/?/, "").replace(/_/g, '/').replace(/-/g, '+'))
+if (!ALLOWED_HOSTS.includes(new URL(toUrl).hostname)){
+    return new Response("Host not allowed!", {
+        status: 400
+    });
+}
+
+if (request.headers.get("User-Agent")?.includes("Instagram")){
+    return new Response("Instagram webview is not supported", {
+        status: 200,
+        headers: {
+            "Content-type": "application/pdf",
+            "Content-Disposition": "inline; filename= fake_file_redirect",
+            "Content-Transfer-Encoding": "binary",
+            "Accept-Ranges": "bytes"
+        }
+    });
+}else{
+    return new Response("", {
+        status: 302,
+        headers: {
+            "Location": toUrl
+        }
+    });
+}
+
+---
+<h1>Redirecting...</h1>

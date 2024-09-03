@@ -6,26 +6,23 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import robotsTxt from "astro-robots-txt";
 
+import netlify from "@astrojs/netlify";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://dev.devfest.it",
   i18n: {
     defaultLocale: "it",
     locales: ["it", "en"],
-    routing:{
-      prefixDefaultLocale: false,
+    routing: {
+      prefixDefaultLocale: false
     }
   },
-  integrations: [
-    partytown({
-      config: {
-        forward: ["dataLayer.push"],
-      },
-    }),
-    mdx(),
-    sitemap(),
-    tailwind(),
-    robotsTxt(),
-    react(),
-  ],
+  integrations: [partytown({
+    config: {
+      forward: ["dataLayer.push"]
+    }
+  }), mdx(), sitemap(), tailwind(), robotsTxt(), react()],
+  output: "hybrid",
+  adapter: netlify()
 });
