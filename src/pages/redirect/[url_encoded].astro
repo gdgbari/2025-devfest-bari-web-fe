@@ -7,17 +7,18 @@ let toUrl = "";
 
 try{
     toUrl = atob(new URL(request.url).pathname.replace(/^\/redirect\/?/, "").replace(/_/g, '/').replace(/-/g, '+'))
+    if (!WebsiteConfig.ALLOWED_REDIRECT_HOSTS.includes(new URL(toUrl).hostname)){
+        return new Response("Host not allowed!", {
+            status: 400
+        });
+    }
 }catch(e){
     return new Response("Invalid URL", {
         status: 400
     });
 }
 
-if (!WebsiteConfig.ALLOWED_REDIRECT_HOSTS.includes(new URL(toUrl).hostname)){
-    return new Response("Host not allowed!", {
-        status: 400
-    });
-}
+
 
 if (request.headers.get("User-Agent")?.includes("Instagram")){
     return new Response("Instagram webview is not supported", {
