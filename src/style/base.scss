@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+
+ @layer utilities{
+    .animated{
+        @apply duration-150 ease-in;
+    }
+
+    .max-w-8xl { max-width: 88rem; }
+    .max-w-7xl { max-width: 78rem; }
+
+    .rounded-3xl {
+        border-radius: 1.25rem;
+    }
+ }
+
+
+
+@layer components {
+    .card{
+        @apply rounded-lg;
+    }
+}
+
+html{
+    scrollbar-color: white #1e1e1e!important;
+}
+
+/*------------------------------------
+    CUSTOM COMPONENTS
+------------------------------------*/
+
+
+
+.btn-content{
+ @apply btn  bg-white text-2xl px-10 py-3 h-auto rounded-lg;
+}
+
+.btn.btn-primary{
+    @apply bg-red text-white text-2xl px-10 py-3 h-auto rounded-lg hover:bg-red-dark border-0;
+}
+
+.category-item {
+    @apply bg-white shadow-md rounded-lg p-4;
+}
+
+.main-container{
+  @apply max-w-8xl lg:w-4/5 w-full m-auto
+}
+
+.speaker-card {
+    @apply flex flex-col card items-stretch bg-red-pastel md:hover:scale-110 h-full w-full text-center animated max-w-[400px];
+}
+
+.faq-page a {
+    @apply text-red hover:text-red-pastel;
+}
+
+/*------------------------------------
+    WHEEL ANIMATION
+------------------------------------*/
+
+
+.wheel-rotate-animation {
+    animation: spin 26s linear infinite;
+    transform-origin: 16.532217264175415% 48.99247921303165%;/* Calculated using public/assets/vectors/skyline-parts/getcoord.html */
+}
+
+.wheel-container {
+    contain: layout;
+    width: 100%;
+    height: 100%;
+}
+        
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
+}
+
+/*------------------------------------
+    MULTI COLORED BG
+------------------------------------*/
+
+@mixin dots($count, $color) {
+    $text-shadow: ();
+    @for $i from 0 through $count {
+        $text-shadow: $text-shadow,
+                    ((random()) * 1.5) + em
+                    ((random()) * 1.5) + em
+                    14px
+                    $color
+    }
+    text-shadow: $text-shadow;
+}
+html.multicolored-bg{
+    head{
+        display: block;
+        color: transparent;
+    }
+    head::before, head::after,
+    body::before, body::after {
+        display: block;
+        font-size: 250px;
+        color: transparent;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 3em;
+        height: 3em;
+        content: '.';
+        mix-blend-mode: screen;
+        animation: 44s -27s move infinite ease-in-out alternate;
+    }
+    
+    
+    body::before {
+        @include dots(40, #34A853);
+        animation-duration: 10s;
+        animation-delay: -27s;
+    }
+    
+    body::after {
+        @include dots(40, #4285F4);
+        animation-duration: 20s;
+        animation-delay: -32s;
+    }
+    
+    head::before {
+        @include dots(50, #EA4335);
+        animation-duration: 40s;
+        animation-delay: -23s;
+    }
+    
+    head::after {
+        @include dots(30, #F9AB00);
+        animation-duration: 30s;
+        animation-delay: -19s;
+    }
+    
+    
+    @keyframes move {
+        from {
+        transform: rotate(0deg) scale(12) translateX(-40px);
+        }
+        to {
+        transform: rotate(180deg) scale(18) translateX(40px);
+        }
+    }   
+}
