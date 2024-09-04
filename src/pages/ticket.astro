@@ -30,8 +30,8 @@ import { WebsiteConfig } from "../config"
             })
         </script>
         <div class="jumbo h-192 lg:h-220 p-10 text-center text-primary-content flex flex-col align-center z-20 justify-center" style="width: 100%; height: 100%;">
-            <img src="/assets/vectors/logo_big.svg" class="h-36 m-12" />
-            <p class="text-3xl md:text-4xl font-semibold">
+            <img src="/assets/vectors/logo_big.svg" class="h-36 m-2 md:m-6" />
+            <p class="text-3xl md:text-4xl font-semibold mt-5">
                 {
                 WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
                     day: "numeric",
@@ -41,7 +41,6 @@ import { WebsiteConfig } from "../config"
                 }
             </p>
             <p class="text-3xl md:text-4xl font-semibold">{t("info.locationName")}</p>
-            
             <div class="my-12 flex gap-4 justify-center flex-col md:flex-row">
                 <a
                 class="btn-content text-xl"
