@@ -1,5 +1,8 @@
 ---
 import { WebsiteConfig } from "../../config";
+import PageHead from "../../components/Common/PageHead.astro";
+import { useTranslations } from "../../i18n/utils";
+
 export const prerender = false;
 
 const request = Astro.request;
@@ -8,28 +11,31 @@ let toUrl = "";
 try{
     toUrl = atob(new URL(request.url).pathname.replace(/^\/redirect\/?/, "").replace(/_/g, '/').replace(/-/g, '+'))
     if (!WebsiteConfig.ALLOWED_REDIRECT_HOSTS.includes(new URL(toUrl).hostname)){
-        return new Response("Host not allowed!", {
-            status: 400
-        });
+        return new Response("Host not allowed!", { status: 400 });
     }
 }catch(e){
-    return new Response("Invalid URL", {
-        status: 400
-    });
+    return new Response("Invalid URL", { status: 400 });
 }
 
 
+const agent = request.headers.get("User-Agent")?.toLowerCase()??"";
+const isInstagram = agent.includes("instagram");
+const isIOS = agent.includes("iphone") || agent.includes("ipad") || agent.includes("ipod");
 
-if (request.headers.get("User-Agent")?.includes("Instagram")){
-    return new Response("Instagram webview is not supported", {
-        status: 200,
-        headers: {
-            "Content-type": "application/zip",
-            "Content-Disposition": "inline; filename= fake_file_redirect",
-            "Content-Transfer-Encoding": "binary",
-            "Accept-Ranges": "bytes"
-        }
-    });
+
+if (isInstagram){
+    if (!isIOS){
+    
+        return new Response("Instagram webview is not supported", {
+            status: 200,
+            headers: {
+                "Content-type": "application/zip",
+                "Content-Disposition": "inline; filename= fake_file_redirect",
+                "Content-Transfer-Encoding": "binary",
+                "Accept-Ranges": "bytes"
+            }
+        });
+    }
 }else{
     return new Response("", {
         status: 302,
@@ -39,5 +45,40 @@ if (request.headers.get("User-Agent")?.includes("Instagram")){
     });
 }
 
+
+
+const lang = "it"
+const t = useTranslations(lang);
+
 ---
-<h1>Redirecting...</h1>
+
+<!-- Below is your "component template." It's just HTML, but with
+     some magic sprinkled in to help you build great templates. -->
+<html lang={lang} class="scroll-smooth flex flex-col min-h-screen multicolored-bg">
+  <PageHead />
+  <body class="flex flex-col flex-1" style="width: 100vw; height:100vh">
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            location.href = location.href.replace(/https?/, "googlechrome")            
+        })
+    </script>
+    <main class="flex flex-col justify-center items-center" style="width: 100vw; height:100vh">
+        <div class="jumbo h-192 lg:h-220 p-10 text-center text-primary-content flex flex-col align-center z-20 justify-center" style="width: 100%; height: 100%;">
+            <img src="/assets/vectors/logo_big.svg" class="h-36 m-2" />
+            <p class="text-xl md:text-2xl font-semibold">
+                {
+                WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                })
+                }
+            </p>
+            <p class="text-xl md:text-2xl font-semibold mb-5">{t("info.locationName")}</p>
+            <p class="mb-2 underline">Per utilizzare questa pagina ti chiediamo di usare il tuo browser!</p>
+            <p class="underline">Clicca i 3 puntini in alto e seleziona "Apri nel browser esterno"</p>
+        </div>
+          
+    </main>
+  </body>
+</html>
