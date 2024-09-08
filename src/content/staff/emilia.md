@@ -1,6 +1,6 @@
 ---
 name: "Emilia Maria Di Cosmo"
-tagline: "Design Team"
+tagline: "Engagement, Design and Marketing Team"
 role: "collaborator"
 image: "emilia.webp"
 ---
