@@ -198,6 +198,20 @@ declare module 'astro:content' {
   collection: "staff";
   data: InferEntrySchema<"staff">
 } & { render(): Render[".md"] };
+"emilia.md": {
+	id: "emilia.md";
+  slug: "emilia";
+  body: string;
+  collection: "staff";
+  data: InferEntrySchema<"staff">
+} & { render(): Render[".md"] };
+"federica.md": {
+	id: "federica.md";
+  slug: "federica";
+  body: string;
+  collection: "staff";
+  data: InferEntrySchema<"staff">
+} & { render(): Render[".md"] };
 "federico.md": {
 	id: "federico.md";
   slug: "federico";
@@ -233,6 +247,13 @@ declare module 'astro:content' {
   collection: "staff";
   data: InferEntrySchema<"staff">
 } & { render(): Render[".md"] };
+"pierantonio.md": {
+	id: "pierantonio.md";
+  slug: "pierantonio";
+  body: string;
+  collection: "staff";
+  data: InferEntrySchema<"staff">
+} & { render(): Render[".md"] };
 "piernicola.md": {
 	id: "piernicola.md";
   slug: "piernicola";
@@ -240,9 +261,23 @@ declare module 'astro:content' {
   collection: "staff";
   data: InferEntrySchema<"staff">
 } & { render(): Render[".md"] };
+"raffaele.md": {
+	id: "raffaele.md";
+  slug: "raffaele";
+  body: string;
+  collection: "staff";
+  data: InferEntrySchema<"staff">
+} & { render(): Render[".md"] };
 "simone.md": {
 	id: "simone.md";
   slug: "simone";
+  body: string;
+  collection: "staff";
+  data: InferEntrySchema<"staff">
+} & { render(): Render[".md"] };
+"vito.md": {
+	id: "vito.md";
+  slug: "vito";
   body: string;
   collection: "staff";
   data: InferEntrySchema<"staff">
@@ -257,5 +292,5 @@ declare module 'astro:content' {
 
 	type AnyEntryMap = ContentEntryMap & DataEntryMap;
 
-	export type ContentConfig = typeof import("../src/content/config.js");
+	export type ContentConfig = typeof import("./../src/content/config.js");
 }

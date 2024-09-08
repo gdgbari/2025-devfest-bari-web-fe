@@ -2,7 +2,7 @@
 name: "Federica Dimola "
 tagline: "Design Team"
 role: "collaborator"
-image: "federica.webp"
+image: "federica.jpeg"
 links:
     linkedin: "https://www.linkedin.com/in/federicadimola"
 ---
