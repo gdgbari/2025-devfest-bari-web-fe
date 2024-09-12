@@ -28,6 +28,6 @@ const img = (imgs[`../../assets/images/staff/${value.data.image}`] as any).defau
     <p class="font-medium text-2xl">{value.data.name}</p>
     <p>{value.data.tagline}</p>
     <div class="my-2"></div>
-    <SpeakersLinks links={value.data.links as SpeakerLinks} />
+   { value.data.links && <SpeakersLinks links={value.data.links as SpeakerLinks} />}
   </div>
 </div>

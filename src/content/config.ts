@@ -44,7 +44,7 @@ const sessionsCollections = defineCollection({
         location: z.string(),
         level: z.string(),
         tags: z.array(z.string()),
-        speaker: reference('speakers'),
+        speaker: reference('speakers')
     })
 });
 
@@ -56,7 +56,7 @@ const staffCollection = defineCollection({
         tagline: z.string(),
         role: z.enum(['organizer', 'collaborator']),
         image: z.string(),
-        links: linksSchema
+        links: linksSchema.optional(),
     }),
 });
 
