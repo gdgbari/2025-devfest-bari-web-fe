@@ -45,7 +45,7 @@ export const LoginPage = () => {
                     })
                 })
             }>
-                <Card className="md:px-20 md:py-16 bg-black bg-opacity-80 z-10 md:h-fit md:w-fit h-screen w-screen justify-center rounded-none px-5 md:rounded-xl">
+                <Card className="md:px-20 md:py-16 bg-black md:bg-opacity-60 bg-opacity-25 z-10 md:h-fit md:w-fit h-screen w-screen justify-center rounded-none px-5 md:rounded-xl">
                     <div className="flex flex-col opacity-100 justify-center items-center">
                         <img src="/assets/vectors/logo_big.svg" className="h-36 m-2 px-8 md:p-0 md:m-6" />
                         <p className="text-2xl md:text-3xl font-semibold mt-5">

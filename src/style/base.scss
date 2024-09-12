@@ -150,3 +150,8 @@ html.multicolored-bg{
         }
     }   
 }
+
+//Fix mantine on mobile
+:root{
+    color-scheme: unset !important;
+}
