@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import type { Speaker } from "../../scripts/api/sessionize_api";
 
 const SpeakerPreviewElement = ({ speaker }: { speaker: Speaker }) => (
