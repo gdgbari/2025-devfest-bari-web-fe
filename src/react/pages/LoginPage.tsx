@@ -16,8 +16,11 @@ export const LoginPage = () => {
             email: (value) => value.length > 0? isEmailValid(value)? undefined: "The email given is invalid": "Email is required",
             password: (value) => value.length > 0? undefined: "Password is required"
         },
-        validateInputOnChange: true
-        
+        validateInputOnChange: true,
+        initialErrors: {
+            email: "Email is required",
+            password: "Password is required"
+        }
     })
 
     const t = useTranslations("en")
