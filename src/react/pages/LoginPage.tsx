@@ -1,10 +1,11 @@
 import { AppMain } from "../AppMain";
-import { Card, Input } from "react-daisyui"
+import { Card, Checkbox, Form, Input } from "react-daisyui"
 import { useForm } from "@mantine/form"
 import { WebsiteConfig } from "../../config";
 import { useTranslations } from "../../i18n/utils";
 import { showNotification } from "@mantine/notifications";
 import { isEmailValid } from "../utils";
+import { useState } from "react";
 
 export const LoginPage = () => {
     const form = useForm({
@@ -23,6 +24,8 @@ export const LoginPage = () => {
         }
     })
 
+    const [showPassword, setShowPassword] = useState(false)
+
     const t = useTranslations("en")
 
     const checkErrors = () => {
@@ -37,7 +40,7 @@ export const LoginPage = () => {
 
     return (
         <AppMain>
-            <form onSubmit={form.onSubmit((data)=>{
+            <Form onSubmit={form.onSubmit((data)=>{
                     showNotification({
                         title: "Function not implemented",
                         message: JSON.stringify(data),
@@ -59,15 +62,21 @@ export const LoginPage = () => {
                         </p>
                         <p className="text-2xl md:text-3xl font-semibold">{t("info.locationName")}</p>
                         <div className="flex flex-col mt-10 w-full">
-                            <Input placeholder="Email" {...form.getInputProps("email")} />
-                            <Input placeholder="Password" className="mt-3" {...form.getInputProps("password")} />
+                            <Input placeholder="Email" type="text" {...form.getInputProps("email")} />
+                            
+                            <Input placeholder="Password" type={showPassword?"text":"password"} className="mt-3" {...form.getInputProps("password")} />
+                            <div className="flex w-full justify-end mt-2">
+                                <Form.Label title="Show password">
+                                    <Checkbox className="ml-3" size="md" onChange={(e)=>setShowPassword(e.target.checked)} checked={showPassword} />
+                                </Form.Label>
+                            </div>
                         </div>
                         <div className="flex flex-col mt-10 items-center w-full">
                         <Input type="submit" value="Login" className="btn btn-primary btn-wide" onClick={checkErrors} />
                         </div>
                     </div>
                 </Card>
-            </form>
+            </Form>
             
         </AppMain>
     );

@@ -88,9 +88,9 @@ html{
     $text-shadow: ();
     @for $i from 0 through $count {
         $text-shadow: $text-shadow,
-                    ((random()) * 1.5) + em
-                    ((random()) * 1.5) + em
-                    14px
+                    (random()+1.6) + em
+                    (random()+1.2) + em
+                    18px
                     $color
     }
     text-shadow: $text-shadow;
@@ -103,13 +103,13 @@ html.multicolored-bg{
     head::before, head::after,
     body::before, body::after {
         display: block;
-        font-size: 250px;
+        font-size: 300px;
         color: transparent;
         position: fixed;
         top: 50%;
         left: 50%;
-        width: 3em;
-        height: 3em;
+        width: 5em;
+        height: 5em;
         content: '.';
         mix-blend-mode: screen;
         animation: 44s -27s move infinite ease-in-out alternate;
@@ -117,30 +117,29 @@ html.multicolored-bg{
     
     
     body::before {
-        @include dots(40, #34A853);
+        @include dots(20, #34A853);
         animation-duration: 10s;
         animation-delay: -27s;
     }
-    
+ 
     body::after {
-        @include dots(40, #4285F4);
+        @include dots(20, #4285F4);
         animation-duration: 20s;
         animation-delay: -32s;
     }
     
     head::before {
-        @include dots(50, #EA4335);
+        @include dots(30, #EA4335);
         animation-duration: 40s;
         animation-delay: -23s;
     }
     
     head::after {
-        @include dots(30, #F9AB00);
+        @include dots(10, #F9AB00);
         animation-duration: 30s;
         animation-delay: -19s;
     }
-    
-    
+
     @keyframes move {
         from {
         transform: rotate(0deg) scale(12) translateX(-40px);
@@ -154,4 +153,11 @@ html.multicolored-bg{
 //Fix mantine on mobile
 :root{
     color-scheme: unset !important;
+}
+
+//Fix checkbox colors
+.checkbox{
+    --chkfg: #dedede;
+    --fallback-bc: #1e1e1e;
+    border-width: 2px;
 }
