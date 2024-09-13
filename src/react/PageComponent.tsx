@@ -7,8 +7,8 @@ export type PageData = { page: "login" } | { page: "registration"} | { page: "nu
 
 export const PageComponent = (props:PageData) => {
 
-    const registrationToken = new URLSearchParams(location.search).get("token")
-    
+    const registrationToken = (new URLSearchParams(location.search).get("token"))??(location.pathname.match(/\/[^\/]*\/(?<token>.*)/)?.groups?.token)
+
     const pageComponent = () => {
         if(props.page === "login") {
             return <LoginPage />
