@@ -3,8 +3,8 @@
 
 import BaseLayout from "../../../components/Common/BaseLayout.astro";
 import SpeakerCard from "../../../components/Speakers/SpeakerCard.astro";
+import { getSpeakers } from "../../../data/api/sessionize_api";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
-import { getSpeakers } from "../../../scripts/api/sessionize_api";
 
 const speakers = await getSpeakers();
 const lang = getLangFromUrl(Astro.url);

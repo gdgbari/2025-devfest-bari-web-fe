@@ -1,6 +1,7 @@
 ---
+import { getSessions } from '../../../data/api/sessionize_api';
+import type { SessionInfo } from '../../../data/types/sessionize';
 import { getLangFromUrl, useTranslatedPath, useTranslations } from '../../../i18n/utils';
-import { getSessions, type SessionInfo } from '../../../scripts/api/sessionize_api';
 import AddToCalendar from '../../Common/AddToCalendar.astro';
 import BaseLayout from '../../Common/BaseLayout.astro';
 import SessionTopic from '../SessionTopic.astro';

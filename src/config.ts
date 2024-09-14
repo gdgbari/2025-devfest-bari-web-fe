@@ -1,4 +1,4 @@
-import { redirectUrl } from "./scripts/utils";
+import { redirectUrl } from "./helpers/redirect_url";
 
 export class WebsiteConfig {
     /*--------------------------------------------

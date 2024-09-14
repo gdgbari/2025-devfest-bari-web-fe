@@ -1,4 +1,4 @@
-import type { Speaker } from "../../scripts/api/sessionize_api";
+import type { Speaker } from "../../data/types/sessionize";
 
 const SpeakerPreviewElement = ({ speaker }: { speaker: Speaker }) => (
   <a

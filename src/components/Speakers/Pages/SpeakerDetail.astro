@@ -3,9 +3,10 @@ import BaseLayout from "../../../components/Common/BaseLayout.astro";
 import SpeakersLinks from "../../../components/Speakers/SpeakersLinks.astro";
 import { WebsiteConfig } from "../../../config";
 import { getLangFromUrl, useTranslatedPath, useTranslations } from "../../../i18n/utils";
-import { type Speaker, getSpeakers } from "../../../scripts/api/sessionize_api";
-import { formatTime } from "../../../scripts/time_utils";
+import { type Speaker } from "../../../data/types/sessionize";
+import { formatTime } from "../../../helpers/time";
 import SessionTopic from "../../Sessions/SessionTopic.astro";
+import { getSpeakers } from "../../../data/api/sessionize_api";
 // 1. Generate a new path for every collection speaker
 
 interface Props {

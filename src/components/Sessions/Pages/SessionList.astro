@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "../../../components/Common/BaseLayout.astro";
 import SessionCard from "../../../components/Sessions/SessionCard.astro";
+import { getSessions } from "../../../data/api/sessionize_api";
 import { getLangFromUrl } from "../../../i18n/utils";
 import { useTranslations } from "../../../i18n/utils";
-import { getSessions } from "../../../scripts/api/sessionize_api";
 
 // is your "component frontmatter". It never runs in the browser.
 

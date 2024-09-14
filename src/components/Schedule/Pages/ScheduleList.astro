@@ -1,8 +1,8 @@
 ---
 
 import ScheduleCard from "../ScheduleCard.astro";
-import { getSchedule } from "../../../scripts/api/sessionize_api";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
+import { getSchedule } from "../../../data/api/sessionize_api";
 
 const schedule = await getSchedule();
 const lang = getLangFromUrl(Astro.url);

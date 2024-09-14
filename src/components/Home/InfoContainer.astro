@@ -1,7 +1,7 @@
 ---
 import { WebsiteConfig } from "../../config";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
-import { getSchedule, getSessions, getSpeakers } from "../../scripts/api/sessionize_api";
+import { getSchedule, getSessions, getSpeakers } from "../../data/api/sessionize_api";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);

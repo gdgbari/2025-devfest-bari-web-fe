@@ -9,3 +9,4 @@ copy/
 external/
 # Local Netlify folder
 .netlify
+.env
