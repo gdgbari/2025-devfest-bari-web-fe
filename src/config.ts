@@ -53,4 +53,18 @@ export class WebsiteConfig {
     public static readonly NUM_PARTECIPENTS : number = 700;
     public static readonly NUM_TRACKS_FALLBACK : number = 7;
 
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    public static readonly FIREBASE_CONFIG = {
+        apiKey: "AIzaSyDiPsb6Iw_JSB5dGZmwOflGbk8ndfMz9xw",
+        authDomain: "devfest-bari-24-app.firebaseapp.com",
+        databaseURL: "https://devfest-bari-24-app-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "devfest-bari-24-app",
+        storageBucket: "devfest-bari-24-app.appspot.com",
+        messagingSenderId: "33508282460",
+        appId: "1:33508282460:web:fa730002a967adbb5a5699",
+        measurementId: "G-7M75EC4PZB"
+    };
+
 }

@@ -1,9 +1,9 @@
 import { AppMain } from "../AppMain";
 import { Card, Checkbox, Form, Input } from "react-daisyui"
 import { useForm } from "@mantine/form"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { showNotification } from "@mantine/notifications";
-import { isEmailValid } from "../utils";
+import { isEmailValid, useFirebaseUserInfo } from "../utils";
 import { WebsiteConfig } from "../../config";
 import { useTranslations } from "../../i18n/utils";
 
@@ -41,6 +41,13 @@ export const SignupPage = ({ token }: { token:string }) => {
 
     const [showPasswords, setShowPasswords] = useState(false)
 
+
+    const { user, hasLoaded } = useFirebaseUserInfo()
+    useEffect(() => {
+        if(user != null && hasLoaded) {
+            location.href = "/app"
+        }
+    }, [user])
 
     if(!token) {
         return <AppMain>Invalid token</AppMain>
