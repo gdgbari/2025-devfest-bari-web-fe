@@ -2,7 +2,7 @@ import { AppMain } from "../AppMain";
 import { Card, Checkbox, Form, Input } from "react-daisyui"
 import { useForm } from "@mantine/form"
 import { useEffect, useState } from "react";
-import { showNotification } from "@mantine/notifications";
+import { notifications, showNotification } from "@mantine/notifications";
 import { isEmailValid, useFirebaseUserInfo } from "../utils";
 import { WebsiteConfig } from "../../config";
 import { useTranslations } from "../../i18n/utils";
@@ -40,7 +40,7 @@ export const SignupPage = ({ token }: { token:string }) => {
     })
 
     const [showPasswords, setShowPasswords] = useState(false)
-
+    const [loading, setLoading] = useState(false)
 
     const { user, hasLoaded } = useFirebaseUserInfo()
     useEffect(() => {
@@ -57,11 +57,35 @@ export const SignupPage = ({ token }: { token:string }) => {
             {/* <p>registration token: {token}</p> */}
 
             <Form onSubmit={form.onSubmit((data)=>{
-                    showNotification({
-                        title: "Function not implemented",
-                        message: JSON.stringify(data),
-                        color: "blue"
+                    const requestId = notifications.show({
+                        loading: true,
+                        title: "Signing up...",
+                        message: "Please wait untils the registration is complete",
+                        autoClose: false
                     })
+                    setLoading(true)
+                    fetch("http://127.0.0.1/fakeAPI")
+                        .then((userInfo) => {
+                            notifications.update({
+                                id: requestId,
+                                loading: false,
+                                title: "Registration Completed",
+                                message: `Welcome ${user?.displayName}`,
+                                color: "green",
+                                autoClose: true
+                            })
+                        }).catch((error) => {
+                            notifications.update({
+                                id: requestId,
+                                loading: false,
+                                title: `Registration error [${error.code}]`,
+                                message: error.message,
+                                color: "red",
+                                autoClose: true
+                            })
+                        }).finally(() => {
+                            setLoading(false)
+                        })
                 })
             }>
                 <Card className="md:px-20 md:py-16 bg-black md:bg-opacity-60 bg-opacity-25 z-10 md:h-fit md:w-fit h-screen w-screen justify-center rounded-none px-5 md:rounded-xl">
@@ -89,7 +113,7 @@ export const SignupPage = ({ token }: { token:string }) => {
                             </div>
                         </div>
                         <div className="flex flex-col mt-10 items-center w-full">
-                        <Input type="submit" value="Signup" className="btn btn-primary btn-wide" onClick={checkErrors} />
+                        <Input type="submit" value={loading?"Loading":"Signup"} className={`btn btn-primary btn-wide ${loading?"opacity-40 btn-warning":""}`} onClick={checkErrors} disabled={loading} />
                         </div>
                     </div>
                 </Card>

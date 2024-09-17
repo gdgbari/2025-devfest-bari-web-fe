@@ -3,7 +3,7 @@ import { Card, Checkbox, Form, Input } from "react-daisyui"
 import { useForm } from "@mantine/form"
 import { WebsiteConfig } from "../../config";
 import { useTranslations } from "../../i18n/utils";
-import { showNotification } from "@mantine/notifications";
+import { notifications, showNotification } from "@mantine/notifications";
 import { firebase, isEmailValid, useFirebaseUserInfo } from "../utils";
 import { useEffect, useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -26,6 +26,7 @@ export const LoginPage = () => {
     })
 
     const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const t = useTranslations("en")
 
@@ -49,20 +50,35 @@ export const LoginPage = () => {
     return (
         <AppMain>
             <Form onSubmit={form.onSubmit((data)=>{
+                    const requestId = notifications.show({
+                        loading: true,
+                        title: "Logging in...",
+                        message: "Please wait untils the login is complete",
+                        autoClose: false
+                    })
+                    setLoading(true)
                     signInWithEmailAndPassword(firebase.auth, data.email, data.password)
                         .then((userCredential) => {
                             const user = userCredential.user;
-                            showNotification({
+                            notifications.update({
+                                id: requestId,
+                                loading: false,
                                 title: "Login success",
                                 message: `Welcome ${user.displayName}`,
-                                color: "green"
+                                color: "green",
+                                autoClose: true
                             })
                         }).catch((error) => {
-                            showNotification({
+                            notifications.update({
+                                id: requestId,
+                                loading: false,
                                 title: `Login error [${error.code}]`,
                                 message: error.message,
-                                color: "red"
+                                color: "red",
+                                autoClose: true
                             })
+                        }).finally(() => {
+                            setLoading(false)
                         })
                 })
             }>
@@ -90,7 +106,7 @@ export const LoginPage = () => {
                             </div>
                         </div>
                         <div className="flex flex-col mt-10 items-center w-full">
-                        <Input type="submit" value="Login" className="btn btn-primary btn-wide" onClick={checkErrors} />
+                        <Input type="submit" value={loading?"Loading":"Login"} className={`btn btn-primary btn-wide ${loading?"opacity-40 btn-warning":""}`} onClick={checkErrors} disabled={loading} />
                         </div>
                     </div>
                 </Card>
