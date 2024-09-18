@@ -4,27 +4,7 @@ import ScheduleCard from "../ScheduleCard.astro";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 import { getSchedule } from "../../../data/api/sessionize_api";
 
-const schedule = (await getSchedule()).map((s) => {
-  s.rooms = s.rooms.map((r) => {
-    r.sessions = r.sessions.map((si) => {
-      if (si.title.indexOf("42!") != -1){
-        si.endsAt = "2024-10-26T14:35:00Z"
-      }
-      return si
-    });
-    return r
-  });
-  s.timeSlots = s.timeSlots.map((ts) => {
-      ts.rooms = ts.rooms.map((r) => {
-        if (r.session.title.indexOf("42!") != -1){
-          r.session.endsAt = "2024-10-26T14:35:00Z"
-        }
-      return r
-    });
-    return ts
-  })
-  return s
-});
+const schedule = await getSchedule()
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
