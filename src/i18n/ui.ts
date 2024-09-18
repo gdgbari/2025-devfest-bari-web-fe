@@ -40,6 +40,7 @@ export const ui = {
         'speakers.detailTitle': 'Speaker details',
         'speakers.sessionList': 'Sessions',
         'scheduling.noschedule': 'Schedule not available',
+        'session.room': 'Room',
     },
     it: {
         'nav.home': 'Home',
@@ -74,5 +75,6 @@ export const ui = {
         'speakers.detailTitle': 'Dettagli speaker',
         'speakers.sessionList': 'Sessioni',
         'scheduling.noschedule': 'Schedule non disponibile',
+        'session.room': 'Aula',
     },
 } as const;

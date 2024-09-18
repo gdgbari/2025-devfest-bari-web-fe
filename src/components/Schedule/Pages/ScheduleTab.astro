@@ -1,11 +1,15 @@
 ---
+import type { ScheduleDay } from "../../../data/types/sessionize";
+import { getLangFromUrl } from "../../../i18n/utils";
 import ScheduleCard from "../ScheduleCard.astro";
+import { capitalizeFirstLetter } from "../../../react/utils";
 
 interface Props {
-  schedule: any;
-  rooms?: any;
+  schedule: ScheduleDay[];
+  rooms?: number[];
 }
 
+const lang = getLangFromUrl(Astro.url);
 const { schedule, rooms } = Astro.props;
 
 const calcSlotsTaken = (s, tsr, ts_idx) => {
@@ -55,11 +59,11 @@ const calcSlotsTaken = (s, tsr, ts_idx) => {
         return <>
           <div class="mb-5">
             <p class="text-3xl font-bold mb-5">
-              {new Date(s.date).toLocaleDateString("en-US", {
+              {capitalizeFirstLetter(new Date(s.date).toLocaleDateString(lang, {
                 day: "numeric",
                 month: "long",
                 weekday: "long",
-              })}
+              }))}
             </p>
             {/* Some classes are created manually due to tilewind issues */}
             <div class={`grid grid-flow-row grid-cols-layout-${totalScheduleCols} grid-rows-layout-${totalScheduleRows} grid-cols-1 gap-4`} >

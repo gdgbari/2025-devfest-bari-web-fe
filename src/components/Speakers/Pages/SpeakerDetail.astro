@@ -70,7 +70,7 @@ const pageTitle = `${speaker.fullName} @ ${WebsiteConfig.DEVFEST_NAME}`;
               const dateStart = new Date(session.startsAt);
               const dateEnd = new Date(session.endsAt);
 
-              const date = dateStart.toLocaleDateString("en-US", {
+              const date = dateStart.toLocaleDateString(lang, {
                 month: "long",
                 day: "numeric",
               });

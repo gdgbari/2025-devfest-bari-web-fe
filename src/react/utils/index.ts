@@ -30,7 +30,7 @@ export const isEmailValid = (email: string) => {
     return emailRegex.test(email)
 }
 
-
-
-
+export function capitalizeFirstLetter(string:string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 

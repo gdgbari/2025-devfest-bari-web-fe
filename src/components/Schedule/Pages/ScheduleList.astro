@@ -1,10 +1,8 @@
 ---
 
-import ScheduleCard from "../ScheduleCard.astro";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 import { getSchedule } from "../../../data/api/sessionize_api";
 import ScheduleTab from "./ScheduleTab.astro";
-
 
 /*
   - 51235:"Frontend"
@@ -16,8 +14,6 @@ import ScheduleTab from "./ScheduleTab.astro";
   - 53349:"WS II"
   - 53350:"WS III"
 */
-
-
 
 const schedule = await getSchedule()
 const lang = getLangFromUrl(Astro.url);
