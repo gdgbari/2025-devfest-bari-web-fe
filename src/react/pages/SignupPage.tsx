@@ -94,6 +94,7 @@ export const SignupPage = ({ token }: { token:string }) => {
                         <p className="text-2xl md:text-3xl font-semibold mt-5">
                             {
                             WebsiteConfig.EVENT_START.toLocaleDateString("en", {
+                                timeZone: WebsiteConfig.EVENT_TIMEZONE,
                                 day: "numeric",
                                 month: "long",
                                 year: "numeric",

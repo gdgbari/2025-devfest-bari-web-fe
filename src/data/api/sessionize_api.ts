@@ -1,3 +1,4 @@
+import { WebsiteConfig } from "../../config";
 import type { ScheduleDay, SessionInfo, Speaker } from "../types/sessionize";
 
 const API_ID = "1rh747m6"
@@ -19,12 +20,15 @@ export async function getSchedule(): Promise<Promise<ScheduleDay[]>> {
 
     schedule.forEach(
         day => day.timeSlots.forEach(
-            slot => slot.rooms.forEach(
-                room => {
-                    const sessionInfoFound = sessionsInfo.find((_s) => _s.id == room.session.id);
-                    room.session.info = sessionInfoFound;
-                },
-            ),
+            (slot, slot_idx) => {
+                day.timeSlots[slot_idx].slotStart = new Date(slot.rooms[0].session.startsAt).toLocaleString("it", {timeZone: WebsiteConfig.EVENT_TIMEZONE, hour:"numeric", minute:"numeric"})
+                slot.rooms.forEach(
+                    room => {
+                        const sessionInfoFound = sessionsInfo.find((_s) => _s.id == room.session.id);
+                        room.session.info = sessionInfoFound;
+                    },
+                )
+            }
         ),
     );
 

@@ -71,6 +71,7 @@ const pageTitle = `${speaker.fullName} @ ${WebsiteConfig.DEVFEST_NAME}`;
               const dateEnd = new Date(session.endsAt);
 
               const date = dateStart.toLocaleDateString(lang, {
+                timeZone: WebsiteConfig.EVENT_TIMEZONE,
                 month: "long",
                 day: "numeric",
               });

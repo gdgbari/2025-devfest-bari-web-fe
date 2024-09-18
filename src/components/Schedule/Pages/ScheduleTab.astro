@@ -3,6 +3,7 @@ import type { ScheduleDay } from "../../../data/types/sessionize";
 import { getLangFromUrl } from "../../../i18n/utils";
 import ScheduleCard from "../ScheduleCard.astro";
 import { capitalizeFirstLetter } from "../../../react/utils";
+import { WebsiteConfig } from "../../../config";
 
 interface Props {
   schedule: ScheduleDay[];
@@ -56,12 +57,12 @@ const calcSlotsTaken = (timeSlots, tsr, ts_idx) => {
         const roomsSelected = rooms?s.rooms.filter((r) => rooms.includes(r.id)):s.rooms
         const timeSlotSelected = s.timeSlots.filter((ts) => ts.rooms.some((tsr) => roomsSelected.map(r => r.id).includes(tsr.id)) || isServiceTimeSlot(ts));
         const totalScheduleCols = roomsSelected.length;
-        const totalScheduleRows = timeSlotSelected.length;
         let skipPadding: {[key:string]:number} = roomsSelected.map((room) => ({[room.id]:0})).reduce((a,b)=>({...a,...b}),{});
         return <>
           <div class="mb-5">
             <p class="text-3xl font-bold mb-5">
               {capitalizeFirstLetter(new Date(s.date).toLocaleDateString(lang, {
+                timeZone: WebsiteConfig.EVENT_TIMEZONE,
                 day: "numeric",
                 month: "long",
                 weekday: "long",
@@ -107,7 +108,7 @@ const calcSlotsTaken = (timeSlots, tsr, ts_idx) => {
                   
                   return [
                   <div class="font-medium text-2xl">
-                      <p>{ts.slotStart.substring(0, 5)}</p>
+                      <p>{ts.slotStart}</p>
                   </div>,
                   ...orderedSessions
                   ];

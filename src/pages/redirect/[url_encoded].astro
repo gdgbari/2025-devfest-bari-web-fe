@@ -69,6 +69,7 @@ const t = useTranslations(lang);
             <p class="text-xl md:text-3xl font-semibold">
                 {
                 WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
+                    timeZone: WebsiteConfig.EVENT_TIMEZONE,
                     day: "numeric",
                     month: "long",
                     year: "numeric",

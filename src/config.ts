@@ -22,6 +22,7 @@ export class WebsiteConfig {
 
     public static readonly EVENT_START : Date = new Date('2024-10-26');
     public static readonly EVENT_END : Date = new Date('2024-10-26');
+    public static readonly EVENT_TIMEZONE : string = 'Europe/Rome';
     public static readonly EVENT_LOCATION_NAME : String = 'Polythecnic of Bari';
     public static readonly EVENT_LOCATION_CITY : String = 'Bari';
     public static readonly EVENT_LOCATION_ADDRESS : String = 'Via Edoardo Orabona 4';
