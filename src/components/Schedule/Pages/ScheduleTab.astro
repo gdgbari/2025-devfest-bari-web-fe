@@ -1,0 +1,180 @@
+---
+import ScheduleCard from "../ScheduleCard.astro";
+
+interface Props {
+  schedule: any;
+  rooms?: any;
+}
+
+const { schedule, rooms } = Astro.props;
+
+const calcSlotsTaken = (s, tsr, ts_idx) => {
+    const endDate = new Date(tsr.session.endsAt);
+    endDate.setSeconds(0)
+    endDate.setMilliseconds(0)
+    //Calculate the space to take (how many timeSlot takes this session (until a service session))
+    let session_len = 1;
+    let last_is_service = false;
+    for (let i = ts_idx+1; i < s.timeSlots.length; i++){
+      //No sessions
+      if (s.timeSlots[i].rooms.length == 0) continue
+      //Take time from one of the sessions
+      //Get next start date
+      const next_date = new Date(s.timeSlots[i].rooms[0].session.startsAt)
+      next_date.setSeconds(0)
+      next_date.setMilliseconds(0)
+      //If it's a service session, can't take this space
+      if (s.timeSlots[i].rooms.some( (tsr) => tsr.session.isServiceSession)){
+        last_is_service = true
+        continue //We need to check if replicate this session for the next timeSlot that is not a service session
+      }
+      if (last_is_service){ //We stopped at a service session and need to check if replicate this session in next timeSlots
+        if (next_date < endDate){
+          s.timeSlots[i].rooms.push(tsr) //Replicate
+        }
+        break
+      }
+      //Continue to get space until this session ends
+      if (next_date < endDate){
+        session_len ++
+      }else{
+        break
+      }
+    }
+    return session_len
+  }
+
+
+---
+<div>
+  {schedule.map((s) => {
+        const roomsSelected = rooms?s.rooms.filter((r) => rooms.includes(r.id)):s.rooms
+        const totalScheduleCols = roomsSelected.length;
+        const totalScheduleRows = s.timeSlots.length;
+        let skipPadding: {[key:string]:number} = roomsSelected.map((room) => ({[room.id]:0})).reduce((a,b)=>({...a,...b}),{});
+        return <>
+          <div class="mb-5">
+            <p class="text-3xl font-bold mb-5">
+              {new Date(s.date).toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "long",
+                weekday: "long",
+              })}
+            </p>
+            {/* Some classes are created manually due to tilewind issues */}
+            <div class={`grid grid-flow-row grid-cols-layout-${totalScheduleCols} grid-rows-layout-${totalScheduleRows} grid-cols-1 gap-4`} >
+              {s.timeSlots.map((ts,ts_idx) => {
+  
+                const hasServiceSession = ts.rooms.some(
+                  (tsr) => tsr.session.isServiceSession,
+                );
+                
+                const sessionsInTimeSlot = ts.rooms.map((tsr) => {
+                  const slots = !hasServiceSession? calcSlotsTaken(s, tsr, ts_idx) : 1;
+                  if (slots > 1){
+                    skipPadding[tsr.id.toString()] = slots-1
+                  }
+                  return {
+                    data: tsr,
+                    html: <>
+                      <div class={`xl:col-span-${ hasServiceSession ? totalScheduleCols : 1 } row-span-${slots}`}>
+                        <ScheduleCard value={tsr} />
+                      </div>
+                    </>,
+                  };
+                });
+                
+              const orderedSessions = (
+                  !hasServiceSession?
+                  roomsSelected.map(
+                      (room) => {
+                          let session = sessionsInTimeSlot.find((target) => room.id == target.data.id)
+                          if (!session){
+                              if (skipPadding[room.id.toString()]){
+                                  skipPadding[room.id.toString()]--
+                                  return null
+                              }
+                              return <><div /></>
+                          }
+                          return session?.html
+                      }
+                  ).filter((ele)=>ele!=null) : sessionsInTimeSlot.map((session) => session.html)
+              )
+                  
+                  return [
+                  <div class="font-medium text-2xl">
+                      <p>{ts.slotStart.substring(0, 5)}</p>
+                  </div>,
+                  ...orderedSessions
+                  ];
+              })}
+            </div>
+          </div>
+        </>
+      })
+    }
+     <style>
+      @media (min-width: 1280px) {
+        .grid-cols-layout-1 {
+            grid-template-columns: 90px repeat(1, minmax(0, 1fr));
+        }
+        .grid-rows-layout-1 {
+            grid-template-rows: repeat(1, minmax(0, 1fr));
+        }
+        .grid-cols-layout-2 {
+            grid-template-columns: 90px repeat(2, minmax(0, 1fr));
+        }
+        .grid-rows-layout-2 {
+            grid-template-rows: repeat(2, minmax(0, 1fr));
+        }
+        .grid-cols-layout-3 {
+            grid-template-columns: 90px repeat(3, minmax(0, 1fr));
+        }
+        .grid-rows-layout-3 {
+            grid-template-rows: repeat(3, minmax(0, 1fr));
+        }
+        .grid-cols-layout-4 {
+            grid-template-columns: 90px repeat(4, minmax(0, 1fr));
+        }
+        .grid-rows-layout-4 {
+            grid-template-rows: repeat(4, minmax(0, 1fr));
+        }
+        .grid-cols-layout-5 {
+            grid-template-columns: 90px repeat(5, minmax(0, 1fr));
+        }
+        .grid-rows-layout-5 {
+            grid-template-rows: repeat(5, minmax(0, 1fr));
+        }
+        .grid-cols-layout-6 {
+            grid-template-columns: 90px repeat(6, minmax(0, 1fr));
+        }
+        .grid-rows-layout-6 {
+            grid-template-rows: repeat(6, minmax(0, 1fr));
+        }
+        .grid-cols-layout-7 {
+            grid-template-columns: 90px repeat(7, minmax(0, 1fr));
+        }
+        .grid-rows-layout-7 {
+            grid-template-rows: repeat(7, minmax(0, 1fr));
+        }
+        .grid-cols-layout-8 {
+            grid-template-columns: 90px repeat(8, minmax(0, 1fr));
+        }
+        .grid-rows-layout-8 {
+            grid-template-rows: repeat(8, minmax(0, 1fr));
+        }
+        .grid-cols-layout-9 {
+            grid-template-columns: 90px repeat(9, minmax(0, 1fr));
+        }
+        .grid-rows-layout-9 {
+            grid-template-rows: repeat(9, minmax(0, 1fr));
+        }
+        .grid-cols-layout-10 {
+            grid-template-columns: 90px repeat(10, minmax(0, 1fr));
+        }
+        .grid-rows-layout-10 {
+            grid-template-rows: repeat(10, minmax(0, 1fr));
+        }
+    }
+    </style> 
+</div>
