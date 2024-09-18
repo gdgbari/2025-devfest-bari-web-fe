@@ -3,8 +3,6 @@
 import ScheduleCard from "../ScheduleCard.astro";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 import { getSchedule } from "../../../data/api/sessionize_api";
-import "./grid-style.css";
-
 
 const schedule = (await getSchedule()).map((s) => {
   s.rooms = s.rooms.map((r) => {
@@ -136,5 +134,68 @@ const t = useTranslations(lang);
     })
   }
   {schedule.length == 0?<h3 class="underline">{t("scheduling.noschedule")}</h3>:null}
-  
+  <style>
+    @media (min-width: 1280px) {
+      .grid-cols-layout-1 {
+          grid-template-columns: 90px repeat(1, minmax(0, 1fr));
+      }
+      .grid-rows-layout-1 {
+          grid-template-rows: repeat(1, minmax(0, 1fr));
+      }
+      .grid-cols-layout-2 {
+          grid-template-columns: 90px repeat(2, minmax(0, 1fr));
+      }
+      .grid-rows-layout-2 {
+          grid-template-rows: repeat(2, minmax(0, 1fr));
+      }
+      .grid-cols-layout-3 {
+          grid-template-columns: 90px repeat(3, minmax(0, 1fr));
+      }
+      .grid-rows-layout-3 {
+          grid-template-rows: repeat(3, minmax(0, 1fr));
+      }
+      .grid-cols-layout-4 {
+          grid-template-columns: 90px repeat(4, minmax(0, 1fr));
+      }
+      .grid-rows-layout-4 {
+          grid-template-rows: repeat(4, minmax(0, 1fr));
+      }
+      .grid-cols-layout-5 {
+          grid-template-columns: 90px repeat(5, minmax(0, 1fr));
+      }
+      .grid-rows-layout-5 {
+          grid-template-rows: repeat(5, minmax(0, 1fr));
+      }
+      .grid-cols-layout-6 {
+          grid-template-columns: 90px repeat(6, minmax(0, 1fr));
+      }
+      .grid-rows-layout-6 {
+          grid-template-rows: repeat(6, minmax(0, 1fr));
+      }
+      .grid-cols-layout-7 {
+          grid-template-columns: 90px repeat(7, minmax(0, 1fr));
+      }
+      .grid-rows-layout-7 {
+          grid-template-rows: repeat(7, minmax(0, 1fr));
+      }
+      .grid-cols-layout-8 {
+          grid-template-columns: 90px repeat(8, minmax(0, 1fr));
+      }
+      .grid-rows-layout-8 {
+          grid-template-rows: repeat(8, minmax(0, 1fr));
+      }
+      .grid-cols-layout-9 {
+          grid-template-columns: 90px repeat(9, minmax(0, 1fr));
+      }
+      .grid-rows-layout-9 {
+          grid-template-rows: repeat(9, minmax(0, 1fr));
+      }
+      .grid-cols-layout-10 {
+          grid-template-columns: 90px repeat(10, minmax(0, 1fr));
+      }
+      .grid-rows-layout-10 {
+          grid-template-rows: repeat(10, minmax(0, 1fr));
+      }
+  }
+  </style>
 </div>
