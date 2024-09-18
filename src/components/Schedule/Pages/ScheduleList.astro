@@ -3,16 +3,40 @@
 import ScheduleCard from "../ScheduleCard.astro";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 import { getSchedule } from "../../../data/api/sessionize_api";
+import "./grid-style.css";
 
-const schedule = await getSchedule();
+
+const schedule = (await getSchedule()).map((s) => {
+  s.rooms = s.rooms.map((r) => {
+    r.sessions = r.sessions.map((si) => {
+      if (si.title.indexOf("42!") != -1){
+        si.endsAt = "2024-10-26T14:35:00Z"
+      }
+      return si
+    });
+    return r
+  });
+  s.timeSlots = s.timeSlots.map((ts) => {
+      ts.rooms = ts.rooms.map((r) => {
+        if (r.session.title.indexOf("42!") != -1){
+          r.session.endsAt = "2024-10-26T14:35:00Z"
+        }
+      return r
+    });
+    return ts
+  })
+  return s
+});
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 ---
 <div class="text-white">
+  
+
 {
     schedule.map((s) => {
-      const totalScheduleCols = s.rooms.length + 1;
+      const totalScheduleCols = s.rooms.length;
       const totalScheduleRows = s.timeSlots.length;
       let skipPadding: {[key:string]:number} = s.rooms.map((room) => ({[room.id]:0})).reduce((a,b)=>({...a,...b}),{})
       return (
@@ -24,11 +48,10 @@ const t = useTranslations(lang);
               weekday: "long",
             })}
           </p>
-          <div
-            class={`grid grid-flow-row xl:grid-cols-[90px_repeat(5,_minmax(0,_1fr))] xl:grid-rows-${totalScheduleRows} grid-cols-1 gap-4`}
-          >
+          {/* Some classes are created manually due to tilewind issues */}
+          <div class={`grid grid-flow-row grid-cols-layout-${totalScheduleCols} grid-rows-layout-${totalScheduleRows} grid-cols-1 gap-4`} >
             {s.timeSlots.map((ts,ts_idx) => {
-              
+
               const hasServiceSession = ts.rooms.some(
                 (tsr) => tsr.session.isServiceSession,
               );
@@ -77,7 +100,7 @@ const t = useTranslations(lang);
                 }
                 return {
                   data: tsr,
-                  html: <div class={`xl:col-span-${ hasServiceSession ? totalScheduleCols - 1 : 1 } row-span-${slots}`}>
+                  html: <div class={`xl:col-span-${ hasServiceSession ? totalScheduleCols : 1 } row-span-${slots}`}>
                     <ScheduleCard value={tsr} />
                   </div>
                 };

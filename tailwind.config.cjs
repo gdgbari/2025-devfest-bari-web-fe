@@ -75,13 +75,6 @@ module.exports = {
     "left-[-16rem]",
     "bg-black/30",
     "bg-black/0",
-    "xl:grid-cols-1",
-    "xl:grid-cols-2",
-    "xl:grid-cols-3",
-    "xl:grid-cols-4",
-    "xl:grid-cols-5",
-    "xl:grid-cols-6",
-    "xl:grid-rows-13",
     "xl:col-span-1",
     "xl:col-span-2",
     "xl:col-span-3",
@@ -112,7 +105,6 @@ module.exports = {
     "bg-[url(/assets/images/gallery/07.webp)]",
     "bg-[url(/assets/images/gallery/08.webp)]",
     "bg-[url(/assets/images/gallery/09.webp)]",
-    "bg-[url(/assets/images/gallery/10.webp)]",
-    "xl:grid-cols-[200px_repeat(5,_minmax(0,_1fr))]"
+    "bg-[url(/assets/images/gallery/10.webp)]"
   ],
 };
