@@ -1,26 +1,13 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { WebsiteConfig } from "../../config";
-import { useEffect, useState } from "react";
 
 
 export const firebaseApp = initializeApp(WebsiteConfig.FIREBASE_CONFIG);
 export const firebase = {
     auth: getAuth(firebaseApp),
-}
-
-export const useFirebaseUserInfo = () => {
-    const [hasLoaded, setHasLoaded] = useState(false)
-    useEffect(() => {
-        onAuthStateChanged(firebase.auth, (user) => {
-            setUser(user)
-            setHasLoaded(true)
-        })
-    }, [])
-    const [user, setUser] = useState(firebase.auth.currentUser)
-    return { user, hasLoaded }
 }
 
 //By https://emailregex.com/

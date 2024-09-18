@@ -3,7 +3,8 @@ import { Card, Checkbox, Form, Input } from "react-daisyui"
 import { useForm } from "@mantine/form"
 import { useEffect, useState } from "react";
 import { notifications, showNotification } from "@mantine/notifications";
-import { isEmailValid, useFirebaseUserInfo } from "../utils";
+import { isEmailValid } from "../utils";
+import { useFirebaseUserInfo } from "../utils/query";
 import { WebsiteConfig } from "../../config";
 import { useTranslations } from "../../i18n/utils";
 

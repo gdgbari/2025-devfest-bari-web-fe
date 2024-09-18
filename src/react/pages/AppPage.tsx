@@ -1,7 +1,8 @@
 import { Button } from "react-daisyui"
 import { AppMain } from "../AppMain"
-import { firebase, useFirebaseUserInfo } from "../utils"
+import { firebase } from "../utils"
 import { useEffect } from "react"
+import { useFirebaseUserInfo } from "../utils/query";
 import { sendEmailVerification } from "firebase/auth"
 import { showNotification } from "@mantine/notifications"
 
