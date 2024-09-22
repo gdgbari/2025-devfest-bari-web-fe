@@ -1,11 +1,9 @@
-import { useEffect } from "react"
-import { useFirebaseUserInfo } from "../../utils/query"
 import { sendEmailVerification, type User } from "firebase/auth"
 import { Button } from "react-daisyui"
 import { showNotification } from "@mantine/notifications"
 import { AppMain } from "../../AppMain"
 
-export const EmailVerificationPage = (user: User) => {
+export const EmailVerificationPage = ({ user }:{ user: User }) => {
     return <AppMain>
         <div className="h-full flex flex-col justify-center items-center">
             <div className="max-w-[60vw]">

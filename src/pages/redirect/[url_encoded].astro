@@ -57,13 +57,13 @@ const t = useTranslations(lang);
      some magic sprinkled in to help you build great templates. -->
 <html lang={lang} class="scroll-smooth flex flex-col min-h-screen multicolored-bg">
   <PageHead />
-  <body class="flex flex-col flex-1" style="width: 100vw; height:100vh">
+  <body class="flex flex-col flex-1">
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             location.href = location.href.replace(/https?/, "googlechrome")            
         })
     </script>
-    <main class="flex flex-col justify-center items-center" style="width: 100vw; height:100vh">
+    <main class="flex flex-col justify-center items-center" style="min-width: 100vw; min-height:100vh">
         <div class="jumbo h-192 lg:h-220 p-10 text-center text-primary-content flex flex-col align-center z-20 justify-center" style="width: 100%; height: 100%;">
             <img src="/assets/vectors/logo_big.svg" class="h-36 m-2 md:m-6" />
             <p class="text-xl md:text-3xl font-semibold">

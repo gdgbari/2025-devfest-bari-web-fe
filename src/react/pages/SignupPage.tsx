@@ -146,7 +146,8 @@ export const SignupPage = ({ token }: { token: string }) => {
                                 value={pageStatus == SignUpPageStatus.SignUpInProgress ? "Loading" : "Signup"}
                                 className={`btn btn-primary btn-wide ${pageStatus == SignUpPageStatus.SignUpInProgress ? "opacity-40 btn-warning" : ""}`}
                                 onClick={checkErrors}
-                                disabled={pageStatus == SignUpPageStatus.SignUpInProgress} />
+                                disabled={pageStatus == SignUpPageStatus.SignUpInProgress}
+                            />
                         </div>
                     </div>
                 </Card>

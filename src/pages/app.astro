@@ -5,9 +5,9 @@ import { PageComponent } from "../react/PageComponent";
 
 <html lang="en" class="scroll-smooth flex flex-col min-h-screen">
   <PageHead />
-  <body class="flex flex-col flex-1" style="width: 100vw; height:100vh">
+  <body class="flex flex-col flex-1">
     
-    <main class="flex flex-col justify-center items-center" style="width: 100vw; height:100vh">
+    <main class="flex flex-col justify-center items-center" style="min-width: 100vw; min-height:100vh">
         <PageComponent client:only="react" page="app" />
     </main>
     
