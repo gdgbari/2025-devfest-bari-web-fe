@@ -30,7 +30,7 @@ export const AppPage = () => {
 
     return <div className="flex flex-col h-full w-full justify-start" style={{minHeight: "100vh"}} >
         <AppBar></AppBar>
-        <div className="flex-1 text-center">
+        <div className="text-center mx-5">
             <AppMain>
                 <Container size="xl" mt="xl">
                     {

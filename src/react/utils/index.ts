@@ -3,11 +3,27 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { WebsiteConfig } from "../../config";
-
+import {
+    getFunctions,
+    httpsCallable,
+  } from "firebase/functions";
 
 export const firebaseApp = initializeApp(WebsiteConfig.FIREBASE_CONFIG);
 export const firebase = {
+    functions: getFunctions(firebaseApp),
     auth: getAuth(firebaseApp),
+}
+
+export const createQuiz = async (data: any) => {
+    const func = httpsCallable(firebase.functions, "createQuiz")
+    const gotData = await func(data).then((result) => {
+        return result.data
+    })
+    const finalData = JSON.parse(gotData as string)
+    if (finalData.error){
+        throw finalData.error
+    }
+    return finalData
 }
 
 //By https://emailregex.com/

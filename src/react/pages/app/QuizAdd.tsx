@@ -2,8 +2,9 @@ import { Button, Input, Radio, Select } from "react-daisyui"
 import { useAppRouter } from "../../utils/store"
 import { useForm } from "@mantine/form";
 import { useState } from "react";
-import { showNotification } from "@mantine/notifications";
+import { notifications, showNotification } from "@mantine/notifications";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { createQuiz, firebase } from "../../utils";
 
 export const QuizAdd = () => {
 
@@ -18,25 +19,21 @@ export const QuizAdd = () => {
         { label: "Talk 5", value: "talk5" }
     ]
 
+    const quizes = Array.from({ length: 3 }, (_, i) => i)
+    const answers = Array.from({ length: 4 }, (_, i) => i)
+
     const form = useForm({
         initialValues: {
             title: "",
             type: "talk",
-            talk: "",
-            questions: [0,1,2,3].map((qNum) => ({
+            questions: quizes.map((_qNum) => ({
                 question: "",
-                options: [
-                    { text: "", isCorrect: false },
-                    { text: "", isCorrect: false },
-                    { text: "", isCorrect: false },
-                    { text: "", isCorrect: false }
-                ]
+                options: answers.map((i)=> ({ text: "", isCorrect: i==0 }))
             }))
         },
         validate: {
             title: (value) => value.length > 0 ? undefined : "Title is required",
-            talk: (value) => value.length > 0 ? undefined : "Talk is required",
-            type: (value) => value == "talk" || value == "sponsor"? undefined : "Invalid type",
+            type: (value) => (value == "talk" || value == "sponsor" || value == "hidden" || value == "special")? undefined : "Invalid type",
             questions: (value) => {
                 let error: undefined|string = undefined
                 value.forEach((q, i) => {
@@ -59,7 +56,6 @@ export const QuizAdd = () => {
         },
         initialErrors: {
             title: "Title is required",
-            talk: "Talk is required",
             type: "Invalid type",
             questions: "Questions are required"
         }
@@ -85,8 +81,40 @@ export const QuizAdd = () => {
         </div>
         <form onSubmit={form.onSubmit((data)=>{
             setSubmitting(true)
-            console.log(data)
-            setSubmitting(false)
+            notifications.show({
+                id: "creating-quiz",
+                title: "Creating quiz",
+                message: "Please wait...",
+                autoClose: false,
+                color: "blue",
+                loading: true
+            })
+            createQuiz({
+                questionList: data.questions.map((q, i) => ({
+                    text: q.question,
+                    answerList: q.options.map(o => o.text),
+                    correctAnswer: q.options.findIndex(o => o.isCorrect),
+                    value: 50
+                })),
+                type: data.type,
+                title: data.title,
+            }).then((data: any) => {
+                showNotification({
+                    title: "Quiz created",
+                    message: "Quiz has been created successfully",
+                    color: "blue"
+                })
+                navigate("app")
+            }).catch((error) => {
+                showNotification({
+                    title: `Error creating quiz [${error.errorCode}]`,
+                    message: error.details,
+                    color: "red"
+                })
+            }).finally(() => {
+                setSubmitting(false)
+                notifications.hide("creating-quiz")
+            })
         })}>
             <div className="flex flex-col mt-10 w-full">
                 <div className="flex items-center w-full">
@@ -101,9 +129,11 @@ export const QuizAdd = () => {
                         <Select {...form.getInputProps("type")} className="select w-full">
                             <option value='talk'>Talk Quiz</option>
                             <option value="sponsor">Sponsor Quiz</option>
+                            <option value="special">Special Quiz</option>
+                            <option value="hidden">Hidden Quiz</option>
                         </Select>
                     </div>
-                    {form.values.type == "talk" && <div className="form-control w-full flex justify-center">
+                    {false && <div className="form-control w-full flex justify-center">
                         <label className="label">
                             <span className="label-text text-white">Associated talk</span>
                         </label>
@@ -113,7 +143,7 @@ export const QuizAdd = () => {
                     </div>}
                 </div>
                 <div className="flex flex-col w-full lg:flex-wrap justify-center items-center lg:flex-row">
-                    {[0,1,2,3].map((qNum) => <div className="flex flex-col mt-10 w-full justify-center items-center px-5" style={{ flexBasis: "50%" }}>
+                    {quizes.map((qNum) => <div className="flex flex-col mt-10 w-full justify-center items-center px-5" key={qNum} style={{ flexBasis: "50%" }}>
                         <div className="flex items-center w-full justify-center">
                             <h1 className="text-5xl font-bold mr-8">{qNum+1}:</h1>
                             <div className="form-control w-full flex justify-center max-w-lg">
@@ -129,7 +159,7 @@ export const QuizAdd = () => {
                                 />
                             </div>
                         </div>
-                        {[0,1,2,3].map(opt => <div
+                        {answers.map(opt => <div
                             key={form.key(`questions.${qNum}.${opt}.isCorrect`)}
                             className="flex items-center mt-5 w-full justify-center"
                         >
