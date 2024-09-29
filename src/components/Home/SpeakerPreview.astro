@@ -1,19 +1,24 @@
 ---
 import { getSpeakers } from "../../data/api/sessionize_api";
+import { getLangFromUrl, useTranslatedPath, useTranslations } from "../../i18n/utils";
 import { RandomSpeakerList } from "./RandomSpeakerList";
 
 const speakers = await getSpeakers();
 
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const getPath = useTranslatedPath(lang);
+
 ---
 
 <div class="py-14 main-container px-4" >
-  <h2 class="text-6xl mb-10 font-bold text-white">Speakers</h2>
+  <h2 class="text-6xl mb-10 font-bold text-white">{t("info.speakers")}</h2>
   <div class="grid md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-10 mt-5 mb-10">
     <RandomSpeakerList client:only="react" speakers={speakers??[]} />
   </div>
 
   <a
     class="btn-content text-xl px-8"
-    href="/speakers">See all Speakers</a
+    href={getPath("/speakers")}>{t("speaker.seeAll")}</a
   >
 </div>

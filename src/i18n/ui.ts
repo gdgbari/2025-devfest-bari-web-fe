@@ -59,7 +59,7 @@ export const ui = {
         'info.speakers': 'Speaker',
         'info.tracks': 'Track',
         'info.categories': 'Categorie',
-        'speaker.seeAll': 'Vedi tutti gli speaker',
+        'speaker.seeAll': 'Tutti gli speaker',
         'hero.ticketsAvailable': 'BIGLIETTI DISPONIBILI',
         'ticket.title': 'Prenota ora il tuo biglietto',
         'ticket.free': 'GRATIS',
