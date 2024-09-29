@@ -18,8 +18,6 @@ const lang = getLangFromUrl(Astro.url);
 const getPath = useTranslatedPath(lang);
 ---
 
-<!-- Below is your "component template." It's just HTML, but with
-     some magic sprinkled in to help you build great templates. -->
 <html lang="en" class="scroll-smooth flex flex-col min-h-screen">
   <PageHead />
 
@@ -41,7 +39,7 @@ const getPath = useTranslatedPath(lang);
         >
       </InfoContainer>
 
-      <!-- <SpeakerPreview /> -->
+      <SpeakerPreview />
       <TicketSection>
         <div slot="ticket-desc">
           <p>

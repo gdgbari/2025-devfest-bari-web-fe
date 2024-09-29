@@ -14,7 +14,9 @@ const dateStart = new Date(session.startsAt);
 const dateEnd = new Date(session.endsAt);
 
 const duration = dateEnd.getTime() - dateStart.getTime();
-const durationMinutes = duration / 60000;
+const minDuration = Math.floor(duration / (1000*60));
+const durationHours = Math.floor(minDuration / 60);
+const durationMinutes = minDuration%60
 
 const lang = getLangFromUrl(Astro.url);
 const getPath = useTranslatedPath(lang);
@@ -47,12 +49,15 @@ const t = useTranslations(lang);
         )
       }
       {
-        durationMinutes > 0 && (
+        minDuration > 0 && (
           <div class="flex gap-3 items-center">
             <div class="w-4">
               <img src="/assets/vectors/time.svg" alt="session duration" />
             </div>
-            <div>{durationMinutes} {t("sessions.shortMinutes")}</div>
+            <div>
+              {durationHours == 0 ? null : `${durationHours} ${t("sessions.shortHours")}`}
+              {durationMinutes == 0 ? null : `${durationMinutes} ${t("sessions.shortMinutes")}`}
+            </div>
           </div>
         )
       }
