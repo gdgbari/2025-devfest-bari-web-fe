@@ -5,14 +5,19 @@ import '@mantine/notifications/styles.css';
 
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+
+const queryClient = new QueryClient()
 
 export const AppMain = ({ children }:{
     children: React.ReactNode
 }) => {
     return (
-        <MantineProvider defaultColorScheme='dark'>
-            <Notifications />
-            {children}
-        </MantineProvider>
+        <QueryClientProvider client={queryClient}>
+            <MantineProvider defaultColorScheme='dark'>
+                <Notifications />
+                {children}
+            </MantineProvider>
+        </QueryClientProvider>
     );
 }

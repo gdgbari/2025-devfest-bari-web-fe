@@ -26,6 +26,61 @@ export const createQuiz = async (data: any) => {
     return finalData
 }
 
+type LeaderBoardData = {
+    currentUser: {
+        nickname: string,
+        position: number,
+        score: number,
+        groupColor: string
+    },
+    users: {
+        nickname: string,
+        position: number,
+        score: number,
+        groupColor: string
+    }[],
+    groups: {
+        groupId: string,
+        name: string,
+        score: number,
+        position: number,
+        imageUrl: string,
+        color: string
+    }[]
+}
+
+
+export const getLeaderboard = async () => {
+    const func = httpsCallable(firebase.functions, "getLeaderboard")
+    const gotData = await func().then((result) => {
+        return result.data
+    })
+    const finalData = JSON.parse(gotData as string)
+    if (finalData.error){
+        throw finalData.error
+    }
+    if (finalData.data != null){
+        return JSON.parse(finalData.data) as LeaderBoardData
+    }
+}
+
+
+export const colorConverter = (color: string) => {
+    if (color === "green"){
+        return "#34A853"
+    }
+    if (color === "blue"){
+        return "#4285F4"
+    }
+    if (color === "red"){
+        return "#EA4335"
+    }
+    if (color === "yellow"){
+        return "#F9AB00"
+    }
+    return "#000000"
+}
+
 //By https://emailregex.com/
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 

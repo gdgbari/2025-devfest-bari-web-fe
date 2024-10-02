@@ -2,7 +2,7 @@
 
 import { create } from 'zustand'
 
-export type AppPage = "app" | "verify-email" | "profile" | "add-quiz"
+export type AppPage = "app" | "verify-email" | "profile" | "add-quiz" | "leaderboard"
 
 type AppRouterStore = {
     currentPage: AppPage

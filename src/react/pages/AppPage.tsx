@@ -9,6 +9,7 @@ import { useAppRouter } from "../utils/store";
 import { QuizList } from "./app/QuizList";
 import { Container } from "@mantine/core";
 import { QuizAdd } from "./app/QuizAdd";
+import { LeaderBoard } from "./app/LeaderBoard";
 
 
 export const AppPage = () => {
@@ -34,10 +35,11 @@ export const AppPage = () => {
             <AppMain>
                 <Container size="xl" mt="xl">
                     {
-                        currentPage == "verify-email"? <EmailVerificationPage user={user!}></EmailVerificationPage> :
+                        currentPage == "verify-email" ? <EmailVerificationPage user={user!}></EmailVerificationPage> :
                         currentPage == "app" ? <QuizList /> :
                         currentPage == "add-quiz" ? <QuizAdd /> :
-                        currentPage == "profile"? <UserInfoPage user={user!}></UserInfoPage> : "Loading..."
+                        currentPage == "profile" ? <UserInfoPage user={user!}></UserInfoPage> :
+                        currentPage == "leaderboard" ? <LeaderBoard /> : "Loading..."
                     }
                 </Container>
             </AppMain>
