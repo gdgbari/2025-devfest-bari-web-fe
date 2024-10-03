@@ -6,6 +6,7 @@ import { useLeaderboard } from "../../utils/query";
 import { colorConverter } from "../../utils";
 import { TbReload } from "react-icons/tb";
 import { useQueryClient } from "@tanstack/react-query";
+import { TitleBar } from "../../components/TitleBar";
 
 export const LeaderBoard = () => {
 
@@ -20,17 +21,16 @@ export const LeaderBoard = () => {
 
 
     return <div className="h-full">
-        <div className="flex align-middle justify-center">
-            <h1 className="text-5xl font-bold">Leaderboard</h1>
-            <div className="flex-1" />
+
+        <TitleBar title="Leaderboard" actions={[
             <Button className="btn-circle mr-4" onClick={()=>queryClient.resetQueries({ queryKey:["leaderboard"] })} loading={leaderBoard.isFetching} disabled={leaderBoard.isFetching} >
                 {!leaderBoard.isFetching &&<TbReload size={32} />}
-            </Button>
+            </Button>,
             <Button className="btn-circle" onClick={()=>navigate("app")} >
                 <IoMdArrowRoundBack size={32} />
-            </Button>
-        </div>
-        <div className="mt-10 flex items-center justify-center flex-wrap">
+            </Button>]}
+        />
+        <div className="mt-16 flex items-center justify-center flex-wrap gap-5">
             <Button
                 type="button" color={selectedLeaderboard=="users"?"primary":"neutral"}
                 className="w-[250px] !text-lg !p-0 mx-5" size="sm"
