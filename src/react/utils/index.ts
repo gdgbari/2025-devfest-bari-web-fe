@@ -24,7 +24,7 @@ export const createQuiz = async (data: any) => {
         return result.data
     })
     const finalData = JSON.parse(gotData as string)
-    if (finalData.error){
+    if (finalData.error) {
         throw finalData.error
     }
     return finalData
@@ -32,7 +32,7 @@ export const createQuiz = async (data: any) => {
 
 type LeaderBoardData = {
     users: {
-        [uid:string]: {
+        [uid: string]: {
             nickname: string,
             score: number,
             groupColor: string,
@@ -40,7 +40,7 @@ type LeaderBoardData = {
         }
     },
     groups: {
-        [gid:string]: {
+        [gid: string]: {
             name: string,
             score: number,
             timestamp: number,
@@ -49,6 +49,11 @@ type LeaderBoardData = {
     }
 }
 
+export type Quiz = {
+    quizId: string;
+    title: string,
+    type: "talk" | "sponsor" | "special" | "hidden",
+}
 
 export const useLeaderboard = () => {
 
@@ -58,22 +63,22 @@ export const useLeaderboard = () => {
             setLeaderboardData(data.val())
         })
     }, [])
-    
+
     return leaderboardData
 }
 
 
 export const colorConverter = (color: string) => {
-    if (color === "green"){
+    if (color === "green") {
         return "#34A853"
     }
-    if (color === "blue"){
+    if (color === "blue") {
         return "#4285F4"
     }
-    if (color === "red"){
+    if (color === "red") {
         return "#EA4335"
     }
-    if (color === "yellow"){
+    if (color === "yellow") {
         return "#F9AB00"
     }
     return "#000000"
@@ -84,13 +89,13 @@ export const getQuizList = async () => {
 
     const response = await func();
     const rawData = response.data;
-    const data = JSON.parse(rawData as string);
+    const { error, data } = JSON.parse(rawData as string);
 
-    if(data.error){
+    if (error) {
         throw data.error;
     }
 
-    return data;
+    return JSON.parse(data) as Quiz[];
 }
 
 //By https://emailregex.com/
@@ -100,7 +105,7 @@ export const isEmailValid = (email: string) => {
     return emailRegex.test(email)
 }
 
-export function capitalizeFirstLetter(string:string) {
+export function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
