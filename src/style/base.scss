@@ -166,3 +166,16 @@ html.multicolored-bg{
     --fallback-bc: #dedede;
     border-width: 3px;
 }
+
+
+input.no-control::-webkit-outer-spin-button,
+input.no-control::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input.no-control[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+    appearance: textfield; /* Chrome */
+}

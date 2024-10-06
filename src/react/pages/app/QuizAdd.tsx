@@ -4,7 +4,8 @@ import { useForm } from "@mantine/form";
 import { useState } from "react";
 import { notifications, showNotification } from "@mantine/notifications";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { createQuiz, firebase } from "../../utils";
+import { createQuiz } from "../../utils";
+import { TitleBar } from "../../components/TitleBar";
 
 export const QuizAdd = () => {
 
@@ -19,8 +20,29 @@ export const QuizAdd = () => {
         { label: "Talk 5", value: "talk5" }
     ]
 
-    const quizes = Array.from({ length: 3 }, (_, i) => i)
+    const [numOfQuizes, setNumOfQuizes] = useState(3)
+
+    const quizes = Array.from({ length: numOfQuizes }, (_, i) => i)
     const answers = Array.from({ length: 4 }, (_, i) => i)
+
+    const baseTalkPoints = 30
+
+    const changeAnswareNumber = (qNum: number) => {
+
+        form.setFieldValue("questions", form.values.questions.filter((q, i) => i < qNum))
+
+        Array.from({ length: qNum }).forEach((q, i) => {
+            if (form.values.questions[i] == null){
+                form.setFieldValue(`questions.${i}`, {
+                    question: "",
+                    options: answers.map((i)=> ({ text: "", isCorrect: i==0 })),
+                    value: "0"
+                })
+            }
+        })
+        setNumOfQuizes(qNum)
+        
+    }
 
     const form = useForm({
         initialValues: {
@@ -28,8 +50,9 @@ export const QuizAdd = () => {
             type: "talk",
             questions: quizes.map((_qNum) => ({
                 question: "",
-                options: answers.map((i)=> ({ text: "", isCorrect: i==0 }))
-            }))
+                options: answers.map((i)=> ({ text: "", isCorrect: i==0 })),
+                value: "0"
+            })),
         },
         validate: {
             title: (value) => value.length > 0 ? undefined : "Title is required",
@@ -37,7 +60,10 @@ export const QuizAdd = () => {
             questions: (value) => {
                 let error: undefined|string = undefined
                 value.forEach((q, i) => {
-                    if (q.question.length == 0){
+                    if (parseInt(q.value) <= 0 && form.values.type != "talk") {
+                        return error = `Value of question ${i+1} is required`
+                    }
+                    if (q.question.length == 0) {
                         return error = `Question title of ${i+1} is required`
                     }
                     let correctSet = false
@@ -51,6 +77,7 @@ export const QuizAdd = () => {
                     if (error != null) return error
                     if (!correctSet) return error = `Correct option of question ${i+1} is required`
                 })
+
                 return error
             }
         },
@@ -72,13 +99,12 @@ export const QuizAdd = () => {
     }
 
     return <div className="flex-col h-full">
-        <div className="flex align-middle justify-center">
-            <h1 className="text-5xl font-bold">Add Quiz</h1>
-            <div className="flex-1" />
-            <Button className="btn-circle" onClick={()=>navigate("app")} >
-                <IoMdArrowRoundBack size={32} />
-            </Button>
-        </div>
+        <TitleBar title="Add Quiz" actions={[
+                <Button className="btn-circle" onClick={()=>navigate("app")} >
+                    <IoMdArrowRoundBack size={32} />
+                </Button>
+            ]}
+        />
         <form onSubmit={form.onSubmit((data)=>{
             setSubmitting(true)
             notifications.show({
@@ -94,7 +120,7 @@ export const QuizAdd = () => {
                     text: q.question,
                     answerList: q.options.map(o => o.text),
                     correctAnswer: q.options.findIndex(o => o.isCorrect),
-                    value: 50
+                    value: data.type == "talk" ? (baseTalkPoints/data.questions.length) : parseInt(q.value) 
                 })),
                 type: data.type,
                 title: data.title,
@@ -127,10 +153,18 @@ export const QuizAdd = () => {
                             <span className="label-text text-white">Quiz type</span>
                         </label>
                         <Select {...form.getInputProps("type")} className="select w-full">
-                            <option value='talk'>Talk Quiz</option>
-                            <option value="sponsor">Sponsor Quiz</option>
-                            <option value="special">Special Quiz</option>
-                            <option value="hidden">Hidden Quiz</option>
+                            <option value='talk'>Talk</option>
+                            <option value="sponsor">Sponsor</option>
+                            <option value="special">Special</option>
+                            <option value="hidden">Hidden</option>
+                        </Select>
+                    </div>
+                    <div className="form-control w-full flex justify-center">
+                        <label className="label">
+                            <span className="label-text text-white">Number of questions</span>
+                        </label>
+                        <Select className="select w-full" onChange={(e) => changeAnswareNumber(parseInt(e.target.value))} value={numOfQuizes}>
+                            {Array.from({ length: 10 }, (_, i) => i+1).map((i) => <option value={i} key={i}>{i}</option>)}
                         </Select>
                     </div>
                     {false && <div className="form-control w-full flex justify-center">
@@ -176,12 +210,24 @@ export const QuizAdd = () => {
                             />
                             <Input
                                 placeholder="Type here"
-                                className="input input-bordered w-full max-w-xs ml-5"
+                                className="input input-bordered w-full max-w-[90%] ml-5"
                                 name={`questions.${qNum}.options.${opt}.text`}
                                 key={form.key(`questions.${qNum}.options.${opt}.text`)}
                                 {...form.getInputProps(`questions.${qNum}.options.${opt}.text`)}
                             />
                         </div>)}
+                        {form.values.type!="talk" && <div className="flex w-full justify-center items-center">
+                            <span className="text-xl mr-3 flex items-center mt-3">Value: </span>
+                            <Input
+                                placeholder="Type here"
+                                className="input input-bordered w-full mt-3 no-control"
+                                name={`questions.${qNum}.value`}
+                                key={form.key(`questions.${qNum}.value`)}
+                                type="number"
+                                min={0}
+                                {...form.getInputProps(`questions.${qNum}.value`)}
+                            />
+                        </div>}
                     </div>)}
                 </div>
             </div>

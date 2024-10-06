@@ -6,12 +6,16 @@ import { WebsiteConfig } from "../../config";
 import {
     getFunctions,
     httpsCallable,
-  } from "firebase/functions";
+} from "firebase/functions";
+import { getDatabase, ref, onValue } from "firebase/database";
+import { useEffect, useState } from "react";
+
 
 export const firebaseApp = initializeApp(WebsiteConfig.FIREBASE_CONFIG);
 export const firebase = {
     functions: getFunctions(firebaseApp),
     auth: getAuth(firebaseApp),
+    database: getDatabase(firebaseApp)
 }
 
 export const createQuiz = async (data: any) => {
@@ -27,41 +31,35 @@ export const createQuiz = async (data: any) => {
 }
 
 type LeaderBoardData = {
-    currentUser: {
-        nickname: string,
-        position: number,
-        score: number,
-        groupColor: string
-    },
     users: {
-        nickname: string,
-        position: number,
-        score: number,
-        groupColor: string
-    }[],
+        [uid:string]: {
+            nickname: string,
+            score: number,
+            groupColor: string,
+            timestamp: number,
+        }
+    },
     groups: {
-        groupId: string,
-        name: string,
-        score: number,
-        position: number,
-        imageUrl: string,
-        color: string
-    }[]
+        [gid:string]: {
+            name: string,
+            score: number,
+            timestamp: number,
+            color: string
+        }
+    }
 }
 
 
-export const getLeaderboard = async () => {
-    const func = httpsCallable(firebase.functions, "getLeaderboard")
-    const gotData = await func().then((result) => {
-        return result.data
-    })
-    const finalData = JSON.parse(gotData as string)
-    if (finalData.error){
-        throw finalData.error
-    }
-    if (finalData.data != null){
-        return JSON.parse(finalData.data) as LeaderBoardData
-    }
+export const useLeaderboard = () => {
+
+    const [leaderboardData, setLeaderboardData] = useState<LeaderBoardData | null>(null)
+    useEffect(() => {
+        onValue(ref(firebase.database, "leaderboard"), (data) => {
+            setLeaderboardData(data.val())
+        })
+    }, [])
+    
+    return leaderboardData
 }
 
 
