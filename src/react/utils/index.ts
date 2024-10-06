@@ -81,6 +81,20 @@ export const colorConverter = (color: string) => {
     return "#000000"
 }
 
+export const getQuizList = async () => {
+    const func = httpsCallable(firebase.functions, "getQuizList");
+
+    const response = await func();
+    const rawData = response.data;
+    const data = JSON.parse(rawData as string);
+
+    if(data.error){
+        throw data.error;
+    }
+
+    return data;
+}
+
 //By https://emailregex.com/
 const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
