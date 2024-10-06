@@ -6,7 +6,7 @@ import { getLangFromUrl, useTranslatedPath, useTranslations } from "../../../i18
 import { type Speaker } from "../../../data/types/sessionize";
 import { formatTime } from "../../../helpers/time";
 import SessionTopic from "../../Sessions/SessionTopic.astro";
-import { getSpeakers } from "../../../data/api/sessionize_api";
+import { getSpeakers } from "../../../data/repositories/sessionize_repository";
 // 1. Generate a new path for every collection speaker
 
 interface Props {

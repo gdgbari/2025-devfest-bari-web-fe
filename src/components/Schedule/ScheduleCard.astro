@@ -1,7 +1,11 @@
 ---
-import type { ScheduleSlotRoom } from '../../data/types/sessionize';
-import { getLangFromUrl, useTranslatedPath, useTranslations } from '../../i18n/utils';
-
+import type { ScheduleSlotRoom } from "../../data/types/sessionize";
+import { ImportSvg } from "../../helpers/svgimport";
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  useTranslations,
+} from "../../i18n/utils";
 
 interface Props {
   value: ScheduleSlotRoom;
@@ -17,19 +21,38 @@ const hasSpeakers = value.session.info && value.session.info.speakers;
 const url = !value.session.isServiceSession
   ? `/sessions/${value.session.info?.slug}`
   : null;
+
+const translationIcon = await ImportSvg("translation");
 ---
 
 <a
-  href={url?getPath(url):null}
+  href={url ? getPath(url) : null}
   class={`p-4 border border-gray-400 rounded-md ${
     value.session.isServiceSession ? "h-52" : "xl:h-full h-52"
   } flex flex-col`}
 >
   {!value.session.isServiceSession && <p class="mb-2">{value.name}</p>}
   <p class="text-xl font-medium">{value.session.title}</p>
-  
+  <div class="flex-flex-col gap-2 mt-8">
+    {
+      value.session.info?.language && (
+        <div class="flex gap-3 items-center">
+          <div class="w-4">
+            <svg class="fill-current h-6 w-6" set:html={translationIcon} />
+          </div>
+          <div>{value.session.info?.language}</div>
+        </div>
+      )
+    }
+  </div>
   <div class="flex flex-row mt-auto justify-between align-center">
-    {value.session.isServiceSession && <p class="opacity-60">{t("session.room")}: {value.name}</p>}
+    {
+      value.session.isServiceSession && (
+        <p class="opacity-60">
+          {t("session.room")}: {value.name}
+        </p>
+      )
+    }
     <div class="mt-4 flex flex-col gap-2">
       {
         hasSpeakers &&
@@ -42,6 +65,7 @@ const url = !value.session.isServiceSession
                   alt={speaker.fullName}
                 />
               </div>
+
               <div class="flex-1">
                 <p class="text-md">{speaker.fullName}</p>
               </div>

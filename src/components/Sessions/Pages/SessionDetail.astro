@@ -1,5 +1,5 @@
 ---
-import { getSessions } from '../../../data/api/sessionize_api';
+import { getSessions } from '../../../data/repositories/sessionize_repository';
 import type { SessionInfo } from '../../../data/types/sessionize';
 import { getLangFromUrl, useTranslatedPath, useTranslations } from '../../../i18n/utils';
 import AddToCalendar from '../../Common/AddToCalendar.astro';
@@ -7,6 +7,7 @@ import BaseLayout from '../../Common/BaseLayout.astro';
 import SessionTopic from '../SessionTopic.astro';
 import { capitalizeFirstLetter } from "../../../react/utils";
 import { WebsiteConfig } from '../../../config';
+import { ImportSvg } from '../../../helpers/svgimport';
 
 interface Props {
   entry: SessionInfo;
@@ -52,6 +53,8 @@ const end = dateEnd.toLocaleTimeString(lang, {
 
 const pageTitle = entry.title;
 const pageDesc = entry.description;
+
+const translationIcon = await ImportSvg("translation");
 ---
 
 <BaseLayout
@@ -84,13 +87,26 @@ const pageDesc = entry.description;
 
     {entry.topics.map((t) => <SessionTopic brightness="dark" topic={t} />)}
   </div>
-  <div class="mb-6">
+  <>
     <p class="text-lg">{t("session.room")}: {entry.room}</p>
     {
       isScheduled && (
         <p class="text-lg">
           {date}, {start} - {end}
         </p>
+      )
+    }
+  </>
+
+  <div class="flex-flex-col gap-2 mb-6">
+    {
+      entry.language && (
+        <div class="flex gap-3 items-center">
+          <div class="w-4">
+            <svg class="fill-current h-6 w-6" set:html={translationIcon} />
+          </div>
+          <div>{entry.language}</div>
+        </div>
       )
     }
   </div>

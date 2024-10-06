@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../../../components/Common/BaseLayout.astro";
 import SessionCard from "../../../components/Sessions/SessionCard.astro";
-import { getSessions } from "../../../data/api/sessionize_api";
+import { getSessions } from "../../../data/repositories/sessionize_repository";
 import type { SessionInfo } from "../../../data/types/sessionize";
 import { getLangFromUrl, useTranslations } from "../../../i18n/utils";
 

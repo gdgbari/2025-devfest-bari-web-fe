@@ -54,6 +54,7 @@ export class WebsiteConfig {
     public static readonly NUM_PARTECIPENTS : number = 700;
     public static readonly NUM_TRACKS_FALLBACK : number = 7;
 
+    public static readonly SESSIONIZE_API_KEY = "1rh747m6";
 
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
