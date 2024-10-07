@@ -3,20 +3,14 @@ import { useAppRouter } from "../../utils/store";
 import { Button } from "react-daisyui";
 import { MdLeaderboard } from "react-icons/md";
 import { TitleBar } from "../../components/TitleBar";
-import { useEffect, useState } from "react";
-import { getQuizList, type Quiz } from "../../utils";
 import { QuizCard } from "../../components/QuizCard";
+import { useQuizes } from "../../utils/query";
 
 export const QuizList = () => {
 
     const { navigate } = useAppRouter()
-    const [quizes, setQuizes] = useState<Quiz[]>([]);
 
-    useEffect(() => {
-        getQuizList().then((res) => {
-            setQuizes(res);
-        });
-    });
+    const quizes = useQuizes()
 
     return <div className="h-full">
         <TitleBar title="Quizes" actions={[
@@ -27,9 +21,9 @@ export const QuizList = () => {
                 <FaPlus size={25} />
             </Button>]}
         />
-
+        {quizes.isLoading && <div>Loading...</div>}
         <div className="flex flex-col gap-4 mt-8">
-            {quizes && quizes.map(q => (<QuizCard key={q.quizId} quiz={q}></QuizCard>))}
+            {quizes && quizes.data?.map(q => (<QuizCard key={q.quizId} quiz={q}></QuizCard>))}
         </div>
     </div>
 }

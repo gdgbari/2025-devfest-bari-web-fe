@@ -69,7 +69,7 @@ export const LeaderBoard = () => {
                     return <div className="flex-col mb-6" key={i}>
                         <div
                             key={i} className="flex justify-center items-center p-2 h-[100px] mb-2 text-3xl"
-                            style={{ width: `${(group.score / (groupMax??1)) * 100}%`, minWidth: "50px", backgroundColor: colorConverter(group.color), color: "white" }}
+                            style={{ width: `${(groupMax==0?0:(group.score / (groupMax??1))) * 100}%`, minWidth: "50px", backgroundColor: colorConverter(group.color), color: "white" }}
                         >
                             <b>{i+1}°</b>
                         </div>
