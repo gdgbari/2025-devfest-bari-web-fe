@@ -28,7 +28,7 @@ const translationIcon = await ImportSvg("translation");
 <a
   href={url ? getPath(url) : null}
   class={`p-4 border border-gray-400 rounded-md ${
-    value.session.isServiceSession ? "h-52" : "xl:h-full h-52"
+    value.session.isServiceSession ? "h-52" : "xl:h-full md:h-52"
   } flex flex-col`}
 >
   {!value.session.isServiceSession && <p class="mb-2">{value.name}</p>}
