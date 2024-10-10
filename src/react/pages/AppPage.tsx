@@ -10,6 +10,7 @@ import { QuizList } from "./app/QuizList";
 import { Container } from "@mantine/core";
 import { QuizAdd } from "./app/QuizAdd";
 import { LeaderBoard } from "./app/LeaderBoard";
+import { QRScan } from "./app/QRScan";
 
 
 export const AppPage = () => {
@@ -35,10 +36,11 @@ export const AppPage = () => {
             <AppMain>
                 <Container size="xl" mt="xl">
                     {
-                        currentPage == "verify-email" ? <EmailVerificationPage user={user!}></EmailVerificationPage> :
+                        currentPage == "verify-email" ? <EmailVerificationPage user={user!} /> :
                         currentPage == "app" ? <QuizList /> :
                         currentPage == "add-quiz" ? <QuizAdd /> :
-                        currentPage == "profile" ? <UserInfoPage user={user!}></UserInfoPage> :
+                        currentPage == "profile" ? <UserInfoPage user={user!} /> :
+                        currentPage == "qrscan" ? <QRScan />:
                         currentPage == "leaderboard" ? <LeaderBoard /> : "Loading..."
                     }
                 </Container>

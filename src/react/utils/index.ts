@@ -55,6 +55,30 @@ export type Quiz = {
     type: "talk" | "sponsor" | "special" | "hidden",
 }
 
+export type UserProfile = {
+    userId: string,
+    nickname: string,
+    email: string,
+    name: string,
+    surname: string,
+    group: {
+        groupId:string,
+        name: string,
+        imageUrl:string,
+        color:string,
+    },
+    groupId: string,
+    position: string,
+    role: string
+}
+
+export type AddPointRequest = {
+    title: string,
+    value: number,
+    userIdList: string[]
+}
+
+
 export const useLeaderboard = () => {
 
     const [leaderboardData, setLeaderboardData] = useState<LeaderBoardData | null>(null)
@@ -96,6 +120,36 @@ export const getQuizList = async () => {
     }
 
     return JSON.parse(data) as Quiz[];
+}
+
+export const getUserProfileById = async (uid: string) => {
+    const func = httpsCallable(firebase.functions, "getUserProfileById");
+
+    const response = await func({ userId: uid });
+    const rawData = response.data;
+    const { error, data } = JSON.parse(rawData as string);
+
+    if (error) {
+        throw data.error;
+    }
+
+    return JSON.parse(data) as UserProfile;
+}
+
+export const addPointsToUsers = async (info: AddPointRequest) => {
+    const func = httpsCallable(firebase.functions, "addPointsToUsers");
+
+    info.value = parseFloat(info.value.toString())
+
+    const response = await func(info);
+    const rawData = response.data;
+    const { error, data } = JSON.parse(rawData as string);
+
+    if (error) {
+        throw data.error;
+    }
+
+    return JSON.parse(data) as UserProfile;
 }
 
 //By https://emailregex.com/
