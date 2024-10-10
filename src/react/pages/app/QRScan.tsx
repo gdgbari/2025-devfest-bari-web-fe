@@ -18,14 +18,14 @@ const UserRowInfo = ({ uid, removeUser }: { uid: string, removeUser: (uid: strin
     const user = useUserProfile(uid)
     return <>
         <div
-            className="flex justify-between items-center p-2 border rounded-xl mb-3 border-"
+            className="flex justify-between items-center p-2 border rounded-xl mb-3 sm:flex-row flex-col"
             style={{borderColor: "#555", borderWidth: "1px"}}
         >
             <div className="flex items-center ml-3 justify-center gap-2">
                 {user.data == null?<><b>{uid}</b><Loading /></>:<b>{user.data?.name} {user.data?.surname}</b>}
             </div>
-            <div className="flex gap-4">
-                <div className="flex-col flex items-end justify-center">
+            <div className="flex gap-4 sm:flex-row flex-col">
+                <div className="flex-col flex justify-center sm:items-end items-center">
                     <small>{user.data?.email}</small>
                     <small>{user.data?.nickname}</small>
                 </div>
