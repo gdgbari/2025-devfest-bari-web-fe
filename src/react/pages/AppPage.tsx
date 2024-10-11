@@ -11,6 +11,7 @@ import { Container } from "@mantine/core";
 import { QuizAdd } from "./app/QuizAdd";
 import { LeaderBoard } from "./app/LeaderBoard";
 import { QRScan } from "./app/QRScan";
+import { QuizInfo } from "./app/QuizInfo";
 
 
 export const AppPage = () => {
@@ -18,6 +19,7 @@ export const AppPage = () => {
     const { user, hasLoaded } = useFirebaseUserInfo()
     const { currentPage, navigate } = useAppRouter()
     const emailVerified = firebase.auth.currentUser?.emailVerified ?? false
+
 
     useEffect(() => {
         if (hasLoaded){
@@ -41,7 +43,9 @@ export const AppPage = () => {
                         currentPage == "add-quiz" ? <QuizAdd /> :
                         currentPage == "profile" ? <UserInfoPage user={user!} /> :
                         currentPage == "qrscan" ? <QRScan />:
-                        currentPage == "leaderboard" ? <LeaderBoard /> : "Loading..."
+                        currentPage == "leaderboard" ? <LeaderBoard /> :
+                        currentPage.startsWith("quiz") ?  <QuizInfo /> : 
+                        "Loading..."
                     }
                 </Container>
             </AppMain>

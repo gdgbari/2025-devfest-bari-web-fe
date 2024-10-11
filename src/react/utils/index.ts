@@ -55,6 +55,30 @@ export type Quiz = {
     type: "talk" | "sponsor" | "special" | "hidden",
 }
 
+export type Question = {
+    questionId: string,
+    text: string,
+    correctAnswer: any,
+    value: any,
+    answerList: Answer[],
+}
+
+export type Answer = {
+    id: string,
+    text: string,
+}
+
+export type QuizDetails = {
+    creatorUid: string,
+    isOpen: boolean,
+    maxScore: string,
+    questionList: Question[],
+    title: string,
+    talkId: string,
+    sponsorId: string,
+    type: "talk" | "sponsor" | "special" | "hidden",
+}
+
 export type UserProfile = {
     userId: string,
     nickname: string,
@@ -62,10 +86,10 @@ export type UserProfile = {
     name: string,
     surname: string,
     group: {
-        groupId:string,
+        groupId: string,
         name: string,
-        imageUrl:string,
-        color:string,
+        imageUrl: string,
+        color: string,
     },
     groupId: string,
     position: string,
@@ -116,10 +140,32 @@ export const getQuizList = async () => {
     const { error, data } = JSON.parse(rawData as string);
 
     if (error) {
-        throw data.error;
+        throw {
+            name: error['errorCode'],
+            message: error['details'],
+            stack : '/getQuizList'
+        } as Error;
     }
 
     return JSON.parse(data) as Quiz[];
+}
+
+export const getQuizInfo = async (quizid: string) => {
+    const func = httpsCallable<{ code: string }, String>(firebase.functions, "getQuiz");
+
+    const response = await func({ code: `quiz:${quizid}` });
+    const rawData = response.data;
+    const { error, data } = JSON.parse(rawData as string);
+
+    if (error) {
+        throw {
+            name: error['errorCode'],
+            message: error['details'],
+            stack : '/getQuiz'
+        } as Error;
+    }
+
+    return JSON.parse(data) as QuizDetails;
 }
 
 export const getUserProfileById = async (uid: string) => {

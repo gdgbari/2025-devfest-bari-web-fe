@@ -1,9 +1,13 @@
 import { Card } from 'react-daisyui';
 import type { Quiz } from '../utils';
 import { FaChevronRight } from 'react-icons/fa';
+import { useAppRouter } from '../utils/store';
 
 export function QuizCard({ quiz }: { quiz: Quiz }) {
-    return <Card role='button' className='border-2 rounded-lg border-white p-4 cursor-pointer'>
+
+    const { navigate } = useAppRouter()
+
+    return <Card role='button' className='border-2 rounded-lg border-white p-4 cursor-pointer' onClick={() => navigate(`quiz/${quiz.quizId}`)}>
         <div className="flex">
             <div className="flex-1 flex flex-col items-start">
                 <p > {quiz.type} - {quiz.quizId}</p>
