@@ -304,6 +304,13 @@ declare module 'astro:content' {
   collection: "staff";
   data: InferEntrySchema<"staff">
 } & { render(): Render[".md"] };
+"nico.md": {
+	id: "nico.md";
+  slug: "nico";
+  body: string;
+  collection: "staff";
+  data: InferEntrySchema<"staff">
+} & { render(): Render[".md"] };
 "paolo.md": {
 	id: "paolo.md";
   slug: "paolo";
@@ -321,6 +328,13 @@ declare module 'astro:content' {
 "piernicola.md": {
 	id: "piernicola.md";
   slug: "piernicola";
+  body: string;
+  collection: "staff";
+  data: InferEntrySchema<"staff">
+} & { render(): Render[".md"] };
+"piero.md": {
+	id: "piero.md";
+  slug: "piero";
   body: string;
   collection: "staff";
   data: InferEntrySchema<"staff">
