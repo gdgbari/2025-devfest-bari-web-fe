@@ -1,4 +1,4 @@
-import { Button, Input, Radio } from "react-daisyui"
+import { Button, Checkbox, Input, Radio } from "react-daisyui"
 import { IoMdArrowRoundBack } from "react-icons/io"
 import { TitleBar } from "../../components/TitleBar"
 import { useAppRouter } from "../../utils/store"
@@ -6,7 +6,7 @@ import { useQuizes, useUserProfile } from "../../utils/query";
 import { BsQrCodeScan } from "react-icons/bs";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal } from '@mantine/core';
-import { useEffect, useRef, type MutableRefObject } from "react";
+import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import { QRCode } from "react-qrcode-logo"
 import type { Quiz } from "../../utils";
 
@@ -32,8 +32,8 @@ export function QuizInfo() {
 
 
     return <>
-        <Modal opened={opened} onClose={close} withCloseButton={true} size={'xl'} title="Qr code">
-            <div className="flex flex-col items-center">
+        <Modal opened={opened} onClose={close} withCloseButton={true} size="xl" title="Qr code" centered>
+            <div className="flex flex-col items-center justify-center h-full">
                 <QRCode
                     size={400}
                     value={`quiz:${quizId}`}
@@ -45,8 +45,7 @@ export function QuizInfo() {
                     logoWidth={100}
                     eyeRadius={20}
                 />
-                <div className="h-8"></div>
-                <Button onClick={() => qrCodeRef.current?.download("png", quizId??"")}>Download Qr</Button>
+                <Button className="mt-8" onClick={() => qrCodeRef.current?.download("png", quizId??"")}>Download Qr</Button>
             </div>
         </Modal>
 
@@ -77,6 +76,7 @@ export function QuizInfo() {
 const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
 
     const createdBy = useUserProfile(quiz.creatorUid)
+    const [showSecrets, setShowSecrets] = useState(false)
 
     return <div className="flex flex-col items-stretch text-start">
         <h2 className="text-4xl font-bold mr-4">Title: {quiz.title} {quiz.isOpen == false && "(closed)"}</h2>
@@ -111,10 +111,14 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
                 value={`${quiz.timerDuration/1e12} s`}
                 readOnly={true}
             />
-            
         </div>
 
-        <div className="mt-4">
+        <div className="flex items-center justify-center mt-5">
+            <b>Show secrets: </b>
+            <Checkbox className="ml-3 checkbox-white" size="md" onChange={(e)=>setShowSecrets(e.target.checked)} checked={showSecrets}/>
+        </div>
+
+        { showSecrets && <div className="mt-4">
             {quiz.questionList.length == 0 && <h2 className="text-3xl font-semibold">No questions</h2>}
             {quiz.questionList.length > 0 && <h2 className="text-3xl font-semibold">Questions: </h2>}
             {quiz.questionList.map((q, i) => (
@@ -128,6 +132,6 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
                     ))}
                 </div>
             ))}
-        </div>
+        </div> }
     </div>
 }
