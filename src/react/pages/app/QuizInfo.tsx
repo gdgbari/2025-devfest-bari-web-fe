@@ -108,7 +108,7 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
             <h2 className="text-xl font-bold mr-4 w-40">Timer Duration: </h2>
             <Input
                 className="input input-bordered w-full  no-control text-white"
-                value={`${quiz.timerDuration} s`}
+                value={`${quiz.timerDuration/1e12} s`}
                 readOnly={true}
             />
             

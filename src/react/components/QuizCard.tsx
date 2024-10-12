@@ -15,7 +15,7 @@ export function QuizCard({ quiz }: { quiz: Quiz }) {
                 <p> {quiz.questionList.length} questions {quiz.isOpen == false? "(closed)": null}</p>
                 <div className='flex flex-1' />
                 <div className='flex justify-between w-full'>
-                    <p> time: {quiz.timerDuration} s</p>
+                    <p> time: {quiz.timerDuration/1e12} s</p>
                     <small>{quiz.quizId}</small>
                 </div>
                 
