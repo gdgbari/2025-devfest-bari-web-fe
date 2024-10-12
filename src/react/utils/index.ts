@@ -18,6 +18,28 @@ export const firebase = {
     database: getDatabase(firebaseApp)
 }
 
+
+export const durationToString = (duration: Date): string => {
+    let result = [] as string[]
+    if (duration.getUTCHours() > 0) {
+        result.push(`${duration.getUTCHours()} h`)
+    }
+    if (duration.getUTCMinutes() > 0) {
+        result.push(`${duration.getUTCMinutes()} m`)
+    }
+    if (duration.getUTCSeconds() > 0) {
+        result.push(`${duration.getUTCSeconds()} s`)
+    }
+    if (result.length === 0) result.push(`0 s`)
+    return result.join(", ")
+}
+
+export const secondDurationToString = (duration: number): string => {
+    let date = new Date(0)
+    date.setSeconds(duration)
+    return durationToString(date)
+}
+
 export const createQuiz = async (data: any) => {
     const func = httpsCallable(firebase.functions, "createQuiz")
     const gotData = await func(data).then((result) => {
@@ -49,6 +71,10 @@ type LeaderBoardData = {
     }
 }
 
+export const QUIZ_TYPES = ["talk", "sponsor", "special", "hidden", "custom"] as const
+
+export type QuizType = typeof QUIZ_TYPES[number]
+
 export type Quiz = {
     quizId: string,
     creatorUid: string,
@@ -59,7 +85,7 @@ export type Quiz = {
     timerDuration: number,
     talkId: string,
     sponsorId: string,
-    type: "talk" | "sponsor" | "special" | "hidden",
+    type: QuizType,
 }
 
 export type Question = {
@@ -186,3 +212,7 @@ export function capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+export const capitalizeString = (word: string) => {
+    if (!word) return word;
+    return word[0].toUpperCase() + word.slice(1).toLowerCase();
+  }

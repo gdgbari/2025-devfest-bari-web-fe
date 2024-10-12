@@ -7,7 +7,7 @@ import { notifications, showNotification } from "@mantine/notifications";
 import { firebase, isEmailValid } from "../utils";
 import { useFirebaseUserInfo } from "../utils/query";
 import { useEffect, useState } from "react";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 
 export const LoginPage = () => {
     const form = useForm({
@@ -17,7 +17,7 @@ export const LoginPage = () => {
         },
         validate: {
             email: (value) => value.length > 0? isEmailValid(value)? undefined: "The email given is invalid": "Email is required",
-            password: (value) => value.length > 0? undefined: "Password is required"
+            password: (value) => value.length > 0 || recoverPassword? undefined: "Password is required"
         },
         validateInputOnChange: true,
         initialErrors: {
@@ -28,6 +28,7 @@ export const LoginPage = () => {
 
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [recoverPassword, setRexoveryPassword] = useState(false)
 
     const t = useTranslations("en")
 
@@ -51,36 +52,68 @@ export const LoginPage = () => {
     return (
         <AppMain>
             <Form onSubmit={form.onSubmit((data)=>{
-                    const requestId = notifications.show({
-                        loading: true,
-                        title: "Logging in...",
-                        message: "Please wait untils the login is complete",
-                        autoClose: false
-                    })
+
                     setLoading(true)
-                    signInWithEmailAndPassword(firebase.auth, data.email, data.password)
-                        .then((userCredential) => {
-                            const user = userCredential.user;
-                            notifications.update({
-                                id: requestId,
-                                loading: false,
-                                title: "Login success",
-                                message: `Welcome ${user.displayName}`,
-                                color: "green",
-                                autoClose: true
-                            })
-                        }).catch((error) => {
-                            notifications.update({
-                                id: requestId,
-                                loading: false,
-                                title: `Login error [${error.code}]`,
-                                message: error.message,
-                                color: "red",
-                                autoClose: true
-                            })
-                        }).finally(() => {
-                            setLoading(false)
+                    if (recoverPassword){
+                        const requestId = notifications.show({
+                            loading: true,
+                            title: "Requiring the password reset...",
+                            message: "Please wait untils the request is complete",
+                            autoClose: false
                         })
+                        sendPasswordResetEmail(firebase.auth, data.email)
+                            .then(() => {
+                                notifications.update({
+                                    id: requestId,
+                                    loading: false,
+                                    title: "Email sent",
+                                    message: `An email was sent to ${data.email} with instructions to reset your password`,
+                                    color: "green",
+                                    autoClose: true
+                                })
+                            }).catch((error) => {
+                                notifications.update({
+                                    id: requestId,
+                                    loading: false,
+                                    title: `Error [${error.code}]`,
+                                    message: error.message,
+                                    color: "red",
+                                    autoClose: true
+                                })
+                            }).finally(() => {
+                                setLoading(false)
+                            })
+                    }else{
+                        const requestId = notifications.show({
+                            loading: true,
+                            title: "Logging in...",
+                            message: "Please wait untils the login is complete",
+                            autoClose: false
+                        })
+                        signInWithEmailAndPassword(firebase.auth, data.email, data.password)
+                            .then((userCredential) => {
+                                const user = userCredential.user;
+                                notifications.update({
+                                    id: requestId,
+                                    loading: false,
+                                    title: "Login success",
+                                    message: `Welcome ${user.displayName}`,
+                                    color: "green",
+                                    autoClose: true
+                                })
+                            }).catch((error) => {
+                                notifications.update({
+                                    id: requestId,
+                                    loading: false,
+                                    title: `Login error [${error.code}]`,
+                                    message: error.message,
+                                    color: "red",
+                                    autoClose: true
+                                })
+                            }).finally(() => {
+                                setLoading(false)
+                            })
+                    }
                 })
             }>
                 <Card className="md:px-20 md:py-16 bg-black md:bg-opacity-60 bg-opacity-25 z-10 md:h-fit md:w-fit h-screen w-screen justify-center rounded-none px-5 md:rounded-xl">
@@ -100,15 +133,21 @@ export const LoginPage = () => {
                         <div className="flex flex-col mt-10 w-full">
                             <Input placeholder="Email" type="text" {...form.getInputProps("email")} />
                             
-                            <Input placeholder="Password" type={showPassword?"text":"password"} className="mt-3" {...form.getInputProps("password")} />
-                            <div className="flex w-full justify-end mt-2">
-                                <Form.Label title="Show password">
-                                    <Checkbox className="ml-3" size="md" onChange={(e)=>setShowPassword(e.target.checked)} checked={showPassword} />
+                            { !recoverPassword && <Input placeholder="Password" type={showPassword?"text":"password"} className="mt-3" {...form.getInputProps("password")} />}
+                            <div className="flex w-full text-white justify-between mt-2">
+                                <div
+                                    className="text-sm cursor-pointer flex items-center justify-center"
+                                    onClick={()=>setRexoveryPassword(!recoverPassword)}
+                                >
+                                    <b><u>{recoverPassword?"Back to login":"Forgot your password?"}</u></b>
+                                </div>
+                                <Form.Label className="text-white cursor-pointer">
+                                    Show password <Checkbox className="ml-3 checkbox-white" size="md" onChange={(e)=>setShowPassword(e.target.checked)} checked={showPassword} />
                                 </Form.Label>
                             </div>
                         </div>
                         <div className="flex flex-col mt-10 items-center w-full">
-                        <Input type="submit" value={loading?"Loading":"Login"} className={`btn btn-primary btn-wide ${loading?"opacity-40 btn-warning":""}`} onClick={checkErrors} disabled={loading} />
+                            <Input type="submit" value={loading?"Loading":recoverPassword?"Reset password":"Login"} className={`btn btn-primary btn-wide ${loading?"opacity-40 btn-warning":""}`} onClick={checkErrors} disabled={loading} />
                         </div>
                     </div>
                 </Card>

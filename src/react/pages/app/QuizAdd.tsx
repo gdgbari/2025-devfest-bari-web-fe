@@ -1,7 +1,7 @@
 import { Button, Input, Radio, Select } from "react-daisyui"
 import { useAppRouter } from "../../utils/store"
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { notifications, showNotification } from "@mantine/notifications";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { createQuiz } from "../../utils";
@@ -21,12 +21,28 @@ export const QuizAdd = () => {
         { label: "Talk 5", value: "talk5" }
     ]
 
+
+
     const [numOfQuizes, setNumOfQuizes] = useState(3)
+    const [selectedQuiz, setSelectedQuiz] = useState(0)
+
+    const getPage = () => {
+        if (selectedQuiz >= numOfQuizes) return numOfQuizes - 1
+        if (selectedQuiz < 0) return 0
+        return selectedQuiz
+    }
 
     const quizes = Array.from({ length: numOfQuizes }, (_, i) => i)
     const answers = Array.from({ length: 4 }, (_, i) => i)
 
     const baseTalkPoints = 30
+
+    useEffect(() => {
+        if (selectedQuiz >= numOfQuizes){
+            setSelectedQuiz(numOfQuizes - 1)
+        }
+    }, [numOfQuizes, selectedQuiz])
+
 
     const queryClient = useQueryClient()
 
@@ -180,11 +196,11 @@ export const QuizAdd = () => {
                         </Select>
                     </div>}
                 </div>
-                <div className="flex flex-col w-full lg:flex-wrap justify-center items-center lg:flex-row">
-                    {quizes.map((qNum) => <div className="flex flex-col mt-10 w-full justify-center items-center px-5" key={qNum} style={{ flexBasis: "50%" }}>
+                <div className="flex flex-col w-full justify-center items-center lg:flex-row">
+                    {[getPage()].map((qNum) => <div className="flex flex-col mt-10 w-full justify-center items-center px-5" key={qNum} >
                         <div className="flex items-center w-full justify-center">
-                            <h1 className="text-5xl font-bold mr-8">{qNum+1}:</h1>
-                            <div className="form-control w-full flex justify-center max-w-lg">
+                            <h1 className="text-5xl font-bold mr-8 w-[50px]">{qNum+1}:</h1>
+                            <div className="form-control w-full flex justify-center">
                                 <label className="label">
                                     <span className="label-text text-white">Question</span>
                                 </label>
@@ -214,7 +230,7 @@ export const QuizAdd = () => {
                             />
                             <Input
                                 placeholder="Type here"
-                                className="input input-bordered w-full max-w-[90%] ml-5"
+                                className="input input-bordered w-full ml-5"
                                 name={`questions.${qNum}.options.${opt}.text`}
                                 key={form.key(`questions.${qNum}.options.${opt}.text`)}
                                 {...form.getInputProps(`questions.${qNum}.options.${opt}.text`)}
@@ -235,13 +251,31 @@ export const QuizAdd = () => {
                     </div>)}
                 </div>
             </div>
-            <Input
-                type="submit"
-                value={submitting ? "Loading" : "Add Quiz"}
-                className={`btn btn-primary btn-wide ${submitting || !form.isValid() ? "opacity-40 btn-warning" : ""} my-20`}
-                onClick={checkErrors}
-                disabled={submitting}
-            />
+            <div className="my-10 flex md:gap-20 gap-8 flex-wrap justify-center items-center mb-20">
+                <Input
+                    type="button"
+                    value="Back"
+                    className={`btn btn-primary btn-wide ${selectedQuiz == 0 ? "opacity-40 btn-warning" : ""}`}
+                    onClick={() => setSelectedQuiz(selectedQuiz - 1 < 0 ? 0 : selectedQuiz - 1)}
+                    disabled={selectedQuiz == 0}
+                />
+                {
+                    selectedQuiz == numOfQuizes - 1?
+                    <Input
+                        type="submit"
+                        value={submitting ? "Loading" : "Add Quiz"}
+                        className={`btn btn-primary btn-wide ${submitting || !form.isValid() ? "opacity-40 btn-warning" : ""}`}
+                        onClick={checkErrors}
+                        disabled={submitting}
+                    />:
+                    <Input
+                        type="button"
+                        value="Next"
+                        className="btn btn-primary btn-wide"
+                        onClick={() => setSelectedQuiz(getPage() + 1)}
+                    />
+                }
+            </div>
         </form>
     </div>
 }

@@ -14,7 +14,7 @@ export const SignupPage = ({ token }: { token: string }) => {
     const t = useTranslations("en")
     const authRepository = new AuthenticationRepository();
     const [pageStatus, setPageStatus] = useState(SignUpPageStatus.Initial);
-    const [showPasswords, setShowPasswords] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
 
     useEffect(() => {
         if (pageStatus !== SignUpPageStatus.Initial) {
@@ -132,11 +132,11 @@ export const SignupPage = ({ token }: { token: string }) => {
                         <div className="flex flex-col mt-10 w-full">
                             <Input placeholder="Email" type="text" {...form.getInputProps("email")} />
 
-                            <Input placeholder="Password" type={showPasswords ? "text" : "password"} className="mt-3" {...form.getInputProps("password")} />
-                            <Input placeholder="Confirm Password" type={showPasswords ? "text" : "password"} className="mt-3" {...form.getInputProps("confirmPassword")} />
+                            <Input placeholder="Password" type={showPassword ? "text" : "password"} className="mt-3" {...form.getInputProps("password")} />
+                            <Input placeholder="Confirm Password" type={showPassword ? "text" : "password"} className="mt-3" {...form.getInputProps("confirmPassword")} />
                             <div className="flex w-full justify-end mt-2">
-                                <Form.Label title="Show passwords">
-                                    <Checkbox className="ml-3" size="md" onChange={(e) => setShowPasswords(e.target.checked)} checked={showPasswords} />
+                                <Form.Label className="text-white cursor-pointer">
+                                    Show password <Checkbox className="ml-3 checkbox-white" size="md" onChange={(e)=>setShowPassword(e.target.checked)} checked={showPassword} />
                                 </Form.Label>
                             </div>
                         </div>
