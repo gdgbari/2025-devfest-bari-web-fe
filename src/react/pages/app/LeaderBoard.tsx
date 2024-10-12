@@ -16,10 +16,12 @@ export const LeaderBoard = () => {
     const [selectedLeaderboard, setSelectedLeaderboard] = useState<"users" | "groups">("users")
     const groupMax = groups.reduce((acc, group) => Math.max(acc, group.score), 0)
 
-    const sortLogic = (a: { score: number, timestamp: number }, b: { score: number, timestamp: number }) => {
+    const sortLogic = (a: { score: number, timestamp: number, name:string }, b: { score: number, timestamp: number, name:string }) => {
         const diff_point = b.score - a.score
         if (diff_point != 0) return diff_point
-        return a.timestamp - b.timestamp
+        const diff_time = a.timestamp - b.timestamp
+        if (diff_time != 0) return diff_time
+        return a.name.localeCompare(b.name)
     }
 
     return <div className="h-full">
@@ -48,7 +50,7 @@ export const LeaderBoard = () => {
         <div className="mt-10">
             {leaderBoard == null && <div>Loading...</div>}
             {
-                selectedLeaderboard == "users"? users.sort(sortLogic).map((user, i) => (
+                selectedLeaderboard == "users"? users.sort((a, b) => sortLogic({...a, name:a.nickname}, {...b, name:b.nickname})).map((user, i) => (
                     <div
                         key={i} className="flex justify-between items-center p-2 border rounded-xl mb-3 border-"
                         style={{borderColor: colorConverter(user.groupColor), borderWidth: "1px"}}
