@@ -108,7 +108,7 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
             <h2 className="text-xl font-bold mr-4 w-40">Timer Duration: </h2>
             <Input
                 className="input input-bordered w-full  no-control text-white"
-                value={`${quiz.timerDuration/1e12} s`}
+                value={`${quiz.timerDuration/1000} s`}
                 readOnly={true}
             />
         </div>
@@ -125,7 +125,13 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
                 <div key={q.questionId} className="mt-4">
                     <h3 className="text-2xl font-medium">{i + 1}. {q.text} ({q.value??"?"} points)</h3>
 
-                    {q.answerList.map((a) => (
+                    {q.answerList.sort(
+                        (a,b) =>
+                            // Correct answer first
+                            a.id == q.correctAnswer?-1:b.id == q.correctAnswer?1:
+                            // Then sort by id (avoids shuffling on refresh)
+                            a.id.localeCompare(b.id)
+                    ).map((a) => (
                         <div key={a.id} className="flex mt-4 gap-4">
                             <Radio readOnly={true} checked={q.correctAnswer == a.id} />
                             <p className="text-xl">{a.text}</p></div>
