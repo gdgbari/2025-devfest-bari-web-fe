@@ -13,6 +13,7 @@ import { useUserProfile } from "../../utils/query"
 import { addPointsToUsers, colorConverter } from "../../utils"
 import { FaTrashAlt } from "react-icons/fa";
 import { notifications } from "@mantine/notifications"
+import { useQueryClient } from "@tanstack/react-query"
 
 const UserRowInfo = ({ uid, removeUser }: { uid: string, removeUser: (uid: string) => void }) => {
     const user = useUserProfile(uid)
@@ -48,6 +49,7 @@ export const QRScan = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [enableCamera, setEnableCamera] = useState(true)
     const [addOrder, setAddOrder] = useState<{uid: string, date: Date}[]>([])
+    const queryClient = useQueryClient()
     const form = useForm({
         initialValues: {
             title: "",
@@ -107,6 +109,7 @@ export const QRScan = () => {
                                     message: "Points added successfully",
                                     color: "teal"
                                 })
+                                queryClient.resetQueries({ queryKey: ["quizes"] })
                                 navigate("app")
                             }).catch((e)=>{
                                 notifications.update({

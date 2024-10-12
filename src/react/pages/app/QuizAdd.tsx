@@ -6,6 +6,7 @@ import { notifications, showNotification } from "@mantine/notifications";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { createQuiz } from "../../utils";
 import { TitleBar } from "../../components/TitleBar";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const QuizAdd = () => {
 
@@ -26,6 +27,8 @@ export const QuizAdd = () => {
     const answers = Array.from({ length: 4 }, (_, i) => i)
 
     const baseTalkPoints = 30
+
+    const queryClient = useQueryClient()
 
     const changeAnswareNumber = (qNum: number) => {
 
@@ -130,6 +133,7 @@ export const QuizAdd = () => {
                     message: "Quiz has been created successfully",
                     color: "blue"
                 })
+                queryClient.resetQueries({ queryKey: ["quizes"] })
                 navigate("app")
             }).catch((error) => {
                 showNotification({

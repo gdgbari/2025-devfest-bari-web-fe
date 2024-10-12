@@ -8,7 +8,8 @@ import { useQuizes } from "../../utils/query";
 import { BsQrCodeScan } from "react-icons/bs";
 import { Space } from "@mantine/core";
 import { useState } from "react";
-
+import { useQueryClient } from "@tanstack/react-query";
+import { TbReload } from "react-icons/tb";
 
 export const QuizList = () => {
 
@@ -16,9 +17,13 @@ export const QuizList = () => {
 
     const quizes = useQuizes()
     const [showHidden, setShowHidden] = useState(false)
+    const queryClient = useQueryClient()
 
     return <div className="h-full">
         <TitleBar title="Quizes" actions={[
+            <Button className="btn-circle mr-4" onClick={() => queryClient.resetQueries()} loading={quizes.isFetching}>
+                { !quizes.isFetching && <TbReload size={32} /> }
+            </Button>,
             <Button className="btn-circle mr-4" onClick={() => navigate("qrscan")} >
                 <BsQrCodeScan size={26} />
             </Button>,
