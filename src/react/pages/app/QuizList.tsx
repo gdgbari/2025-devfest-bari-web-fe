@@ -4,7 +4,7 @@ import { Button, Checkbox, Loading } from "react-daisyui";
 import { MdLeaderboard } from "react-icons/md";
 import { TitleBar } from "../../components/TitleBar";
 import { QuizCard } from "../../components/QuizCard";
-import { useQuizes } from "../../utils/query";
+import { useQuizzes } from "../../utils/query";
 import { BsQrCodeScan } from "react-icons/bs";
 import { SegmentedControl, Space } from "@mantine/core";
 import { useState } from "react";
@@ -16,15 +16,15 @@ export const QuizList = () => {
 
     const { navigate } = useAppRouter()
 
-    const quizes = useQuizes()
+    const quizzes = useQuizzes()
     const [filterSelected, setFilterSelected] = useState("talk")
     const queryClient = useQueryClient()
-    const filteredQuizes = quizes.data?.filter(q => filterSelected == "all" || q.type == filterSelected)
+    const filteredQuizzes = quizzes.data?.filter(q => filterSelected == "all" || q.type == filterSelected)
 
     return <div className="h-full">
-        <TitleBar title="Quizes" actions={[
-            <Button className="btn-circle mr-4" onClick={() => queryClient.resetQueries()} loading={quizes.isFetching}>
-                { !quizes.isFetching && <TbReload size={32} /> }
+        <TitleBar title="Quizzes" actions={[
+            <Button className="btn-circle mr-4" onClick={() => queryClient.invalidateQueries()} loading={quizzes.isFetching}>
+                { !quizzes.isFetching && <TbReload size={32} /> }
             </Button>,
             <Button className="btn-circle mr-4" onClick={() => navigate("qrscan")} >
                 <BsQrCodeScan size={26} />
@@ -46,10 +46,10 @@ export const QuizList = () => {
             value={filterSelected}
         />
         <Space h="md" />
-        {quizes.isLoading && <Loading />}
+        {quizzes.isLoading && <Loading />}
         <div className="flex flex-col gap-4 mt-8">
-            {filteredQuizes && filteredQuizes.length == 0 && <b className="text-2xl">No quizes found :{"("}</b>}
-            {filteredQuizes && filteredQuizes.map(q => (<QuizCard key={q.quizId} quiz={q}></QuizCard>))}
+            {filteredQuizzes && filteredQuizzes.length == 0 && <b className="text-2xl">No quizzes found :{"("}</b>}
+            {filteredQuizzes && filteredQuizzes.map(q => (<QuizCard key={q.quizId} quiz={q}></QuizCard>))}
         </div>
     </div>
 }

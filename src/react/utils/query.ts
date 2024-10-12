@@ -17,9 +17,9 @@ export const useFirebaseUserInfo = () => {
 }
 
 
-export const useQuizes = () => {
+export const useQuizzes = () => {
     return useQuery({
-        queryKey: ["quizes"],
+        queryKey: ["quizzes"],
         queryFn: getQuizList,
         staleTime: 1000 * 60 * 5
     })

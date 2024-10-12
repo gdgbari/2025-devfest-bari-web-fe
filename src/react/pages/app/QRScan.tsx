@@ -109,7 +109,7 @@ export const QRScan = () => {
                                     message: "Points added successfully",
                                     color: "teal"
                                 })
-                                queryClient.resetQueries({ queryKey: ["quizes"] })
+                                queryClient.invalidateQueries({ queryKey: ["quizzes"] })
                                 navigate("app")
                             }).catch((e)=>{
                                 notifications.update({

@@ -2,7 +2,7 @@ import { Button, Checkbox, Input, Radio } from "react-daisyui"
 import { IoMdArrowRoundBack } from "react-icons/io"
 import { TitleBar } from "../../components/TitleBar"
 import { useAppRouter } from "../../utils/store"
-import { useQuizes, useUserProfile } from "../../utils/query";
+import { useQuizzes, useUserProfile } from "../../utils/query";
 import { BsQrCodeScan } from "react-icons/bs";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal } from '@mantine/core';
@@ -15,8 +15,8 @@ import { FaLockOpen } from "react-icons/fa";
 export function QuizInfo() {
     const [opened, { open, close }] = useDisclosure(false);
     const { navigate, quizId } = useAppRouter();
-    const quizes = useQuizes();
-    const quiz = quizes.data?.find(q => q.quizId == quizId)
+    const quizzes = useQuizzes();
+    const quiz = quizzes.data?.find(q => q.quizId == quizId)
 
     const qrCodeRef = useRef<QRCode>();
     if (quiz) {
@@ -60,10 +60,10 @@ export function QuizInfo() {
             ]}
             />
             <div className="h-10"></div>
-            {quizes.isLoading && <h1>Loading quiz {quizId}</h1>}
+            {quizzes.isLoading && <h1>Loading quiz {quizId}</h1>}
             {quiz && <QuizDetails quiz={quiz} />}
-            {quizes.isError && quizes.error && <div className="flex-1 flex flex-col justify-center items-center">
-                <p className="mb-12 text-5xl font-bold">Ops!! {quizes.error.message}</p>
+            {quizzes.isError && quizzes.error && <div className="flex-1 flex flex-col justify-center items-center">
+                <p className="mb-12 text-5xl font-bold">Ops!! {quizzes.error.message}</p>
                 <img src="https://media1.tenor.com/m/KWCVIqd2HmYAAAAd/boris-proda.gif" />
             </div>}
         </div>

@@ -23,25 +23,25 @@ export const QuizAdd = () => {
 
 
 
-    const [numOfQuizes, setNumOfQuizes] = useState(3)
+    const [numOfQuizzes, setNumOfQuizzes] = useState(3)
     const [selectedQuiz, setSelectedQuiz] = useState(0)
 
     const getPage = () => {
-        if (selectedQuiz >= numOfQuizes) return numOfQuizes - 1
+        if (selectedQuiz >= numOfQuizzes) return numOfQuizzes - 1
         if (selectedQuiz < 0) return 0
         return selectedQuiz
     }
 
-    const quizes = Array.from({ length: numOfQuizes }, (_, i) => i)
+    const quizzes = Array.from({ length: numOfQuizzes }, (_, i) => i)
     const answers = Array.from({ length: 4 }, (_, i) => i)
 
     const baseTalkPoints = 30
 
     useEffect(() => {
-        if (selectedQuiz >= numOfQuizes){
-            setSelectedQuiz(numOfQuizes - 1)
+        if (selectedQuiz >= numOfQuizzes){
+            setSelectedQuiz(numOfQuizzes - 1)
         }
-    }, [numOfQuizes, selectedQuiz])
+    }, [numOfQuizzes, selectedQuiz])
 
 
     const queryClient = useQueryClient()
@@ -59,7 +59,7 @@ export const QuizAdd = () => {
                 })
             }
         })
-        setNumOfQuizes(qNum)
+        setNumOfQuizzes(qNum)
         
     }
 
@@ -67,7 +67,7 @@ export const QuizAdd = () => {
         initialValues: {
             title: "",
             type: "talk",
-            questions: quizes.map((_qNum) => ({
+            questions: quizzes.map((_qNum) => ({
                 question: "",
                 options: answers.map((i)=> ({ text: "", isCorrect: i==0 })),
                 value: "0"
@@ -149,7 +149,7 @@ export const QuizAdd = () => {
                     message: "Quiz has been created successfully",
                     color: "blue"
                 })
-                queryClient.resetQueries({ queryKey: ["quizes"] })
+                queryClient.invalidateQueries({ queryKey: ["quizzes"] })
                 navigate("app")
             }).catch((error) => {
                 showNotification({
@@ -183,7 +183,7 @@ export const QuizAdd = () => {
                         <label className="label">
                             <span className="label-text text-white">Number of questions</span>
                         </label>
-                        <Select className="select w-full" onChange={(e) => changeAnswareNumber(parseInt(e.target.value))} value={numOfQuizes}>
+                        <Select className="select w-full" onChange={(e) => changeAnswareNumber(parseInt(e.target.value))} value={numOfQuizzes}>
                             {Array.from({ length: 10 }, (_, i) => i+1).map((i) => <option value={i} key={i}>{i}</option>)}
                         </Select>
                     </div>
@@ -260,7 +260,7 @@ export const QuizAdd = () => {
                     disabled={selectedQuiz == 0}
                 />
                 {
-                    selectedQuiz == numOfQuizes - 1?
+                    selectedQuiz == numOfQuizzes - 1?
                     <Input
                         type="submit"
                         value={submitting ? "Loading" : "Add Quiz"}
