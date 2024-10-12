@@ -44,7 +44,7 @@ export const AppPage = () => {
                         currentPage == "profile" ? <UserInfoPage user={user!} /> :
                         currentPage == "qrscan" ? <QRScan />:
                         currentPage == "leaderboard" ? <LeaderBoard /> :
-                        currentPage.startsWith("quiz") ?  <QuizInfo /> : 
+                        currentPage == "quiz-info" ?  <QuizInfo /> : 
                         "Loading..."
                     }
                 </Container>
