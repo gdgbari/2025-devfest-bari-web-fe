@@ -9,6 +9,7 @@ import { Modal } from '@mantine/core';
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import { QRCode } from "react-qrcode-logo"
 import type { Quiz } from "../../utils";
+import { FaLock } from "react-icons/fa";
 
 
 
@@ -79,7 +80,7 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
     const [showSecrets, setShowSecrets] = useState(false)
 
     return <div className="flex flex-col items-stretch text-start">
-        <h2 className="text-4xl font-bold mr-4">Title: {quiz.title} {quiz.isOpen == false && "(closed)"}</h2>
+        <h2 className="text-4xl font-bold mr-4f flex items-center gap-4">Title: {quiz.title} {!quiz.isOpen && <FaLock size={20} color='red' />}</h2>
         <div className="flex items-center mt-4">
             <h2 className="text-xl font-bold mr-4 w-40">Quiz type: </h2>
             <Input
@@ -139,5 +140,6 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
                 </div>
             ))}
         </div> }
+        <div className="mt-10" />
     </div>
 }
