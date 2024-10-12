@@ -8,6 +8,7 @@ import { firebase, isEmailValid } from "../utils";
 import { useFirebaseUserInfo } from "../utils/query";
 import { useEffect, useState } from "react";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { set } from "firebase/database";
 
 export const LoginPage = () => {
     const form = useForm({
@@ -28,7 +29,11 @@ export const LoginPage = () => {
 
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [recoverPassword, setRexoveryPassword] = useState(false)
+    const [recoverPassword, setRecoveryPassword] = useState(false)
+
+    useEffect(() => {
+        form.isValid() //Trigger validation
+    }, [recoverPassword])
 
     const t = useTranslations("en")
 
@@ -67,10 +72,11 @@ export const LoginPage = () => {
                                     id: requestId,
                                     loading: false,
                                     title: "Email sent",
-                                    message: `An email was sent to ${data.email} with instructions to reset your password`,
+                                    message: `An email was sent to ${data.email} with instructions to reset your password if the email exists`,
                                     color: "green",
                                     autoClose: true
                                 })
+                                setRecoveryPassword(false)
                             }).catch((error) => {
                                 notifications.update({
                                     id: requestId,
@@ -137,7 +143,7 @@ export const LoginPage = () => {
                             <div className="flex w-full text-white justify-between mt-2">
                                 <div
                                     className="text-sm cursor-pointer flex items-center justify-center"
-                                    onClick={()=>setRexoveryPassword(!recoverPassword)}
+                                    onClick={()=>setRecoveryPassword(!recoverPassword)}
                                 >
                                     <b><u>{recoverPassword?"Back to login":"Forgot your password?"}</u></b>
                                 </div>
