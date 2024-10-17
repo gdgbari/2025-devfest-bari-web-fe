@@ -118,7 +118,7 @@ export const LeaderBoard = () => {
             </Button>
         </div>
         <div className="mt-10">
-            {selectedLeaderboard == "users" && <Box className="flex items-center justify-center gap-20 px-10 pb-10">
+            {selectedLeaderboard == "users" && <Box className="flex flex-col md:flex-row items-center justify-center md:gap-20 gap-10 px-10 pb-10">
                 <MultiSelect
                     label="Filter by groups"
                     className="w-full"
@@ -146,7 +146,7 @@ export const LeaderBoard = () => {
                         disabled={usersToShow == -1}
                     />
                 </Box>
-                <Box className="flex flex-col justify-center items-center w-full gap-2">
+                <Box className="flex md:flex-col flex-row justify-center items-center w-full gap-2">
                     <MantineButton
                         className="w-full"
                         size="sm"
