@@ -4,7 +4,6 @@ import SpeakersLinks from "../../../components/Speakers/SpeakersLinks.astro";
 import { WebsiteConfig } from "../../../config";
 import { getLangFromUrl, useTranslatedPath, useTranslations } from "../../../i18n/utils";
 import { type Speaker } from "../../../data/types/sessionize";
-import { formatTime } from "../../../helpers/time";
 import SessionTopic from "../../Sessions/SessionTopic.astro";
 import { getSpeakers } from "../../../data/repositories/sessionize_repository";
 // 1. Generate a new path for every collection speaker
@@ -75,8 +74,17 @@ const pageTitle = `${speaker.fullName} @ ${WebsiteConfig.DEVFEST_NAME}`;
                 month: "long",
                 day: "numeric",
               });
-              const startTime = formatTime(dateStart);
-              const endTime = formatTime(dateEnd);
+              const startTime = dateStart.toLocaleTimeString(lang, {
+                timeZone: WebsiteConfig.EVENT_TIMEZONE,
+                hour: "numeric",
+                minute: "numeric",
+              });
+
+              const endTime = dateEnd.toLocaleTimeString(lang, {
+                timeZone: WebsiteConfig.EVENT_TIMEZONE,
+                hour: "numeric",
+                minute: "numeric",
+              });
               const isScheduled = dateStart.getTime() > 0;
               return (
                 <a class="flex flex-col" href={getPath(`/sessions/${session.slug}`)}>
