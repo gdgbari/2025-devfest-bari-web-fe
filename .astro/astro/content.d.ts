@@ -179,6 +179,13 @@ declare module 'astro:content' {
   collection: "externals";
   data: InferEntrySchema<"externals">
 } & { render(): Render[".md"] };
+"droidcon.md": {
+	id: "droidcon.md";
+  slug: "droidcon";
+  body: string;
+  collection: "externals";
+  data: InferEntrySchema<"externals">
+} & { render(): Render[".md"] };
 "google.md": {
 	id: "google.md";
   slug: "google";
@@ -200,9 +207,23 @@ declare module 'astro:content' {
   collection: "externals";
   data: InferEntrySchema<"externals">
 } & { render(): Render[".md"] };
+"link.md": {
+	id: "link.md";
+  slug: "link";
+  body: string;
+  collection: "externals";
+  data: InferEntrySchema<"externals">
+} & { render(): Render[".md"] };
 "nextome.md": {
 	id: "nextome.md";
   slug: "nextome";
+  body: string;
+  collection: "externals";
+  data: InferEntrySchema<"externals">
+} & { render(): Render[".md"] };
+"randstad.md": {
+	id: "randstad.md";
+  slug: "randstad";
   body: string;
   collection: "externals";
   data: InferEntrySchema<"externals">
