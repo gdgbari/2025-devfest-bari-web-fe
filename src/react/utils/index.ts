@@ -18,6 +18,22 @@ export const firebase = {
     database: getDatabase(firebaseApp)
 }
 
+export function shuffle(array: any[]) {
+    let currentIndex = array.length;
+  
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element...
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+    return array;
+}
 
 export const durationToString = (duration: Date): string => {
     let result = [] as string[]
@@ -52,22 +68,26 @@ export const createQuiz = async (data: any) => {
     return finalData
 }
 
-type LeaderBoardData = {
+export type LeaderBoardUser = {
+    nickname: string,
+    score: number,
+    groupColor: string,
+    timestamp: number,
+}
+
+export type LeaderBoardGroup = {
+    name: string,
+    score: number,
+    timestamp: number,
+    color: string
+}
+
+export type LeaderBoardData = {
     users: {
-        [uid: string]: {
-            nickname: string,
-            score: number,
-            groupColor: string,
-            timestamp: number,
-        }
+        [uid: string]: LeaderBoardUser
     },
     groups: {
-        [gid: string]: {
-            name: string,
-            score: number,
-            timestamp: number,
-            color: string
-        }
+        [gid: string]: LeaderBoardGroup
     }
 }
 
