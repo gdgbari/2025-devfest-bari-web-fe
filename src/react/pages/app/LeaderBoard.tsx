@@ -158,7 +158,7 @@ export const LeaderBoard = () => {
                         className="w-full"
                         size="s"
                         onClick={() => {
-                            const csv = users.map((user, pos) => `${pos+1},${user.nickname},${user.score},${user.timestamp},${groupByColor(user.groupColor)?.name}`).join("\n")
+                            const csv = filteredAndSortedUsers.map((user, pos) => `${pos+1},${user.nickname},${user.score},${user.timestamp},${groupByColor(user.groupColor)?.name}`).join("\n")
                             const blob = new Blob(["Position,Nickname,Score,LastSubmission,GroupName\n"+csv], { type: "text/csv" })
                             const url = URL.createObjectURL(blob)
                             const a = document.createElement("a")
