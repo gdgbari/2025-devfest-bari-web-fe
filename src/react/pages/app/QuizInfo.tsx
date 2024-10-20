@@ -8,9 +8,10 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal } from '@mantine/core';
 import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import { QRCode } from "react-qrcode-logo"
-import { secondDurationToString, type Quiz } from "../../utils";
+import { secondDurationToString, toggleQuiz, type Quiz } from "../../utils";
 import { FaLock } from "react-icons/fa";
 import { FaLockOpen } from "react-icons/fa";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function QuizInfo() {
     const [opened, { open, close }] = useDisclosure(false);
@@ -75,9 +76,30 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
 
     const createdBy = useUserProfile(quiz.creatorUid)
     const [showSecrets, setShowSecrets] = useState(false)
+    const quizzes = useQuizzes(); //Useful only for checking cache state
+    const [quizToggled, setQuizToggled] = useState(false)
+    const queryClient = useQueryClient()
+
+    useEffect(() => {
+        if (quizToggled && !quizzes.isFetching) {
+            setQuizToggled(false)
+        }
+    }, [quizzes.isFetching])
 
     return <div className="flex flex-col items-stretch text-start">
-        <h2 className="text-4xl font-bold mr-4f flex items-center gap-4">Title: {quiz.title} {quiz.isOpen ? <FaLockOpen size={20} color="lime" /> : <FaLock size={20} color='red' />}</h2>
+        <h2 className="text-4xl font-bold mr-4f flex items-center gap-4">Title: {quiz.title}
+            <Button className="btn-circle btn-sm bg-[#444] border-[#444] w-10 h-10 hover:border-[#333] hover:bg-[#333]" onClick={() => {
+                setQuizToggled(true)
+                toggleQuiz(quiz.quizId).then(() => {
+                    setQuizToggled(false)
+                    quiz.isOpen = !quiz.isOpen
+                    queryClient.refetchQueries({ queryKey: ["quizzes"]})
+                })
+            }} loading={quizToggled} disabled={quizToggled}>
+                {quizToggled? null: quiz.isOpen ? <FaLockOpen size={20} color="lime" /> : <FaLock size={20} color='red' />}
+            </Button>
+            
+        </h2>
         <div className="flex items-center mt-4">
             <h2 className="text-xl font-bold mr-4 w-40">Quiz type: </h2>
             <Input

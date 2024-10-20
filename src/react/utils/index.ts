@@ -68,6 +68,18 @@ export const createQuiz = async (data: any) => {
     return finalData
 }
 
+export const toggleQuiz = async (quizId: string) => {   
+    const func = httpsCallable(firebase.functions, "toggleIsOpen")
+    const gotData = await func({ quizId }).then((result) => {
+        return result.data
+    })
+    const finalData = JSON.parse(gotData as string)
+    if (finalData.error) {
+        throw finalData.error
+    }
+    return finalData
+}
+
 export type LeaderBoardUser = {
     nickname: string,
     score: number,
