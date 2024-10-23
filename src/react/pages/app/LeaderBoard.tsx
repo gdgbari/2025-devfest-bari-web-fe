@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useAppRouter } from "../../utils/store";
 import { Button, Checkbox } from "react-daisyui";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { capitalizeFirstLetter, colorConverter, shuffle, useLeaderboard, type LeaderBoardUser } from "../../utils";
+import { capitalizeFirstLetter, colorConverter, COLORS_LIST, shuffle, useLeaderboard, type LeaderBoardUser } from "../../utils";
 import { TitleBar } from "../../components/TitleBar";
-import { Box, MultiSelect, NumberInput, Button as MantineButton, Modal, Chip, Container } from "@mantine/core";
+import { Box, MultiSelect, NumberInput, Button as MantineButton, Modal, Chip, Container, Space } from "@mantine/core";
+import ConfettiExplosion from 'react-confetti-explosion';
+import { PiNavigationArrowDuotone } from "react-icons/pi";
 
-const UserRow = ({ user, pos }: { user: LeaderBoardUser, pos?: number }) => {
+const UserRow = ({ user, pos, style }: { user: LeaderBoardUser, pos?: number, style?: CSSProperties }) => {
+
     return <div
-        className="flex justify-between items-center p-2 border rounded-xl mb-3 w-full"
-        style={{borderColor: colorConverter(user.groupColor), borderWidth: "1px"}}
+        className="flex justify-between items-center p-2 border rounded-xl w-full"
+        style={{borderColor: colorConverter(user.groupColor), borderWidth: "1px", ...(style??{})}}
     >
         <div className="flex items-center">
             <div
@@ -42,10 +45,12 @@ export const LeaderBoard = () => {
     const [wheelTrigger, setWheelTrigger] = useState(false)
     const [lastSpeed, setLastSpeed] = useState(0)
 
+    const selectedQuizNum = Math.floor(spinningArray.length/2)
+
     useEffect(() => {
         if (wheelStatus == "spinning") {
             const copyOfArray = filteredAndSortedUsers.copyWithin(0,filteredAndSortedUsers.length)
-            setSpinningArray(shuffle(copyOfArray).splice(0, 6))
+            setSpinningArray(shuffle(copyOfArray).splice(0, 5))
             setLastSpeed(0)
             setWheelTrigger(!wheelTrigger)
         }
@@ -59,12 +64,16 @@ export const LeaderBoard = () => {
 
     useEffect(() => {
         if (!showWheel || wheelStatus != "spinning") return
-        setLastSpeed(lastSpeed + (lastSpeed < 150 ? 2 : lastSpeed < 300 ? 5 : lastSpeed < 500 ? 10 : 30))
-        const nextElement = shuffle(filteredAndSortedUsers.copyWithin(0,filteredAndSortedUsers.length))[0]
-        if (lastSpeed >= 800) {
+        setLastSpeed(lastSpeed + (lastSpeed < 80 ? 2 : lastSpeed < 150 ? 8 : lastSpeed < 300 ? 20 : 30))
+        if (lastSpeed >= 500) {
             setWheelStatus("stopped")
-            setSpinningArray([nextElement])
             return
+        }
+        let nextElement:LeaderBoardUser
+        while (true){
+            nextElement = shuffle(filteredAndSortedUsers.copyWithin(0,filteredAndSortedUsers.length))[0]
+            const elementToDelete = spinningArray[spinningArray.length-1]
+            if (nextElement == elementToDelete || !spinningArray.includes(nextElement)) break
         }
         setSpinningArray((prev) => [nextElement, ...prev.splice(0, prev.length-1)])
         setTimeout(()=>setWheelTrigger(!wheelTrigger), lastSpeed)
@@ -174,7 +183,7 @@ export const LeaderBoard = () => {
             {leaderBoard == null && <div>Loading...</div>}
             {
                 selectedLeaderboard == "users"? filteredAndSortedUsers.map((user, i) => (
-                    <UserRow key={i} user={user} pos={i}/>
+                    <UserRow key={i} user={user} pos={i} style={{ marginBottom: 10 }}/>
                 )) : 
                 selectedLeaderboard == "groups" ? sortedGroups.map((group, i) => {
                     return <div className="flex-col mb-6" key={i}>
@@ -193,22 +202,32 @@ export const LeaderBoard = () => {
         </div>
         <Modal opened={showWheel} onClose={()=>setShowWheel(false)} fullScreen className="flex justify-center items-center h-full">
             <p className="text-3xl font-bold justify-center flex">Wheel of Fortune 🍀</p>
+            <Box className="flex justify-center">
+                {wheelStatus == "stopped" && <ConfettiExplosion colors={COLORS_LIST.map(ele => colorConverter(ele))} zIndex={10000} width={4000} height={"350vh"}/>}
+            </Box>
             <Box className="flex gap-10 justify-center py-4">
-                {usersToShow != -1 && <Chip>{`Top ${usersToShow} users`}</Chip>}
-                {groupFilter.length > 0 && <Chip>{`Groups: ${groupFilter.join(", ")}`}</Chip>}
+                {usersToShow != -1 && <Chip disabled>{`Top ${usersToShow} users`}</Chip>}
+                {groupFilter.length > 0 && <Chip disabled>{`Groups: ${groupFilter.map(ele => capitalizeFirstLetter(ele)).join(", ")}`}</Chip>}
             </Box>
             { wheelStatus != "not-started" &&  <Box className="flex flex-col gap-1 justify-center py-4 items-center my-10">
                 {wheelStatus == "spinning" && <p className="text-2xl font-bold mb-2">Spinning...</p>}
                 {wheelStatus == "stopped" && <p className="text-2xl font-bold mb-2">🎉 The winner is ...</p>}
                 <Container size="sm" className="w-full">
                     {spinningArray.map((user, i) => (
-                    <UserRow key={i} user={user} />
+                        <Box key={i} style={{ display: "flex", justifyContent:"center", alignItems: "center" }}>
+                            <Box style={{ width: 80, display: "flex", justifyContent:"center", alignItems: "center" }}>
+                                {i == selectedQuizNum && <>
+                                    <PiNavigationArrowDuotone style={{ rotate: "135deg"}} size={40} />
+                                    <Space h="md" />
+                                </>}
+                            </Box>
+                            <UserRow user={user} style={{ marginBottom: 10, marginTop: 10, opacity: selectedQuizNum==i?1:0.4 }} />
+                        </Box>
                     ))}
                 </Container>
             </Box> }
-
             <Box className="justify-center flex mt-[20vh]">
-                {wheelStatus != "spinning" && <MantineButton onClick={()=> setWheelStatus("spinning")}>
+                {wheelStatus != "spinning" && <MantineButton onClick={()=> setWheelStatus("spinning")} disabled={filteredAndSortedUsers.length == 0}>
                     {wheelStatus == "stopped"? "Spin the wheel again": "Spin the wheel"}
                 </MantineButton>}
             </Box>

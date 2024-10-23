@@ -168,7 +168,7 @@ export const useLeaderboard = () => {
     return leaderboardData
 }
 
-
+export const COLORS_LIST = ["green", "blue", "red", "yellow"]
 export const colorConverter = (color: string) => {
     if (color === "green") {
         return "#34A853"

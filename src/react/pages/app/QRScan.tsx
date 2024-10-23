@@ -2,7 +2,6 @@ import { IoMdArrowRoundBack } from "react-icons/io"
 import { TitleBar } from "../../components/TitleBar"
 import { Button, Input, Loading } from "react-daisyui"
 import { useAppRouter } from "../../utils/store"
-import { FaPlus } from "react-icons/fa"
 import { Scanner } from '@yudiel/react-qr-scanner';
 import { FaCamera } from "react-icons/fa";
 import { FiCameraOff } from "react-icons/fi"
@@ -14,6 +13,7 @@ import { addPointsToUsers, colorConverter } from "../../utils"
 import { FaTrashAlt } from "react-icons/fa";
 import { notifications } from "@mantine/notifications"
 import { useQueryClient } from "@tanstack/react-query"
+import { FaCheck } from "react-icons/fa";
 
 const UserRowInfo = ({ uid, removeUser }: { uid: string, removeUser: (uid: string) => void }) => {
     const user = useUserProfile(uid)
@@ -135,7 +135,7 @@ export const QRScan = () => {
                         }
                     }}
                 >
-                    <FaPlus size={25} />
+                    <FaCheck size={25} />
                 </Button>
             ]}
         />
