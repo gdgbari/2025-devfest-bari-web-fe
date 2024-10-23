@@ -21,7 +21,7 @@ export const QuizList = () => {
     const queryClient = useQueryClient()
     const filteredQuizzes = quizzes.data?.filter(q => filterSelected == "all" || q.type == filterSelected)
 
-    return <div className="h-full">
+    return <div className="h-full mb-5">
         <TitleBar title="Quizzes" actions={[
             <Button className="btn-circle mr-4" onClick={() => queryClient.invalidateQueries()} loading={quizzes.isFetching}>
                 { !quizzes.isFetching && <TbReload size={32} /> }
