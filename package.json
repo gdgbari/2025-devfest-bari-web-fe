@@ -45,5 +45,5 @@
     "daisyui": "^4.12.10",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1"
-  }
+  } 
 }
