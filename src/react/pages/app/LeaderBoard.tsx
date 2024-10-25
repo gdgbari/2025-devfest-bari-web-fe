@@ -4,11 +4,12 @@ import { Button, Checkbox } from "react-daisyui";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { capitalizeFirstLetter, colorConverter, COLORS_LIST, shuffle, useLeaderboard, type LeaderBoardUser } from "../../utils";
 import { TitleBar } from "../../components/TitleBar";
-import { Box, MultiSelect, NumberInput, Button as MantineButton, Modal, Chip, Container, Space } from "@mantine/core";
+import { Box, MultiSelect, NumberInput, Button as MantineButton, Modal, Chip, Container, Space, Switch } from "@mantine/core";
 import ConfettiExplosion from 'react-confetti-explosion';
 import { PiNavigationArrowDuotone } from "react-icons/pi";
+import { set } from "firebase/database";
 
-const UserRow = ({ user, pos, style }: { user: LeaderBoardUser, pos?: number, style?: CSSProperties }) => {
+const UserRow = ({ user, pos, style, hidePoints }: { user: LeaderBoardUser, pos?: number, style?: CSSProperties, hidePoints?:boolean }) => {
 
     return <div
         className="flex justify-between items-center p-2 border rounded-xl w-full"
@@ -23,7 +24,7 @@ const UserRow = ({ user, pos, style }: { user: LeaderBoardUser, pos?: number, st
             </div>
             <div className="ml-5"><b>{user.nickname}</b></div>
         </div>
-        <div className="mr-5"><b>{user.score} points</b></div>
+        <div className="mr-5">{ !hidePoints && <b>{user.score} points</b> }</div>
     </div>
 }
 
@@ -44,13 +45,18 @@ export const LeaderBoard = () => {
     const [spinningArray, setSpinningArray] = useState<LeaderBoardUser[]>([])
     const [wheelTrigger, setWheelTrigger] = useState(false)
     const [lastSpeed, setLastSpeed] = useState(0)
+    const [finalUserToSelect, setFinalUserToSelect] = useState(1)
+    const [userToSelect, setUserToSelect] = useState(1)
+    const [instantSpinning, setInstantSpinning] = useState(false)
 
-    const selectedQuizNum = Math.floor(spinningArray.length/2)
+    const borderUsers = 2
+    const usersInWheel = borderUsers*2+userToSelect
 
     useEffect(() => {
         if (wheelStatus == "spinning") {
             const copyOfArray = filteredAndSortedUsers.copyWithin(0,filteredAndSortedUsers.length)
-            setSpinningArray(shuffle(copyOfArray).splice(0, 5))
+            setFinalUserToSelect(userToSelect)
+            setSpinningArray(shuffle(copyOfArray).splice(0, usersInWheel))
             setLastSpeed(0)
             setWheelTrigger(!wheelTrigger)
         }
@@ -65,7 +71,7 @@ export const LeaderBoard = () => {
     useEffect(() => {
         if (!showWheel || wheelStatus != "spinning") return
         setLastSpeed(lastSpeed + (lastSpeed < 80 ? 2 : lastSpeed < 150 ? 8 : lastSpeed < 300 ? 20 : 30))
-        if (lastSpeed >= 500) {
+        if (lastSpeed >= 500 || instantSpinning) {
             setWheelStatus("stopped")
             return
         }
@@ -91,6 +97,15 @@ export const LeaderBoard = () => {
         const res = groups.filter((group) => group.color == color)
         if (res.length == 0) return null
         return res[0]
+    }
+
+    useEffect(()=>{
+        setInstantSpinning(false)
+        setUserToSelect(1)
+    }, [showWheel])
+
+    const isUserSelected = (userIndex:number):boolean => {
+        return (userIndex-borderUsers)<finalUserToSelect && (userIndex-borderUsers)>=0
     }
 
     const filteredAndSortedUsers = users.filter((ele)=>{
@@ -216,17 +231,37 @@ export const LeaderBoard = () => {
                     {spinningArray.map((user, i) => (
                         <Box key={i} style={{ display: "flex", justifyContent:"center", alignItems: "center" }}>
                             <Box style={{ width: 80, display: "flex", justifyContent:"center", alignItems: "center" }}>
-                                {i == selectedQuizNum && <>
+                                {isUserSelected(i) && <>
                                     <PiNavigationArrowDuotone style={{ rotate: "135deg"}} size={40} />
                                     <Space h="md" />
                                 </>}
                             </Box>
-                            <UserRow user={user} style={{ marginBottom: 10, marginTop: 10, opacity: selectedQuizNum==i?1:0.4 }} />
+                            <UserRow user={user} style={{ marginBottom: 10, marginTop: 10, opacity: isUserSelected(i)?1:0.4 }} hidePoints />
                         </Box>
                     ))}
                 </Container>
             </Box> }
-            <Box className="justify-center flex mt-[20vh]">
+            <Box className="justify-center flex mt-[3vh] gap-5">
+                {
+                    wheelStatus != "spinning" && <NumberInput
+                        onChange={(v) => v != "" && setUserToSelect(parseInt(v.toString()))}
+                        value={userToSelect}
+                        min={1}
+                        label="Number of users to extract"
+                        max={users.length-borderUsers*2}
+                        step={1}
+                    />
+                }
+                {
+                    wheelStatus != "spinning" && <Switch
+                        onChange={(v) => setInstantSpinning(v.target.checked)}
+                        checked={instantSpinning}
+                        className="mt-8"
+                        label="Instant Spinning ™️"
+                    />
+                }
+            </Box>
+            <Box className="justify-center flex my-[10vh]">
                 {wheelStatus != "spinning" && <MantineButton onClick={()=> setWheelStatus("spinning")} disabled={filteredAndSortedUsers.length == 0}>
                     {wheelStatus == "stopped"? "Spin the wheel again": "Spin the wheel"}
                 </MantineButton>}

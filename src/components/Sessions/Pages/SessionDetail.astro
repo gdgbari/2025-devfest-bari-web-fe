@@ -88,7 +88,7 @@ const translationIcon = await ImportSvg("translation");
     {entry.topics.map((t) => <SessionTopic brightness="dark" topic={t} />)}
   </div>
   <>
-    <p class="text-lg">{t("session.room")}: {entry.room}</p>
+    <p class="text-lg">{entry.room}</p>
     {
       isScheduled && (
         <p class="text-lg">
