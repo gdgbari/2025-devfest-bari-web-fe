@@ -31,7 +31,7 @@ export const AppPage = () => {
                 location.href = "/"
             }
         }
-        if (this_user.isFetching && this_user.data?.role != "staff"){
+        if (this_user.isFetched && this_user.data?.role != "staff"){
             navigate("not-allowed")
         }
         console.log(this_user)
