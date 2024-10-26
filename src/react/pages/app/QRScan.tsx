@@ -8,7 +8,7 @@ import { FiCameraOff } from "react-icons/fi"
 import { useState } from "react"
 import { Space } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { useUserProfile } from "../../utils/query"
+import { useUserProfileById } from "../../utils/query"
 import { addPointsToUsers, colorConverter } from "../../utils"
 import { FaTrashAlt } from "react-icons/fa";
 import { notifications } from "@mantine/notifications"
@@ -16,7 +16,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { FaCheck } from "react-icons/fa";
 
 const UserRowInfo = ({ uid, removeUser }: { uid: string, removeUser: (uid: string) => void }) => {
-    const user = useUserProfile(uid)
+    const user = useUserProfileById(uid)
     return <>
         <div
             className="flex justify-between items-center p-2 border rounded-xl mb-3 sm:flex-row flex-col"

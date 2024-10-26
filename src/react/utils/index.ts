@@ -203,6 +203,21 @@ export const getQuizList = async () => {
     return JSON.parse(data) as Quiz[];
 }
 
+
+export const getUserProfile = async () => {
+    const func = httpsCallable(firebase.functions, "getUserProfile");
+
+    const response = await func();
+    const rawData = response.data;
+    const { error, data } = JSON.parse(rawData as string);
+
+    if (error) {
+        throw data.error;
+    }
+
+    return JSON.parse(data) as UserProfile;
+}
+
 export const getUserProfileById = async (uid: string) => {
     const func = httpsCallable(firebase.functions, "getUserProfileById");
 

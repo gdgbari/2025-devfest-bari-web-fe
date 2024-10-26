@@ -2,7 +2,7 @@ import { Button, Checkbox, Input, Radio } from "react-daisyui"
 import { IoMdArrowRoundBack } from "react-icons/io"
 import { TitleBar } from "../../components/TitleBar"
 import { useAppRouter } from "../../utils/store"
-import { useQuizzes, useUserProfile } from "../../utils/query";
+import { useQuizzes, useUserProfileById } from "../../utils/query";
 import { BsQrCodeScan } from "react-icons/bs";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal } from '@mantine/core';
@@ -74,7 +74,7 @@ export function QuizInfo() {
 
 const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
 
-    const createdBy = useUserProfile(quiz.creatorUid)
+    const createdBy = useUserProfileById(quiz.creatorUid)
     const [showSecrets, setShowSecrets] = useState(false)
     const quizzes = useQuizzes(); //Useful only for checking cache state
     const [quizToggled, setQuizToggled] = useState(false)

@@ -1,7 +1,7 @@
 import { AppMain } from "../AppMain"
 import { firebase } from "../utils"
 import { useEffect } from "react"
-import { useFirebaseUserInfo } from "../utils/query";
+import { useFirebaseUserInfo, useUserProfile } from "../utils/query";
 import { AppBar } from "../components/AppBar";
 import { UserInfoPage } from "./app/UserInfoPage";
 import { EmailVerificationPage } from "./app/EmailVerificationPage";
@@ -19,6 +19,7 @@ export const AppPage = () => {
     const { user, hasLoaded } = useFirebaseUserInfo()
     const { currentPage, navigate } = useAppRouter()
     const emailVerified = firebase.auth.currentUser?.emailVerified ?? false
+    const this_user = useUserProfile()
 
 
     useEffect(() => {
@@ -27,10 +28,14 @@ export const AppPage = () => {
                 location.href = "/login"
             }
             if (user && !emailVerified && currentPage !== "verify-email") {
-                navigate("verify-email")
+                location.href = "/"
             }
         }
-    }, [user, hasLoaded])
+        if (this_user.isFetching && this_user.data?.role != "staff"){
+            navigate("not-allowed")
+        }
+        console.log(this_user)
+    }, [user, hasLoaded, this_user.isFetching])
 
     return <div className="flex flex-col h-full w-full justify-start" style={{minHeight: "100vh"}} >
         <AppBar></AppBar>
@@ -45,6 +50,7 @@ export const AppPage = () => {
                         currentPage == "qrscan" ? <QRScan />:
                         currentPage == "leaderboard" ? <LeaderBoard /> :
                         currentPage == "quiz-info" ?  <QuizInfo /> : 
+                        currentPage == "not-allowed"? <div className="text-2xl">You are not allowed to access this page</div> :
                         "Loading..."
                     }
                 </Container>
