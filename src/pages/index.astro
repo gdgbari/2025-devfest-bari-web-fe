@@ -38,7 +38,26 @@ const getPath = useTranslatedPath(lang);
         </span>
       </InfoContainer>
 
+      <Gallery>
+        <p slot="join-photos-text">Foto del DevFest Bari 2024!</p>
+
+        <a
+          slot="join-photos-btn"
+          class="btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto mr-2"
+          href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">
+          Ufficiali
+          <img src="/assets/vectors/camera.svg" class="h-6 ml-2" />
+        </a>
+        <a
+          slot="join-photos-btn"
+          class="btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto"
+          href="https://photos.app.goo.gl/gLHnJxHhpBuUrBdaA">
+            Community <img src="/assets/vectors/community.svg" class="h-6 ml-2" />
+        </a>
+      </Gallery>
+      
       <SpeakerPreview />
+      { /*
       <TicketSection>
         <div slot="ticket-desc">
           <p>
@@ -75,7 +94,7 @@ const getPath = useTranslatedPath(lang);
             </a> per saperne di più.
           </p>
         </div>
-      </TicketSection>
+      </TicketSection> */} 
 
       <ReasonsToJoin>
         <span slot="reasons-title">Perché partecipare alla DevFest?</span>
@@ -105,16 +124,6 @@ const getPath = useTranslatedPath(lang);
       </Location>
 
       <div class="h-2"></div>
-
-      <Gallery>
-        <p slot="join-photos-text">Alcune foto della DevFest Bari 2023.</p>
-
-        <a
-          slot="join-photos-btn"
-          class="btn btn-ghost border-2 border-black/20 text-2xl px-10 py-3 h-auto"
-          href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">Album</a
-        >
-      </Gallery>
 
       <JoinDiscord>
         <span slot="join-title">Entra nella Community</span>

@@ -39,8 +39,26 @@ const getPath = useTranslatedPath(lang);
         >
       </InfoContainer>
 
+      <Gallery>
+        <p slot="join-photos-text">Photos of DevFest Bari 2024!</p>
+
+        <a
+          slot="join-photos-btn"
+          class="btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto mr-2"
+          href="https://photos.app.goo.gl/gLHnJxHhpBuUrBdaA">
+          Officials
+          <img src="/assets/vectors/camera.svg" class="h-6 ml-2" />
+        </a>
+        <a
+          slot="join-photos-btn"
+          class="btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto"
+          href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">
+            Community <img src="/assets/vectors/community.svg" class="h-6 ml-2" />
+        </a>
+      </Gallery>
+
       <SpeakerPreview />
-      <TicketSection>
+      {/*<TicketSection>
         <div slot="ticket-desc">
           <p>
             Reserve your spot for DevFest Bari 2024 and gain access to the
@@ -73,7 +91,7 @@ const getPath = useTranslatedPath(lang);
           </p>
         </div>
       </TicketSection>
-      
+      */}
       <ReasonsToJoin>
         <span slot="reasons-title">Why attend the DevFest?</span>
         <span slot="reason-learning-title">Learning</span>
@@ -99,16 +117,6 @@ const getPath = useTranslatedPath(lang);
           and industry-oriented research.
         </span>
       </Location>
-
-      <Gallery>
-        <p slot="join-photos-text">Some photos from DevFest Bari 2023.</p>
-
-        <a
-          slot="join-photos-btn"
-          class="btn-content"
-          href="https://photos.app.goo.gl/YoTZStZH9xjAXQyY8">See them</a
-        >
-      </Gallery>
 
       <JoinDiscord>
         <span slot="join-title">Join the Community</span>

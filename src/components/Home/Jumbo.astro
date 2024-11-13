@@ -24,9 +24,11 @@ const t = useTranslations(lang);
       </p>
       <p class="text-3xl md:text-4xl font-semibold">{t("info.locationName")}</p>
       <div class="mt-12 flex gap-4 justify-center flex-col md:flex-row">
-        <a class="btn-content text-xl" target="_blank" href={WebsiteConfig.DEVFEST_EVENT_LINK}
-          >{t("hero.ticketsAvailable")}</a
-        >
+        <a class="btn-content text-xl" target="_blank" href="#gallery">
+          <img src="/assets/vectors/camera.svg" class="h-7 mr-2" />
+          {t("hero.photoAvailable")}
+          <div class="ml-1" />
+        </a>
       </div>
     </div>
     <div class="wheel-container">

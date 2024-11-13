@@ -97,10 +97,10 @@ const pageTitle = `${speaker.fullName} @ ${WebsiteConfig.DEVFEST_NAME}`;
                   <p>{session.room}</p>
                 </a>
                 <div class="flex gap-3 mt-3">
-                    {session.topics.map((t) => (
-                      <SessionTopic brightness="dark" topic={t} />
-                    ))}
-                  </div>
+                  {session.topics.map((t) => (
+                    <SessionTopic brightness="dark" topic={t} />
+                  ))}
+                </div>
               );
             })
         }

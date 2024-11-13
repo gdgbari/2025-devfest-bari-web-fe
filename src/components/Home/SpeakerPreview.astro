@@ -16,9 +16,16 @@ const getPath = useTranslatedPath(lang);
   <div class="grid md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-10 mt-5 mb-10">
     <RandomSpeakerList client:only="react" speakers={speakers??[]} />
   </div>
-
-  <a
-    class="btn-content text-xl px-8"
-    href={getPath("/speakers")}>{t("speaker.seeAll")}</a
-  >
+  <div class="flex items-center gap-4">
+    <a
+      class="btn-content text-xl px-8"
+      href={getPath("/speakers")}>{t("speaker.seeAll")}</a
+    >
+    <a
+      class="btn-content text-xl px-8"
+      href="https://drive.google.com/drive/folders/1IY0pU_2mmmsbblPE8mcDFXGge1bk3Ry-">
+      <img src="/assets/vectors/download.svg" class="h-8 mr-2" />
+        {t("speaker.slides")}
+    </a>
+  </div>
 </div>
