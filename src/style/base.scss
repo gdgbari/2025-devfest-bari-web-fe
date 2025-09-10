@@ -84,70 +84,66 @@ html{
     MULTI COLORED BG
 ------------------------------------*/
 
-@mixin dots($count, $color) {
-    $text-shadow: ();
-    @for $i from 0 through $count {
-        $text-shadow: $text-shadow,
-                    (random()+1.6) + em
-                    (random()+1.2) + em
-                    18px
-                    $color
-    }
-    text-shadow: $text-shadow;
+html.multicolored-bg {
+    min-height: 100vh;
+    position: relative;
+    background: #181818;
+    overflow: hidden;
 }
-html.multicolored-bg{
-    head{
-        display: block;
-        color: transparent;
-    }
-    head::before, head::after,
-    body::before, body::after {
-        display: block;
-        font-size: 300px;
-        color: transparent;
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        width: 5em;
-        height: 5em;
-        content: '.';
-        mix-blend-mode: screen;
-        animation: 44s -27s move infinite ease-in-out alternate;
-    }
-    
-    
-    body::before {
-        @include dots(20, #34A853);
-        animation-duration: 10s;
-        animation-delay: -27s;
-    }
- 
-    body::after {
-        @include dots(20, #4285F4);
-        animation-duration: 20s;
-        animation-delay: -32s;
-    }
-    
-    head::before {
-        @include dots(30, #EA4335);
-        animation-duration: 40s;
-        animation-delay: -23s;
-    }
-    
-    head::after {
-        @include dots(10, #F9AB00);
-        animation-duration: 30s;
-        animation-delay: -19s;
-    }
+html.multicolored-bg::before,
+html.multicolored-bg::after {
+    content: '';
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 120vw;
+    height: 120vh;
+    pointer-events: none;
+    opacity: 0.7;
+    filter: blur(0.5vw) saturate(1.2);
+}
+html.multicolored-bg::before {
+    background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.45) 0 12vw, transparent 13vw),
+        radial-gradient(circle at 15% 25%, #34A853 0 18vw, transparent 19vw),
+        radial-gradient(circle at 85% 20%, #4285F4 0 22vw, transparent 23vw),
+        radial-gradient(circle at 60% 85%, #EA4335 0 28vw, transparent 29vw),
+        radial-gradient(circle at 30% 75%, #F9AB00 0 16vw, transparent 17vw);
+    background-blend-mode: screen, screen, screen, screen, screen;
+    animation: bg-move-1 36s linear infinite alternate;
+}
+html.multicolored-bg::after {
+    background:
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.25) 0 18vw, transparent 19vw),
+        radial-gradient(circle at 70% 60%, #00C3FF 0 18vw, transparent 19vw),
+        radial-gradient(circle at 40% 80%, #FF61A6 0 14vw, transparent 15vw),
+        radial-gradient(circle at 80% 80%, #FFD600 0 12vw, transparent 13vw);
+    background-blend-mode: screen, screen, screen, screen;
+    opacity: 0.5;
+    filter: blur(1vw) saturate(1.5);
+    animation: bg-move-2 48s ease-in-out infinite alternate;
+}
 
-    @keyframes move {
-        from {
-        transform: rotate(0deg) scale(12) translateX(-40px);
-        }
-        to {
-        transform: rotate(180deg) scale(18) translateX(40px);
-        }
-    }   
+@keyframes bg-move-1 {
+    0% {
+        transform: scale(1) rotate(0deg) translateY(0);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(1.15) rotate(12deg) translateY(-3vw);
+        opacity: 1;
+    }
+}
+@keyframes bg-move-2 {
+    0% {
+        transform: scale(1.1) rotate(0deg) translateX(0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1.25) rotate(-10deg) translateX(4vw);
+        opacity: 0.8;
+    }
 }
 
 //Fix mantine on mobile

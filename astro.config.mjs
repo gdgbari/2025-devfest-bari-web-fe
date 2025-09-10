@@ -23,6 +23,6 @@ export default defineConfig({
       forward: ["dataLayer.push"]
     }
   }), mdx(), sitemap(), tailwind(), robotsTxt(), react()],
-  output: "hybrid",
+  output: "static", // hybrid??
   adapter: netlify()
 });

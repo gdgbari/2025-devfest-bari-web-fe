@@ -1,0 +1,67 @@
+{
+  "$ref": "#/definitions/staff",
+  "definitions": {
+    "staff": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "tagline": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "organizer",
+            "collaborator"
+          ]
+        },
+        "image": {
+          "type": "string"
+        },
+        "links": {
+          "type": "object",
+          "properties": {
+            "twitter": {
+              "type": "string"
+            },
+            "instagram": {
+              "type": "string"
+            },
+            "facebook": {
+              "type": "string"
+            },
+            "websites": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "linkedin": {
+              "type": "string"
+            },
+            "github": {
+              "type": "string"
+            },
+            "company": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "tagline",
+        "role",
+        "image"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
