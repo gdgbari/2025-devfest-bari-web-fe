@@ -11,7 +11,7 @@ const { speaker } = Astro.props;
 
 <a
   href={`/speakers/${speaker.slug}`}
-  class="bg-white p-3 flex flex-col items-center text-center"
+  class="not-coloredbg-white p-3 flex flex-col items-center text-center"
 >
   <img src={speaker.profilePicture} alt={speaker.fullName} class="w-32 h-32 rounded-full" />
   <p class="my-2 font-medium">{speaker.fullName}</p>

@@ -7,7 +7,7 @@ const SpeakerPreviewElement = ({ speaker }: { speaker: Speaker }) => {
   return <a
     key={speaker.id}
     href={getPath(`/speakers/${speaker.slug}`)}
-    className="speaker-card"
+    className="not-colored speaker-card"
   >
     <figure>
       <img

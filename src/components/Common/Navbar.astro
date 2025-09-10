@@ -57,7 +57,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
         </label>
       </div>
       <div class="mx-2 flex-1 px-2">
-       <a href={links[0].link}>
+       <a href={links[0].link} class="not-colored">
         <img
         src="/assets/vectors/logo_full.svg"
         alt="Devfest Logo"
@@ -72,7 +72,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
             links.map((item) => (
               <li>
                 <a
-                  class="btn btn-ghost hover:bg-red-pastel hover:text-black"
+                  class="btn btn-ghost hover:bg-red-pastel hover:text-black not-colored"
                   href={item.link}
                 >
                   {item.name}
@@ -98,7 +98,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
                   Object.keys(languages).map((lang) => (
                     <li>
                       <a
-                        class=" hover:bg-red-pastel hover:text-black"
+                        class="not-colored hover:bg-red-pastel hover:text-black"
                         href={translatePath(currentPath, lang)}
                       >
                         {languages[lang]}
@@ -120,7 +120,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
       {
         links.map((item) => (
           <li class="hover:bg-black/10">
-            <a href={item.link}>{item.name}</a>
+            <a href={item.link} class="not-colored">{item.name}</a>
           </li>
         ))
       }
@@ -135,7 +135,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
             {
               Object.keys(languages).map((lang) => (
                 <a
-                  class="px-4 py-2 hover:bg-black/15"
+                  class="not-colored text-white px-4 py-2 hover:bg-black/15"
                   href={translatePath(currentPath, lang)}
                 >
                   {languages[lang]}

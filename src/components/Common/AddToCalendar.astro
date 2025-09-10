@@ -30,13 +30,13 @@ const appleLink = `data:text/calendar;charset=utf8, BEGIN:VCALENDAR%0AVERSION:2.
 ---
 
 <div class="dropdown dropdown-end">
-    <div tabindex="0" role="button" class="btn m-1 text-red  rounded-md hover:bg-red/20 text-center border-2 border-red bg-white p-3 flex" style="width: 50px; height: 50px;">
+    <div tabindex="0" role="button" class="btn m-1 text-red rounded-md hover:bg-red/20 text-center border-2 border-red bg-white p-3 flex" style="width: 50px; height: 50px;">
         <img src="/assets/vectors/add-calendar.svg" alt="add to calendar"/>
         <slot />
     </div>
     <ul tabindex="0" class="menu dropdown-content bg-base-100 z-[1] w-52 p-2 shadow float-left rounded-md border-2 border-red">
-        <li><a href={googleLink} target="_blank" class="focus:text-red">Google</a></li>
-        <li><a href={outlookLink} target="_blank" class="focus:text-red">Outlook</a></li>
-        <li><a href={appleLink} target="_blank" class="focus:text-red">Apple</a></li>
+        <li><a href={googleLink} target="_blank" class="not-colored focus:text-red">Google</a></li>
+        <li><a href={outlookLink} target="_blank" class="not-colored focus:text-red">Outlook</a></li>
+        <li><a href={appleLink} target="_blank" class="not-colored focus:text-red">Apple</a></li>
     </ul>
 </details>

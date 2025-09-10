@@ -87,7 +87,7 @@ const pageTitle = `${speaker.fullName} @ ${WebsiteConfig.DEVFEST_NAME}`;
               });
               const isScheduled = dateStart.getTime() > 0;
               return (
-                <a class="flex flex-col" href={getPath(`/sessions/${session.slug}`)}>
+                <a class="not-colored flex flex-col" href={getPath(`/sessions/${session.slug}`)}>
                   <p class="text-xl font-medium"> {session.title}</p>
                   {isScheduled && (
                     <p>

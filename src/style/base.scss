@@ -55,9 +55,16 @@ html{
     @apply flex flex-col card items-stretch bg-red-pastel md:hover:scale-110 h-full w-full text-center animated max-w-[400px];
 }
 
-.faq-page a {
-    @apply text-red hover:text-red-pastel;
+a:not(.not-colored) {
+    @apply text-red;
+    transition: 0.3s;
 }
+
+a:not(.not-colored):hover {
+    @apply text-red-pastel;
+    transition: 0.3s;
+}
+
 
 /*------------------------------------
     WHEEL ANIMATION

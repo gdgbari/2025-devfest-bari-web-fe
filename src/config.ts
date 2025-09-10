@@ -5,10 +5,11 @@ export class WebsiteConfig {
     |              GENERAL SETTINGS              |  
     --------------------------------------------*/
     
-    public static readonly DEVFEST_NAME: string = 'Devfest Bari 2024';
+    public static readonly DEVFEST_NAME: string = 'Devfest Bari 2025';
     public static readonly DEVFEST_LOGO_LIGHT: string = '/assets/images/logo_light.webp';
     public static readonly DEVFEST_LOGO_DARK: string = '/assets/images/logo_dark.webp';
-    public static readonly DEVFEST_EVENT_LINK: string = redirectUrl('https://gdg.community.dev/e/mnr6ek/');
+    public static readonly DEVFEST_EVENT_LINK: string = redirectUrl('https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2025/');
+    public static readonly DEVFEST_WEBSITE_LINK: string = 'https://bari.devfest.it';
     public static readonly ALLOWED_REDIRECT_HOSTS = [
         "bari.devfest.it",
         "dev.devfest.it",
@@ -20,8 +21,8 @@ export class WebsiteConfig {
     |              EVENT INFO                    |  
     --------------------------------------------*/
 
-    public static readonly EVENT_START : Date = new Date('2024-10-26');
-    public static readonly EVENT_END : Date = new Date('2024-10-26');
+    public static readonly EVENT_START : Date = new Date("2025-11-29T09:00:00+01:00");
+    public static readonly EVENT_END : Date = new Date("2025-11-29T19:00:00+01:00");
     public static readonly EVENT_TIMEZONE : string = 'Europe/Rome';
     public static readonly EVENT_LOCATION_NAME : String = 'Polythecnic of Bari';
     public static readonly EVENT_LOCATION_CITY : String = 'Bari';
@@ -33,8 +34,8 @@ export class WebsiteConfig {
     |              SOCIAL SHARE                  |  
     --------------------------------------------*/
 
-    public static readonly TWITTER_SOCIAL_TEXT : string = 'Devfest Bari 2024 {url}';
-    public static readonly TELEGRAM_MESSAGE_TEXT : string = 'Devfest Bari 2024';
+    public static readonly TWITTER_SOCIAL_TEXT : string = 'Devfest Bari 2025 {url}';
+    public static readonly TELEGRAM_MESSAGE_TEXT : string = 'Devfest Bari 2025';
 
     /*--------------------------------------------
     |              SOCIAL PAGES                  |  

@@ -43,21 +43,20 @@ const getPath = useTranslatedPath(lang);
 
         <a
           slot="join-photos-btn"
-          class="btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto mr-2"
+          class="not-colored btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto mr-2"
           href="https://photos.app.goo.gl/AfzLSMGbazxceF2K7">
           Ufficiali
           <img src="/assets/vectors/camera.svg" class="h-6 ml-2" />
         </a>
         <a
           slot="join-photos-btn"
-          class="btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto"
+          class="not-colored btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto"
           href="https://photos.app.goo.gl/gLHnJxHhpBuUrBdaA">
             Community <img src="/assets/vectors/community.svg" class="h-6 ml-2" />
         </a>
       </Gallery>
 
       <SpeakerPreview />
-      { /*
       <TicketSection>
         <div slot="ticket-desc">
           <p>
@@ -72,7 +71,7 @@ const getPath = useTranslatedPath(lang);
             <a
               href="https://forms.gle/NM2boABkkXr4R3N96"
               target="_blank"
-              class="text-red hover:text-red-pastel">Scrivici</a
+            >Scrivici</a
             > per organizzare la vostra partecipazione.
           </p>
           <p class="mt-4 text-3xl font-medium mb-2">
@@ -83,18 +82,17 @@ const getPath = useTranslatedPath(lang);
             invece vuoi partecipare in autonomia, <a
               target="_blank"
               href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2024/#QeHcv97kND"
-              class="text-red hover:text-red-pastel">Contattaci</a
+            >Contattaci</a
             > e ti aiuteremo noi.
           </p>
           <p class="mt-10">
             Consulta le <a
-              class="text-red hover:text-red-pastel"
               href={getPath("/faq", lang)}
               >FAQ
             </a> per saperne di più.
           </p>
         </div>
-      </TicketSection> */} 
+      </TicketSection>
 
       <ReasonsToJoin>
         <span slot="reasons-title">Perché partecipare alla DevFest?</span>
