@@ -34,7 +34,6 @@ export const AppPage = () => {
         if (this_user.isFetched && this_user.data?.role != "staff"){
             navigate("not-allowed")
         }
-        console.log(this_user)
     }, [user, hasLoaded, this_user.isFetching])
 
     return <div className="flex flex-col h-full w-full justify-start" style={{minHeight: "100vh"}} >

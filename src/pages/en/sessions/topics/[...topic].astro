@@ -1,9 +1,0 @@
----
-import SessionTopicList, { getTopicPaths } from '../../../../components/Sessions/Pages/SessionTopicList.astro';
-
-
-export const getStaticPaths = getTopicPaths
-const { sessions, topic } = Astro.props;
----
-
-<SessionTopicList sessions={sessions} topic={topic} />

@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../components/Common/BaseLayout.astro";
+import { getLangFromUrl, useTranslationsData } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslationsData(lang);
+
+const faq = t("faq.questions") as { group: string; questions: { question: string; answer: string }[] }[];
+
+---
+
+<BaseLayout pageTitle="Faq">
+  <div class="faq-page flex flex-col gap-10">
+    {
+      faq.map((group) => (
+        <div class="grid md:grid-cols-2 grid-flow-row gap-4 text-white">
+          <div class="flex flex-col justify-start">
+            <h2 class="font-semibold text-4xl">{group.group}</h2>
+          </div>
+          <div>
+            {group.questions.map((q) => (
+              <p>
+                <h3 class="font-medium text-2xl my-2">{q.question}</h3>
+                <p class="text-md">
+                  <Fragment set:html={q.answer} />
+                </p>
+              </p>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</BaseLayout>

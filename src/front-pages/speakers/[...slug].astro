@@ -1,18 +1,18 @@
 ---
-import BaseLayout from "../../../components/Common/BaseLayout.astro";
-import SpeakersLinks from "../../../components/Speakers/SpeakersLinks.astro";
-import { WebsiteConfig } from "../../../config";
-import { getLangFromUrl, useTranslatedPath, useTranslations } from "../../../i18n/utils";
-import { type Speaker } from "../../../data/types/sessionize";
-import SessionTopic from "../../Sessions/SessionTopic.astro";
-import { getSpeakers } from "../../../data/repositories/sessionize_repository";
+import BaseLayout from "../../components/Common/BaseLayout.astro";
+import SpeakersLinks from "../../components/Speakers/SpeakersLinks.astro";
+import { WebsiteConfig } from "../../config";
+import { getLangFromUrl, useTranslatedPath, useTranslations } from "../../i18n/utils";
+import { type Speaker } from "../../data/types/sessionize";
+import SessionTopic from "../../components/Sessions/SessionTopic.astro";
+import { getSpeakers } from "../../data/repositories/sessionize_repository";
 // 1. Generate a new path for every collection speaker
 
 interface Props {
   speaker: Speaker;
 }
 
-export async function getSpeakerPaths() {
+export async function getStaticPaths() {
   const speakerEntries = await getSpeakers(true);
   return speakerEntries.map((speaker) => ({
     params: { slug: speaker.slug },

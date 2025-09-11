@@ -1,9 +1,0 @@
----
-import SessionDetail from "../../../components/Sessions/Pages/SessionDetail.astro";
-import { getSessionSlugPaths } from "../../../components/Sessions/Pages/SessionDetail.astro";
-
-export const getStaticPaths = getSessionSlugPaths
-const { entry } = Astro.props;
----
-
-<SessionDetail entry={entry} />

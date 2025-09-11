@@ -8,7 +8,21 @@ export function getLangFromUrl(url: URL) {
 
 export function useTranslations(lang: keyof typeof ui) {
     return function t(key: keyof typeof ui[typeof defaultLang]) {
-        return ui[lang][key] || ui[defaultLang][key];
+        const result = (ui[lang][key] || ui[defaultLang][key]);
+        if (!result) {
+            console.warn(`Missing translation for key "${key}" in language "${lang}"`);
+        }
+        return (result ?? "ERROR: translation missing") as string;
+    }
+}
+
+export function useTranslationsData(lang: keyof typeof ui) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        const result = (ui[lang][key] || ui[defaultLang][key]);
+        if (!result) {
+            console.warn(`Missing translation for key "${key}" in language "${lang}"`);
+        }
+        return result;
     }
 }
 

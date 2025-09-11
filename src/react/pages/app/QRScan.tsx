@@ -158,8 +158,6 @@ export const QRScan = () => {
                         onScan={(result) => {
                             let usedUIDS = [...form.values.userIdList]
                             result.forEach((r) => {
-                                
-                                console.log(r.rawValue)
    
                                 if (!r.rawValue.startsWith("user:")){
                                     return

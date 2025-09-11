@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../components/Common/BaseLayout.astro";
+import { getSchedule } from "../data/repositories/sessionize_repository";
+import ScheduleTab from "../components/Schedule/ScheduleTab.astro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const schedule = await getSchedule()
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+//const tab1Rooms = [51235, 51236, 51237, 53347, 53346];
+//const tab2Rooms = [53348, 53349, 53350];
+
+---
+
+<BaseLayout pageTitle="Schedule">
+  <div class="text-white">
+    <ScheduleTab schedule={schedule} />
+    {/*
+    <div role="tablist" class="tabs tabs-boxed bg-transparent w-full tabs-lg mt-[-20px]">
+      <input
+        type="radio"
+        name="schedule_tabs"
+        role="tab"
+        class="tab text-white rounded-md"
+        aria-label="Talks"
+        checked="checked"
+      />
+      <div role="tabpanel" class="tab-content mt-3">
+        <ScheduleTab schedule={schedule} />
+      </div>
+      
+      <input
+        type="radio"
+        name="schedule_tabs"
+        role="tab"
+        class="tab text-white rounded-xl"
+        aria-label="Workshops"
+      />
+      <div role="tabpanel" class="tab-content mt-3">
+        <ScheduleTab schedule={schedule} rooms={tab2Rooms} />
+      </div>
+    
+    </div>
+    */}
+    
+    {schedule.length == 0?<h3 class="underline">{t("scheduling.noschedule")}</h3>:null}
+
+  </div>
+</BaseLayout>

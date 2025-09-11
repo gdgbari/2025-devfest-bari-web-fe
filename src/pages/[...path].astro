@@ -1,0 +1,351 @@
+---
+/**
+ * Router Universale per Astro - Gestione Multilingue Automatica
+ * 
+ * Questo file mira a riprodurre il normale comportamento del router di Astro, 
+ * ma evitando di duplicare i file per le varie traduzioni.
+ * 
+ * FUNZIONAMENTO:
+ * - I percorsi delle pagine vengono dinamicamente presi e replicati per le 
+ *   varie lingue dalla cartella "front-pages"
+ * - La cartella "back-pages" viene integrata in modo normale senza traduzioni
+ * - Supporta sia route statiche che dinamiche (con parametri [slug], [...path])
+ * - Rileva automaticamente i file e genera tutti i percorsi necessari
+ * - Passa tutti i props di Astro alle componenti dinamiche
+ * 
+ * STRUTTURA:
+ * - front-pages/ → Pagine tradotte (duplicate per ogni lingua in extraLangs)
+ * - back-pages/  → Pagine non tradotte (integrate normalmente)
+ * 
+ * LINGUE SUPPORTATE: definite in extraLangs
+ */
+export const extraLangs = ["en"];
+
+export async function collectPaths(allComponents: Record<string, () => Promise<unknown>>, originalPath: string, translated: boolean = false) {
+  // Automatically discover all page components
+  const allRoutes: ({ params: { path: string } } & any)[] = [];
+
+  // Process each component to generate routes
+  const componentPaths = Object.keys(allComponents);
+  
+  // Process all components in parallel
+  await Promise.all(componentPaths.map(async (componentPath) => {
+    // Extract the route from the component path - handle both front-pages and back-pages
+    let route = componentPath
+    .replace(`../${originalPath}/`, '')
+    .replace('.astro', '');
+
+    // Handle dynamic route patterns
+    if (route.includes('[') && route.includes(']')) {
+      // Extract the base path and dynamic segment
+      const segments = route.split('/');
+      const dynamicSegmentIndex = segments.findIndex(seg => seg.startsWith('['));
+      
+      if (dynamicSegmentIndex !== -1) {
+        const basePath = segments.slice(0, dynamicSegmentIndex).join('/');
+        
+        // Add the base path
+        if (basePath) {
+          allRoutes.push({ params: { path: basePath } });
+        }
+        
+        // Import the dynamic component and get its static paths
+        try {
+          const dynamicComponent = await allComponents[componentPath]();
+          
+          // Check if the component has getStaticPaths
+          if (dynamicComponent && typeof dynamicComponent === 'object' && 'getStaticPaths' in dynamicComponent) {
+            const staticPaths = await (dynamicComponent as any).getStaticPaths();
+            
+            // Process the static paths from the dynamic component
+            if (Array.isArray(staticPaths)) {
+              staticPaths.forEach(pathObj => {
+                if (pathObj && pathObj.params) {
+                  // Extract the dynamic parameter names from the route segment
+                  const dynamicSegment = segments[dynamicSegmentIndex];
+                  
+                  // Handle different dynamic patterns
+                  if (dynamicSegment.startsWith('[...')) {
+                    // Rest parameter like [...slug]
+                    const paramName = dynamicSegment.slice(4, -1); // Remove [...] 
+                    const paramValue = pathObj.params[paramName];
+                    
+                    if (paramValue) {
+                      const fullRoute = basePath ? `${basePath}/${paramValue}` : paramValue;
+                      allRoutes.push({ ...pathObj, params: { ...(pathObj.params??{}), path: fullRoute } });
+                    }
+                  } else if (dynamicSegment.startsWith('[') && dynamicSegment.endsWith(']')) {
+                    // Single parameter like [slug]
+                    const paramName = dynamicSegment.slice(1, -1); // Remove []
+                    const paramValue = pathObj.params[paramName];
+                    
+                    if (paramValue) {
+                      const fullRoute = basePath ? `${basePath}/${paramValue}` : paramValue;
+                      allRoutes.push({ ...pathObj, params: { ...(pathObj.params??{}), path: fullRoute } });
+                    }
+                  }
+                }
+              });
+            }
+          }
+        } catch (error) {
+          // If we can't import or process the dynamic component, just add the base path
+          console.warn(`Could not process dynamic routes for ${componentPath}:`, error);
+        }
+      }
+    } else {
+      // Static route - add as-is unless it's index
+      if (route !== 'index') {
+        allRoutes.push({ params: { path: route } });
+      }
+    }
+  }));
+  
+  const routes = allRoutes.concat([
+    // Add root route
+    { params: { path: undefined } }
+  ]);
+
+  console.log('Collected routes for', originalPath, ':', routes);
+
+  if (translated) {
+    // Add translated routes
+    const translatedPaths: any[] = [];
+    routes.forEach(pathObj => {
+      translatedPaths.push(pathObj);
+      extraLangs.forEach(lang => {
+        if (pathObj.params.path) {
+          translatedPaths.push({ ...pathObj, params: { ...(pathObj.params??{}), path: `${lang}/${pathObj.params.path}` } });
+        } else {
+          translatedPaths.push({ params: { path: lang } });
+        }
+      });
+    });
+    return translatedPaths;
+  }
+  return routes;
+
+
+}
+
+// Pre-calculate all available paths for use in getPageComponent
+export const [frontPaths, backPaths] = await Promise.all([
+  import.meta.glob(`../front-pages/**/*.astro`),
+  import.meta.glob(`../back-pages/**/*.astro`)
+]);
+
+export const allAvailablePaths = {
+  'front-pages': frontPaths,
+  'back-pages': backPaths
+};
+
+export async function getStaticPaths() {
+  const [front, back] = await Promise.all([
+    collectPaths(frontPaths, "front-pages", true),
+    collectPaths(backPaths, "back-pages", false)
+  ]);
+  return [...front, ...back];
+}
+
+const { path } = Astro.params;
+
+// Automatically resolve component based on path
+const getPageComponent = async (routePath) => {
+  let route = routePath || "";
+  let lang = '';
+  let isTranslated = false;
+  
+  console.log('Original routePath:', routePath);
+  
+  // Extract language prefix
+  extraLangs.forEach(langCode => {
+    if (route.startsWith(`${langCode}/`) || route === langCode) {
+      lang = langCode;
+      route = route === langCode ? '' : route.substring(langCode.length + 1);
+      isTranslated = true;
+    }
+  });
+
+  console.log('After lang extraction - lang:', lang, 'route:', route, 'isTranslated:', isTranslated);
+
+  const componentName = route || 'index';
+  
+  // Determine which folder to search in based on whether it's translated
+  const folders = isTranslated ? ['front-pages'] : ['front-pages', 'back-pages'];
+
+  console.log('Searching in folders:', folders, 'for component:', componentName);
+
+  for (const folder of folders) {
+    try {
+      // Get pre-calculated paths for this folder
+      const folderPaths = allAvailablePaths[folder];
+      if (!folderPaths) continue;
+      
+      // Check if there's a static path that matches exactly (before trying dynamic imports)
+      const staticPaths = Object.keys(folderPaths).filter(filePath => {
+        let cleanPath = filePath
+          .replace(`../${folder}/`, '')
+          .replace(`.astro`, '');
+        
+        // Remove language prefix if present
+        if (lang && cleanPath.startsWith(`${lang}/`)) {
+          cleanPath = cleanPath.substring(lang.length + 1);
+        }
+        
+        // Check for exact match (no dynamic segments)
+        const hasNoDynamicSegments = !cleanPath.includes('[') && !cleanPath.includes(']');
+        
+        if (!hasNoDynamicSegments) return false;
+        
+        // Handle index matching: "index" component should match both "index" files and empty path (root level files)
+        if (componentName === 'index') {
+          return cleanPath === 'index' || cleanPath === '';
+        }
+        
+        // Handle regular component matching: check both direct match and {componentName}/index pattern
+        return cleanPath === componentName || cleanPath === `${componentName}/index`;
+      });
+
+      // Try language-specific component first from static paths
+      if (lang && staticPaths.length > 0) {
+        const langSpecificPath = staticPaths.find(path => path.includes(`${lang}/${componentName}`));
+        if (langSpecificPath) {
+          try {
+            console.log(`Found static lang path: ${langSpecificPath}`);
+            const langComponent = await folderPaths[langSpecificPath]();
+            return (langComponent as any).default;
+          } catch (langError) {
+            console.log('Static lang component load failed:', langError.message);
+          }
+        }
+      }
+      
+      // Try exact match from static paths
+      if (staticPaths.length > 0) {
+        for (const staticPath of staticPaths) {
+          try {
+            console.log(`Found static path: ${staticPath}`);
+            const component = await folderPaths[staticPath]();
+            return (component as any).default;
+          } catch (staticError) {
+            console.log('Static component load failed:', staticError.message);
+            continue;
+          }
+        }
+      }
+      
+      // If no static paths found, fall back to dynamic imports for edge cases
+      // Try language-specific component first
+      if (lang) {
+        try {
+          console.log(`Fallback trying: ../${folder}/${lang}/${componentName}.astro`);
+          const langComponent = await import(`../${folder}/${lang}/${componentName}.astro`);
+          return langComponent.default;
+        } catch (langError) {
+          console.log('Lang-specific component not found:', langError.message);
+        }
+      }
+      
+      // Try exact match for static routes
+      try {
+        console.log(`Fallback trying: ../${folder}/${componentName}.astro`);
+        const component = await import(`../${folder}/${componentName}.astro`);
+        return component.default;
+      } catch (staticError) {
+        console.log('Static component not found:', staticError.message);
+        
+        // Try {componentName}/index.astro pattern
+        try {
+          console.log(`Fallback trying: ../${folder}/${componentName}/index.astro`);
+          const indexComponent = await import(`../${folder}/${componentName}/index.astro`);
+          return indexComponent.default;
+        } catch (indexError) {
+          console.log('Index component not found:', indexError.message);
+        }
+        
+        // Find actual dynamic files using pre-calculated paths
+        try {
+          // Use pre-calculated paths for this folder
+          const folderPaths = allAvailablePaths[folder];
+          if (!folderPaths) continue;
+          
+          // Look for files with brackets that could match our route
+          const segments = route.split('/');
+          
+          for (let i = segments.length; i >= 0; i--) {
+            const basePath = segments.slice(0, i).join('/');
+            
+            // Find matching dynamic files
+            const matchingFiles = Object.keys(folderPaths).filter(filePath => {
+              let cleanPath = filePath
+                .replace(`../${folder}/`, '')
+                .replace(`.astro`, '');
+              
+              // Remove language prefix if present
+              if (lang && cleanPath.startsWith(`${lang}/`)) {
+                cleanPath = cleanPath.substring(lang.length + 1);
+              }
+              
+              // Check if this file could match our route structure
+              if (basePath && !cleanPath.startsWith(basePath)) {
+                return false;
+              }
+              
+              const fileSegments = cleanPath.split('/');
+              const dynamicSegmentIndex = fileSegments.findIndex(seg => seg.includes('[') && seg.includes(']'));
+              
+              if (dynamicSegmentIndex === -1) {
+                return false;
+              }
+              
+              // Check if the base path matches
+              const fileBasePath = fileSegments.slice(0, dynamicSegmentIndex).join('/');
+              return fileBasePath === basePath;
+            });
+            
+            // Try to load the first matching dynamic file
+            for (const matchingFile of matchingFiles) {
+              try {
+                console.log(`Found and trying dynamic file: ${matchingFile}`);
+                const dynamicComponent = await folderPaths[matchingFile]();
+                return (dynamicComponent as any).default;
+              } catch (dynamicError) {
+                console.log(`Failed to load dynamic file ${matchingFile}:`, dynamicError.message);
+                continue;
+              }
+            }
+          }
+        } catch (pathError) {
+          console.log('Error using pre-calculated paths:', pathError.message);
+        }
+      }
+    } catch (folderError) {
+      console.log('Folder error:', folderError.message);
+    }
+  }
+  
+  console.log('No component found, falling back to 404');
+  
+  // Final fallback to 404
+  try {
+    const notFound = await import('./404.astro');
+    return notFound.default;
+  } catch (notFoundError) {
+    return null;
+  }
+};
+
+const PageComponent = await getPageComponent(path);
+
+// Prepare props to pass to the dynamic component
+const componentProps = {
+  ...Astro.props,
+  path,
+  params: Astro.params,
+  url: Astro.url,
+  request: Astro.request
+};
+---
+
+{PageComponent && <PageComponent {...componentProps} />}
+{!PageComponent && <div>404 - Page not found</div>}

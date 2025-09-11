@@ -20,9 +20,6 @@ export function QuizInfo() {
     const quiz = quizzes.data?.find(q => q.quizId == quizId)
 
     const qrCodeRef = useRef<QRCode>();
-    if (quiz) {
-        console.log(quiz)
-    }
 
     useEffect(() => {
         if (quizId == null){

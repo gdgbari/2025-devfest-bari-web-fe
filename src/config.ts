@@ -24,7 +24,8 @@ export class WebsiteConfig {
     public static readonly EVENT_START : Date = new Date("2025-11-29T09:00:00+01:00");
     public static readonly EVENT_END : Date = new Date("2025-11-29T19:00:00+01:00");
     public static readonly EVENT_TIMEZONE : string = 'Europe/Rome';
-    public static readonly EVENT_LOCATION_NAME : String = 'Polythecnic of Bari';
+    public static readonly EVENT_LOCATION_NAME_ITA : String = 'Politecnico di Bari';
+    public static readonly EVENT_LOCATION_NAME_ENG : String = 'Polythecnic of Bari';
     public static readonly EVENT_LOCATION_CITY : String = 'Bari';
     public static readonly EVENT_LOCATION_ADDRESS : String = 'Via Edoardo Orabona 4';
     public static readonly EVENT_LOCATION_FULL_ADDRESS : String = ` ${this.EVENT_LOCATION_ADDRESS}, 70126 Bari BA`;
@@ -55,7 +56,9 @@ export class WebsiteConfig {
     public static readonly NUM_PARTECIPENTS : number = 700;
     public static readonly NUM_TRACKS_FALLBACK : number = 7;
 
-    public static readonly SESSIONIZE_API_KEY = "1rh747m6";
+    public static readonly TALKS_SLIDE_DOWNLOAD_LINK : string = '';
+
+    public static readonly SESSIONIZE_API_KEY = "i9otum6s";
 
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional

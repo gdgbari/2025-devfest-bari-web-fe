@@ -1,7 +1,8 @@
 ---
+/*
 import { WebsiteConfig } from "../../config";
 import PageHead from "../../components/Common/PageHead.astro";
-import { useTranslations } from "../../i18n/utils";
+import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
 export const prerender = false;
 
@@ -48,13 +49,11 @@ if (isInstagram || isFacebook){
 
 
 
-const lang = "it"
+const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 ---
 
-<!-- Below is your "component template." It's just HTML, but with
-     some magic sprinkled in to help you build great templates. -->
 <html lang={lang} class="scroll-smooth flex flex-col min-h-screen multicolored-bg">
   <PageHead />
   <body class="flex flex-col flex-1">
@@ -77,10 +76,10 @@ const t = useTranslations(lang);
                 }
             </p>
             <p class="text-xl md:text-3xl font-semibold mb-5">{t("info.locationName")}</p>
-            <p class="mb-2 underline">Per utilizzare questa pagina ti chiediamo di usare il tuo browser!</p>
-            <p class="underline">Clicca i 3 puntini in alto e seleziona "Apri nel browser esterno"</p>
+            <Fragment set:html={t("redirect.instructions")} />
         </div>
           
     </main>
   </body>
 </html>
+*/

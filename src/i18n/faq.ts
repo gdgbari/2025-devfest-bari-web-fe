@@ -1,7 +1,109 @@
----
-import BaseLayout from "../components/Common/BaseLayout.astro";
 
-const faq = [
+export const faqEng = [
+  {
+    group: "General",
+    questions: [
+      {
+        question: "How do I get there?",
+        answer:
+          "You can easily reach Polytechnic of Bari with public transportation or just by walking. Please check the location page where you can find further details.",
+      },
+      {
+        question: "Do I need a ticket to join DevFest Bari?",
+        answer:
+          "Yes, participation to the DevFest is free, but registration is mandatory. Being in the waiting list is not sufficient to participate to the conference.",
+      },
+      {
+        question: "I can't attend the DevFest, what should I do?",
+        answer:
+          "If you can't attend we kindly ask you to cancel your order via the GDG platform, or either send us an email (we can do it for you).",
+      },
+      {
+        question: "Do I need to print my tickets?",
+        answer:
+          "No, you can use your smartphone to show us the ticket. Showing the ticket email with the QR code is also enough. Please make sure to have your ticket ready to do not slow down the check-in process.",
+      },
+      {
+        question: "Should I come even if I'm still on the waiting list?",
+        answer:
+          "You can come even if you're in the waiting list, but we can't assure you will get a spot. We will release tickets of people that don't show up during day so you may have a chance to get in, but this is out of our control, and we can't tell you in advance if you'll get a place.",
+      },
+      {
+        question: "Can I give my ticket to a friend?",
+        answer:
+          "Sadly this is not possible. If you're not planning to come, please cancel your ticket and ask your friend to register themselves for a new ticket.",
+      },
+      {
+        question: "Can I leave the conference and come back later?",
+        answer:
+          "Yes, you can always leave the conference and come back whenever you want. To enter the venue you anyway always need your badge (you will get it at the entrance).",
+      },
+      {
+        question: "What should I carry on to the conference?",
+        answer:
+          "Your ticket. That's the only necessary thing you shouldn't forget.",
+      },
+      {
+        question: "Are the sessions recorded?",
+        answer: "No, we are not recording/live-streaming the sessions.",
+      },
+    ],
+  },
+  {
+    group: "Schools",
+    questions: [
+      {
+        question:
+          "I am a high school student, and my class has registered to participate in the Devfest. Do I need to get a ticket?",
+        answer: "Yes, remember to get the school ticket.",
+      },
+      {
+        question:
+          "I am a high school student, and my class is not registered to participate in the Devfest, but I still want to participate on my own. How can I join?",
+        answer:
+          "If you are coming on your own, you can still participate in the Devfest! In this case, remember to get a regular ticket.",
+      },
+      {
+        question:
+          "I have a school ticket. Is it mandatory to follow the track of talks dedicated to students?",
+        answer:
+          "Following the track of talks dedicated to students is not mandatory, but it is highly recommended.",
+      },
+      {
+        question: "What does the school ticket include?",
+        answer:
+          "The school ticket grants access to the entire event area and allows participation in all tracks and workshops. It also provides priority access to the student track, specifically designed for high school students/new graduates. The track will last for half the morning to cover school hours. For the same reason, the school ticket does not include a lunch box.",
+      },
+      {
+        question: "What should I do if I have problems with the tickets?",
+        answer:
+          "If you have any issues with the tickets, please do not hesitate to contact us privately.",
+      },
+      {
+        question: "Are the tickets available in limited quantities?",
+        answer:
+          "Yes, tickets are limited in number, so we recommend that the entire class registers at the same time to avoid anyone missing out on a ticket.",
+      },
+      {
+        question: "What should I do if I can no longer participate?",
+        answer:
+          "If you can no longer participate, please cancel your registration for the event so that someone else can attend!",
+      },
+      {
+        question: "I am a teacher; do I also need to register?",
+        answer:
+          'Yes, if you are a teacher, you must still register using the school ticket. Remember to use your institutional email. Also, remember to register the class by filling out the form <a href="https://forms.gle/NM2boABkkXr4R3N96">schools@devfest bari 2024</a>.',
+      },
+      {
+        question: "I am a teacher; how can I register the class?",
+        answer:
+          'To register the class, you need to fill out the form <a href="https://forms.gle/NM2boABkkXr4R3N96">schools@devfest bari 2024</a>. The form is an expression of interest that allows us to have a better view of the classes that want to participate. It is still necessary for each student to individually get a ticket to participate. The spots are limited, so we recommend doing it as soon as possible.',
+      },
+    ],
+  },
+];
+
+export const faqIta = [
   {
     group: "Generali",
     questions: [
@@ -105,28 +207,3 @@ const faq = [
     ],
   },
 ];
----
-
-<BaseLayout pageTitle="Faq">
-  <div class="faq-page flex flex-col gap-10">
-    {
-      faq.map((group) => (
-        <div class="grid md:grid-cols-2 grid-flow-row gap-4 text-white">
-          <div class="flex flex-col justify-start">
-            <h2 class="font-semibold text-4xl">{group.group}</h2>
-          </div>
-          <div>
-            {group.questions.map((q) => (
-              <p>
-                <h3 class="font-medium text-2xl my-2">{q.question}</h3>
-                <p class="text-md">
-                  <Fragment set:html={q.answer} />
-                </p>
-              </p>
-            ))}
-          </div>
-        </div>
-      ))
-    }
-  </div>
-</BaseLayout>

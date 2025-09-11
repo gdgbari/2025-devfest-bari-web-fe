@@ -1,10 +1,10 @@
 ---
 
 import PageHead from "../components/Common/PageHead.astro";
-import { useTranslations } from "../i18n/utils";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import { WebsiteConfig } from "../config";
 
-const lang = "it"
+const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 

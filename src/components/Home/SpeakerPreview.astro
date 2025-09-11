@@ -1,4 +1,5 @@
 ---
+import { WebsiteConfig } from "../../config";
 import { getSpeakers } from "../../data/repositories/sessionize_repository";
 import { getLangFromUrl, useTranslatedPath, useTranslations } from "../../i18n/utils";
 import { RandomSpeakerList } from "./RandomSpeakerList";
@@ -12,20 +13,27 @@ const getPath = useTranslatedPath(lang);
 ---
 
 <div class="py-14 main-container px-4" >
-  <h2 class="text-6xl mb-10 font-bold text-white">{t("info.speakers")}</h2>
-  <div class="grid md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-10 mt-5 mb-10">
-    <RandomSpeakerList client:only="react" speakers={speakers??[]} />
-  </div>
-  <div class="flex items-center gap-4 sm:flex-row flex-col">
-    <a
-      class="not-colored btn-content text-xl px-8"
-      href={getPath("/speakers")}>{t("speaker.seeAll")}</a
-    >
-    <a
-      class="not-colored btn-content text-xl px-8"
-      href="https://drive.google.com/drive/folders/1IY0pU_2mmmsbblPE8mcDFXGge1bk3Ry-">
-      <img src="/assets/vectors/download.svg" class="h-8 mr-2" />
-        {t("speaker.slides")}
-    </a>
-  </div>
+  {(speakers && speakers.length > 0) ? <>
+    <h2 class="text-6xl mb-10 font-bold text-white">{t("info.speakers")}</h2>
+    <div class="grid md:grid-cols-4 sm:grid-cols-2 grid-flow-row gap-10 mt-5 mb-10">
+      <RandomSpeakerList client:only="react" speakers={speakers??[]} />
+    </div>
+    <div class="flex items-center gap-4 sm:flex-row flex-col">
+      <a
+        class="not-colored btn-content text-xl px-8"
+        href={getPath("/speakers")}>{t("speaker.seeAll")}</a
+      >
+      {WebsiteConfig.TALKS_SLIDE_DOWNLOAD_LINK &&
+      <a
+        class="not-colored btn-content text-xl px-8"
+        href={WebsiteConfig.TALKS_SLIDE_DOWNLOAD_LINK}>
+        <img src="/assets/vectors/download.svg" class="h-8 mr-2" />
+          {t("speaker.slides")}
+      </a>}
+    </div>
+  </>:
+  <>
+    <h2 class="text-6xl mb-10 font-bold text-white">{t("info.speakers")}</h2>
+    <p class="text-white text-2xl">{t("speaker.comingSoon")}</p>
+  </>}
 </div>

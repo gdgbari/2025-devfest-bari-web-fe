@@ -1,9 +1,9 @@
 ---
-import type { ScheduleDay } from "../../../data/types/sessionize";
-import { getLangFromUrl } from "../../../i18n/utils";
-import ScheduleCard from "../ScheduleCard.astro";
-import { capitalizeFirstLetter } from "../../../react/utils";
-import { WebsiteConfig } from "../../../config";
+import type { ScheduleDay } from "../../data/types/sessionize";
+import { getLangFromUrl } from "../../i18n/utils";
+import ScheduleCard from "./ScheduleCard.astro";
+import { capitalizeFirstLetter } from "../../react/utils";
+import { WebsiteConfig } from "../../config";
 
 interface Props {
   schedule: ScheduleDay[];

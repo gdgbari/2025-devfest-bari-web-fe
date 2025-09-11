@@ -1,0 +1,21 @@
+---
+
+import BaseLayout from "../components/Common/BaseLayout.astro";
+import StaffView from "../components/Staff/StaffView.astro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+---
+
+<BaseLayout pageTitle="Team">
+  <div class="mb-6 text-white">
+    <p class="mb-3">
+      <Fragment set:html={t("team.description")} />
+    </p>
+  </div>
+
+  <StaffView />
+
+</BaseLayout>

@@ -1,19 +1,19 @@
 ---
-import { getSessions } from '../../../data/repositories/sessionize_repository';
-import type { SessionInfo } from '../../../data/types/sessionize';
-import { getLangFromUrl, useTranslatedPath, useTranslations } from '../../../i18n/utils';
-import AddToCalendar from '../../Common/AddToCalendar.astro';
-import BaseLayout from '../../Common/BaseLayout.astro';
-import SessionTopic from '../SessionTopic.astro';
-import { capitalizeFirstLetter } from "../../../react/utils";
-import { WebsiteConfig } from '../../../config';
-import { ImportSvg } from '../../../helpers/svgimport';
+import { getSessions } from '../../data/repositories/sessionize_repository';
+import type { SessionInfo } from '../../data/types/sessionize';
+import { getLangFromUrl, useTranslatedPath, useTranslations } from '../../i18n/utils';
+import AddToCalendar from '../../components/Common/AddToCalendar.astro';
+import BaseLayout from '../../components/Common/BaseLayout.astro';
+import SessionTopic from '../../components/Sessions/SessionTopic.astro';
+import { capitalizeFirstLetter } from "../../react/utils";
+import { WebsiteConfig } from '../../config';
+import { ImportSvg } from '../../helpers/svgimport';
 
 interface Props {
   entry: SessionInfo;
 }
 
-export async function getSessionSlugPaths() {
+export async function getStaticPaths() {
   const sessions = await getSessions(true);
   return sessions.map((entry) => ({
     params: { slug: entry.slug },
@@ -27,6 +27,7 @@ const getPath = useTranslatedPath(lang);
 
 // 2. When it's time to render, you can get the entry directly from the prop
 const { entry } = Astro.props;
+
 
 const dateStart = new Date(entry.startsAt);
 const dateEnd = new Date(entry.endsAt);
