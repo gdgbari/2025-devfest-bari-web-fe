@@ -1,0 +1,104 @@
+---
+import { WebsiteConfig } from "../config";
+import PageHead from "../components/Common/PageHead.astro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+---
+
+<html lang={lang} class="scroll-smooth multicolored-bg">
+  <PageHead />
+  <body class="overflow-auto min-h-screen">
+    <script>
+        import { WebsiteConfig } from "../config";
+        let toUrl = "";
+        
+        try{
+            toUrl = atob(new URLSearchParams(window.location.search).get("to")?.replace(/_/g, '/').replace(/-/g, '+') || "")
+            if (!WebsiteConfig.ALLOWED_REDIRECT_HOSTS.includes(new URL(toUrl).hostname)){
+                console.warn("Blocked redirect to", toUrl);
+                location.href = "/";
+            }
+        }catch(e){
+            console.error(e);
+            location.href = "/";
+        }
+
+        const agent = navigator.userAgent.toLowerCase();
+        const isInstagram = agent.includes("instagram");
+        const isFacebook = agent.match(/fban|fbav/)
+        const isIOS = agent.includes("iphone") || agent.includes("ipad") || agent.includes("ipod");
+
+        // Show fallback instructions after 3 seconds if redirect hasn't happened
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            const instructions = document.getElementById('instructions');
+            const homeButton = document.getElementById('home-button');
+            if (homeButton) homeButton.style.display = 'block';
+            if (loader) loader.style.display = 'none';
+            if (instructions) instructions.style.display = 'block';
+        }, 3000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (isInstagram || isFacebook){
+                if (!isIOS){
+                    const originalSchema = new URL(toUrl).protocol.replace(':', '');
+                    location.href = toUrl.replace(/https?/, "intent") + "#Intent;scheme="+ originalSchema + ";end" // for android 
+                }else{
+                    location.href = "x-safari-" + toUrl
+                }
+            }else{
+                location.href = toUrl;
+            }
+        })
+    </script>
+    <main class="relative z-50 min-h-screen flex flex-col justify-center items-center p-4 text-center text-primary-content">
+        <div class="max-w-2xl w-full">
+            <img src="/assets/vectors/logo_big.svg" class="h-36 mx-auto block mb-6" />
+            <p class="text-xl md:text-3xl font-semibold">
+                {
+                WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
+                    timeZone: WebsiteConfig.EVENT_TIMEZONE,
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                })
+                }
+            </p>
+            <p class="text-xl md:text-3xl font-semibold mb-5">{t("info.locationName")}</p>
+        <div class="mt-10"></div>
+        <!-- Loader -->
+        <div id="loader" class="flex flex-col items-center">
+            <!-- Material Design Loader -->
+            <div class="relative mb-6">
+                <!-- Outer spinning ring with gradient effect -->
+                <div class="w-12 h-12 border-8 border-primary-content/20 rounded-full material-loader-ring" 
+                        style="border-top-color: currentColor; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));"></div>
+            </div>
+            <p class="text-lg font-medium animate-pulse">{t("redirect.redirecting")}</p>
+        </div>
+        <!-- Back to Home Button (hidden initially) -->
+        <div id="home-button" style="display: none;">
+            <a href="/"  
+                class="not-colored inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-4 px-8 rounded-lg text-lg transition-colors">
+                {t("redirect.backToHome")}
+            </a>
+        </div>
+        <!-- Instructions (hidden initially) -->
+        <div id="instructions" style="display: none;" class="mt-10 mb-[50px]">
+            <div class="max-w-md mx-auto space-y-6">
+                <!-- Ticket Issue Section -->
+                <div class="bg-orange-50 border border-orange-200 rounded-lg p-6 text-orange-800">
+                    <h3 class="text-lg font-semibold mb-3 text-center">{t("redirect.ticketIssueTitle")}</h3>
+                    <div class="text-sm">
+                        <Fragment set:html={t("redirect.instructions")} />
+                    </div>
+                </div>
+            </div>
+        </div>
+          
+    </main>
+  </body>
+</html>

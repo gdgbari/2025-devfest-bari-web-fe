@@ -1,11 +1,12 @@
 ---
 
 import PageHead from "../components/Common/PageHead.astro";
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { getLangFromUrl, useTranslatedPath, useTranslations } from "../i18n/utils";
 import { WebsiteConfig } from "../config";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const getPath = useTranslatedPath(lang);
 ---
 
 <html lang={lang} class="scroll-smooth flex flex-col min-h-screen multicolored-bg">
@@ -14,14 +15,12 @@ const t = useTranslations(lang);
 
     <main class="flex flex-col justify-center items-center" style="min-width: 100vw; min-height:100vh">
         <script>
-import { WebsiteConfig } from "../config"
-
             document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('ticket-click')?.addEventListener('click', () => {  
                     if (navigator.userAgent.toLowerCase().match(/instagram/)){
                         return
                     }
-                    window.open(WebsiteConfig.DEVFEST_EVENT_LINK, '_blank')
+                    window.open(document.getElementById('ticket-click')?.getAttribute('href')||"/", '_blank')
                     document.location.href = '/'
                 })
                 
@@ -45,7 +44,7 @@ import { WebsiteConfig } from "../config"
                 class="not-colored btn-content text-xl"
                 target="_blank"
                 id="ticket-click"
-                href={WebsiteConfig.DEVFEST_EVENT_LINK}
+                href={getPath(WebsiteConfig.DEVFEST_EVENT_LINK)}
                 >{t("ticket.title")}</a
                 >
             </div>

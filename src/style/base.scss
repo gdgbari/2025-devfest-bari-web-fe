@@ -95,7 +95,6 @@ html.multicolored-bg {
     min-height: 100vh;
     position: relative;
     background: #181818;
-    overflow: hidden;
 }
 html.multicolored-bg::before,
 html.multicolored-bg::after {
@@ -118,7 +117,7 @@ html.multicolored-bg::before {
         radial-gradient(circle at 60% 85%, #EA4335 0 28vw, transparent 29vw),
         radial-gradient(circle at 30% 75%, #F9AB00 0 16vw, transparent 17vw);
     background-blend-mode: screen, screen, screen, screen, screen;
-    animation: bg-move-1 36s linear infinite alternate;
+    animation: bg-move-1 12s linear infinite alternate;
 }
 html.multicolored-bg::after {
     background:
@@ -129,7 +128,7 @@ html.multicolored-bg::after {
     background-blend-mode: screen, screen, screen, screen;
     opacity: 0.5;
     filter: blur(1vw) saturate(1.5);
-    animation: bg-move-2 48s ease-in-out infinite alternate;
+    animation: bg-move-2 16s ease-in-out infinite alternate;
 }
 
 @keyframes bg-move-1 {
@@ -187,4 +186,32 @@ input.no-control::-webkit-inner-spin-button {
 input.no-control[type=number] {
     -moz-appearance:textfield; /* Firefox */
     appearance: textfield; /* Chrome */
+}
+
+
+@keyframes materialSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes materialPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+@keyframes materialBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-4px) scale(1.1); }
+}
+
+.material-loader-ring {
+    animation: materialSpin 2s linear infinite;
+}
+
+.material-loader-dot {
+    animation: materialPulse 1.5s ease-in-out infinite;
+}
+
+.material-loader-bounce {
+    animation: materialBounce 1.8s ease-in-out infinite;
 }

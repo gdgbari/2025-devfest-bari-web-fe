@@ -98,9 +98,12 @@ export const ui = {
         `,
         'faq.questions': faqEng,
         'redirect.instructions': `
-            <p class="mb-2 underline">To use this page, we ask you to use your browser!</p>
-            <p class="underline">Click the 3 dots at the top and select "Open in external browser"</p>
+            <p class="mb-2 underline">To access the ticket page:</p>
+            <p class="underline">Tap the 3 dots above and select "Open in browser"</p>
         `,
+        'redirect.redirecting': 'Redirecting...',
+        'redirect.backToHome': 'Back to homepage',
+        'redirect.ticketIssueTitle': 'Unable to access the ticket page?',
         'home.whatIsDevfestBariTitle': 'What is DevFest Bari?',
         'home.whatIsDevfestBari': `
             <b>DevFest Bari</b> is an annual event organized by the Google Developers
@@ -250,9 +253,12 @@ export const ui = {
         `,
         'faq.questions': faqIta,
         'redirect.instructions': `
-            <p class="mb-2 underline">Per utilizzare questa pagina ti chiediamo di usare il tuo browser!</p>
-            <p class="underline">Clicca i 3 puntini in alto e seleziona "Apri nel browser esterno"</p>
+            <p class="mb-2 underline">Per accedere alla pagina del ticket:</p>
+            <p class="underline">Tocca i 3 puntini sopra e seleziona "Apri nel browser"</p>
         `,
+        'redirect.redirecting': 'Reindirizzamento in corso...',
+        'redirect.backToHome': 'Torna alla homepage',
+        'redirect.ticketIssueTitle': 'Non riesci ad accedere alla pagina del ticket?',
         'home.whatIsDevfestBariTitle': "Cos'è la DevFest Bari?",
         'home.whatIsDevfestBari': `
             La <b>DevFest Bari</b> è un evento annuale organizzato dal Google

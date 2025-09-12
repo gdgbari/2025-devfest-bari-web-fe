@@ -1,9 +1,10 @@
 ---
 import { WebsiteConfig } from "../../config";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import { getLangFromUrl, useTranslatedPath, useTranslations, useTranslationsData } from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const getPath = useTranslatedPath(lang);
 ---
 
 <div  class="relative main-container xl:px-4 px-3 flex md:flex-row flex-col-reverse pb-14 pt-12">
@@ -23,7 +24,7 @@ const t = useTranslations(lang);
             <p class="text-3xl font-medium">{t('ticket.title')}</p>
             <p class="text-6xl font-bold my-8 text-red">{t('ticket.free')}</p>
             
-            <a class="not-colored btn btn-primary" target="_blank" href={WebsiteConfig.DEVFEST_EVENT_LINK}>{t('ticket.cta')}</a>
+            <a class="not-colored btn btn-primary" target="_blank" href={getPath(WebsiteConfig.DEVFEST_EVENT_LINK)}>{t('ticket.cta')}</a>
         </div>
     </div>
 </div>
