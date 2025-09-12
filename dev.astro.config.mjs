@@ -26,6 +26,6 @@ export default defineConfig({
     }),
     react(),
   ],
-  output: "static", // hybrid
+  output: "static",
   adapter: node({ mode: "standalone" })
 });

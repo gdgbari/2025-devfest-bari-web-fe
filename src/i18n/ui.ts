@@ -117,7 +117,7 @@ export const ui = {
         'home.officialPhotos': 'Officials',
         'home.communityPhotos': 'Community',
         'ticket.description': `
-            Reserve your spot for DevFest Bari 2024 and gain access to the
+            Reserve your spot for ${WebsiteConfig.DEVFEST_NAME} and gain access to the
             conference including all talks and workshops.
         `,
         'ticket.schools': `
@@ -133,7 +133,7 @@ export const ui = {
                 <p>
                 Talk to your teachers and have them contact us. If you want to
                 participate independently, <a
-                    href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2024/#QeHcv97kND"
+                    href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2025/#QeHcv97kND"
                 >Contact us</a
                 > and we will assist you.
             </p>`,
@@ -273,7 +273,7 @@ export const ui = {
         'home.officialPhotos': 'Ufficiali',
         'home.communityPhotos': 'Community',
         'ticket.description': `
-            Riserva il tuo posto per la DevFest Bari 2024 ed avrai accesso alla
+            Riserva il tuo posto per la ${WebsiteConfig.DEVFEST_NAME} ed avrai accesso alla
             conferenza comprensiva di tutti i talk e i workshop.
         `,
         'ticket.schools': `
@@ -294,7 +294,7 @@ export const ui = {
                 Parlane con con i tuoi professori e facci contattare da loro. Se
                 invece vuoi partecipare in autonomia, <a
                 target="_blank"
-                href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2024/#QeHcv97kND"
+                href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2025/#QeHcv97kND"
                 >Contattaci</a
                 > e ti aiuteremo noi.
             </p>`,

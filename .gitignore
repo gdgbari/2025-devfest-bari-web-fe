@@ -1,12 +1,9 @@
 node_modules/
 dist/
 .vscode/
-.firebase
-.firebase/hosting.ZGlzdA.cache
 copy/template.txt
 dev-dist/**
 copy/
 external/
-# Local Netlify folder
-.netlify
 .env
+.astro/
