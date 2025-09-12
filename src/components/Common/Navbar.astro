@@ -167,7 +167,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
                   editions.map((event) => (
                     <li>
                       <a
-                        class="not-colored hover:bg-red-pastel hover:text-black"
+                        class="not-colored hover:bg-black/15"
                         href={event.link}
                       >
                         {event.year}
@@ -189,7 +189,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
             {
               Object.keys(languages).map((lang) => (
                 <a
-                  class="not-colored text-white px-4 py-2 hover:bg-black/15"
+                  class="not-colored px-4 py-2 hover:bg-black/15"
                   href={translatePath(currentPath, lang)}
                 >
                   {languages[lang]}
