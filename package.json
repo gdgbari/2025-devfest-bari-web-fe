@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "@astrojs/mdx": "^4.3.5",
-    "@astrojs/netlify": "^6.5.10",
     "@astrojs/node": "^9.4.3",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/react": "^4.3.1",
