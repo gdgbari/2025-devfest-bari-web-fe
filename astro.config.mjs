@@ -6,8 +6,6 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import robotsTxt from "astro-robots-txt";
 
-import netlify from "@astrojs/netlify";
-
 // https://astro.build/config
 export default defineConfig({
   site: "https://dev.devfest.it",
@@ -23,6 +21,5 @@ export default defineConfig({
       forward: ["dataLayer.push"]
     }
   }), mdx(), sitemap(), tailwind(), robotsTxt(), react()],
-  output: "static",
-  adapter: netlify()
+  output: "static"
 });
