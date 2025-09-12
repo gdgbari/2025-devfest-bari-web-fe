@@ -26,6 +26,11 @@ const links = [
   { link: translatePath("/team"), name: t("nav.team") },
 ];
 
+const editions = [
+  { year: '2024', link: "https://bari2024.devfest.it"},
+  { year: '2023', link: "https://bari2023.devfest.it"},
+]
+
 const currentPath = getUrlPathWithoutLang(lang, Astro.url);
 ---
 
@@ -94,10 +99,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
                 class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow top-12"
               >
                 {
-                  [
-                    { year: '2024', link: "https://bari2024.devfest.it"},
-                    { year: '2023', link: "https://bari2023.devfest.it"},
-                  ].map((event) => (
+                  editions.map((event) => (
                     <li>
                       <a
                         class="not-colored hover:bg-red-pastel hover:text-black"
@@ -154,6 +156,26 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
           </li>
         ))
       }
+    <div class="collapse hover:bg-black/10">
+        <input type="checkbox" class="min-h-0" />
+        <div class="min-h-0 collapse-title px-4 py-2 flex gap-4 items-center">
+          {t('nav.editions')}
+        </div>
+        <div class="px-0 collapse-content">
+          <div class="flex flex-col gap-2">
+            {
+                  editions.map((event) => (
+                    <li>
+                      <a
+                        class="not-colored hover:bg-red-pastel hover:text-black"
+                        href={event.link}
+                      >
+                        {event.year}
+                      </a>
+                    </li>
+                  ))
+                }
+          </div>
       <div class="collapse hover:bg-black/10">
         <input type="checkbox" class="min-h-0" />
         <div class="min-h-0 collapse-title px-4 py-2 flex gap-4 items-center">
