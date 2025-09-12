@@ -80,7 +80,37 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
               </li>
             ))
           }
-
+          <li>
+            <div class="dropdown dropdown-end p-0">
+              <div
+                tabindex="0"
+                role="button"
+                class="btn btn-ghost hover:bg-red-pastel hover:text-black"
+              >
+                {t("nav.editions")}
+              </div>
+              <ul
+                tabindex="0"
+                class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow top-12"
+              >
+                {
+                  [
+                    { year: '2024', link: "https://bari2024.devfest.it"},
+                    { year: '2023', link: "https://bari2023.devfest.it"},
+                  ].map((event) => (
+                    <li>
+                      <a
+                        class="not-colored hover:bg-red-pastel hover:text-black"
+                        href={event.link}
+                      >
+                        {event.year}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </li>
           <li>
             <div class="dropdown dropdown-end p-0">
               <div
