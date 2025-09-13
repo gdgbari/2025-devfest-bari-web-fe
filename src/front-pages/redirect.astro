@@ -31,28 +31,29 @@ const t = useTranslations(lang);
         const isFacebook = agent.match(/fban|fbav/)
         const isIOS = agent.includes("iphone") || agent.includes("ipad") || agent.includes("ipod");
 
-        // Show fallback instructions after 3 seconds if redirect hasn't happened
-        setTimeout(() => {
-            const loader = document.getElementById('loader');
-            const instructions = document.getElementById('instructions');
-            const homeButton = document.getElementById('home-button');
-            if (homeButton) homeButton.style.display = 'block';
-            if (loader) loader.style.display = 'none';
-            if (instructions) instructions.style.display = 'block';
-        }, 3000);
+        if (isInstagram || isFacebook){
+            if (!isIOS){
+                const originalSchema = new URL(toUrl).protocol.replace(':', '');
+                location.href = toUrl.replace(/https?/, "intent") + "#Intent;scheme="+ originalSchema + ";end" // for android 
+            }else{
+                location.href = "x-safari-" + toUrl
+            }
+        }else{
+            location.href = toUrl;
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
-            if (isInstagram || isFacebook){
-                if (!isIOS){
-                    const originalSchema = new URL(toUrl).protocol.replace(':', '');
-                    location.href = toUrl.replace(/https?/, "intent") + "#Intent;scheme="+ originalSchema + ";end" // for android 
-                }else{
-                    location.href = "x-safari-" + toUrl
-                }
-            }else{
-                location.href = toUrl;
-            }
+            // Show fallback instructions after 3 seconds if redirect hasn't happened
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                const instructions = document.getElementById('instructions');
+                const homeButton = document.getElementById('home-button');
+                if (homeButton) homeButton.style.display = 'block';
+                if (loader) loader.style.display = 'none';
+                if (instructions) instructions.style.display = 'block';
+            }, 4000);
         })
+
     </script>
     <main class="relative z-50 min-h-screen flex flex-col justify-center items-center p-4 text-center text-primary-content">
         <div class="max-w-2xl w-full">
