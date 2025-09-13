@@ -13,6 +13,7 @@ import SponsorSection from "../components/Home/SponsorSection.astro";
 import ReasonsToJoin from "../components/Home/ReasonsToJoin.astro";
 import TicketSection from "../components/Home/TicketSection.astro";
 import { getLangFromUrl, useTranslatedPath, useTranslations } from "../i18n/utils";
+import { WebsiteConfig } from "../config";
 
 const lang = getLangFromUrl(Astro.url);
 const getPath = useTranslatedPath(lang);
@@ -44,7 +45,6 @@ const t = useTranslations(lang);
         </div>
       </TicketSection>
 
-
       <Gallery>
         <p slot="join-photos-text">{t("home.photosTitle")}</p>
 
@@ -63,7 +63,7 @@ const t = useTranslations(lang);
         </a>
       </Gallery>
 
-      {/* <SpeakerPreview /> */}
+      { WebsiteConfig.SHOW_EVENT_TALKS && <SpeakerPreview /> }
 
       <ReasonsToJoin>
         <span slot="reasons-title">{t("home.whyPartecipateTitle")}</span>
