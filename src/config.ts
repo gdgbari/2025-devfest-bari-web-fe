@@ -15,6 +15,7 @@ export class WebsiteConfig {
         "dev.devfest.it",
         "gdg.community.dev"
     ]
+    public static readonly SHOW_EVENT_TALKS: boolean = false;
     public static readonly DEVFEST_THEME_COLOR: string = '#f59e0b';
 
     /*--------------------------------------------
