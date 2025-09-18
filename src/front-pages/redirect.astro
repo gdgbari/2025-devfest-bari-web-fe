@@ -36,7 +36,10 @@ const t = useTranslations(lang);
                 const originalSchema = new URL(toUrl).protocol.replace(':', '');
                 location.href = toUrl.replace(/https?/, "intent") + "#Intent;scheme="+ originalSchema + ";end" // for android 
             }else{
-                location.href = "x-safari-" + toUrl
+                // IOS 16+
+                location.href = `x-safari-https://${toUrl.replace(/^https?:\/\//, '')}`
+                // LEGACY IOS <16
+                setTimeout(() => { location.href = `com-apple-mobilesafari-tab:${toUrl}`; }, 500);
             }
         }else{
             location.href = toUrl;
