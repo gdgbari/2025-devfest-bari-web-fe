@@ -13,7 +13,7 @@ const getPath = useTranslatedPath(lang);
   <PageHead />
   <body class="flex flex-col flex-1">
 
-    <main class="flex flex-col justify-center items-center" style="min-width: 100vw; min-height:100vh">
+    <main class="flex-1 flex flex-col justify-center items-center w-screen">
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('ticket-click')?.addEventListener('click', () => {  
@@ -49,7 +49,16 @@ const getPath = useTranslatedPath(lang);
                 >
             </div>
         </div>
-          
     </main>
+    <footer class="w-full bg-black text-white relative z-50 isolate" style="background-color:#181818">
+      <div class="mx-auto max-w-5xl px-4 py-6">
+        <nav class="w-full flex flex-row items-center justify-center gap-6 text-base text-white flex-wrap">
+          <a class="not-colored no-underline text-white visited:text-white focus:text-white active:text-white hover:opacity-75 transition-opacity px-1 py-1" href={WebsiteConfig.FACEBOOK_PAGE} target="_blank" >Facebook</a>
+          <a class="not-colored no-underline text-white visited:text-white focus:text-white active:text-white hover:opacity-75 transition-opacity px-1 py-1" href={WebsiteConfig.INSTAGRAM_PAGE} target="_blank" >Instagram</a>
+          <a class="not-colored no-underline text-white visited:text-white focus:text-white active:text-white hover:opacity-75 transition-opacity px-1 py-1" href={WebsiteConfig.LINKEDIN_PAGE} target="_blank" >LinkedIn</a>
+          <a class="not-colored no-underline text-white visited:text-white focus:text-white active:text-white hover:opacity-75 transition-opacity px-1 py-1" href={WebsiteConfig.WEBSITE} target="_blank" >Website</a>
+        </nav>
+      </div>
+    </footer>
   </body>
 </html>
