@@ -9,7 +9,7 @@ export class WebsiteConfig {
     public static readonly DEVFEST_LOGO_LIGHT: string = '/assets/images/logo_light.webp';
     public static readonly DEVFEST_LOGO_DARK: string = '/assets/images/logo_dark.webp';
     public static readonly DEVFEST_EVENT_LINK: string = redirectUrl('https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2025/');
-    public static readonly DEVFEST_SCHOOL_LINK; string = 'https://forms.gle/wnSLfGmydP1PeGWB6'
+    public static readonly DEVFEST_SCHOOL_LINK: string = 'https://forms.gle/wnSLfGmydP1PeGWB6';
     public static readonly DEVFEST_WEBSITE_LINK: string = 'https://bari.devfest.it';
     public static readonly ALLOWED_REDIRECT_HOSTS = [
         "bari.devfest.it",
