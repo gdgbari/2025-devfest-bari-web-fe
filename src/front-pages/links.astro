@@ -1,0 +1,102 @@
+---
+
+import PageHead from "../components/Common/PageHead.astro";
+import { getLangFromUrl, useTranslatedPath, useTranslations } from "../i18n/utils";
+import { WebsiteConfig } from "../config";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const getPath = useTranslatedPath(lang);
+---
+
+<html lang={lang} class="scroll-smooth flex flex-col min-h-screen multicolored-bg">
+  <PageHead />
+  <body class="flex flex-col flex-1">
+
+    <main class="flex-1 flex flex-col justify-center items-center w-screen">
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                document.getElementById('ticket-click')?.addEventListener('click', () => {  
+                    if (navigator.userAgent.toLowerCase().match(/instagram/)){
+                        return
+                    }
+                    window.open(document.getElementById('ticket-click')?.getAttribute('href')||"/", '_blank')
+                    document.location.href = '/'
+                })
+                
+            })
+        </script>
+        <div class="jumbo h-192 lg:h-220 p-10 text-center text-primary-content flex flex-col align-center z-20 justify-center" style="width: 100%; height: 100%;">
+            <img src="/assets/vectors/logo_big.svg" class="h-36 m-2 md:m-6" />
+            <p class="text-3xl md:text-4xl font-semibold mt-5">
+                {
+                WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
+                    timeZone: WebsiteConfig.EVENT_TIMEZONE,
+                    day: "numeric",
+                    month: "long",
+                    year: "numeric",
+                })
+                }
+            </p>
+            <p class="text-3xl md:text-4xl font-semibold">{t("info.locationName")}</p>
+            <!-- Pulsante Ticket -->
+            <div class="my-8">
+                <a
+                class="not-colored inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                target="_blank"
+                id="ticket-click"
+                href={getPath(WebsiteConfig.DEVFEST_EVENT_LINK)}
+                >{t("ticket.title")}</a
+                >
+            </div>
+
+            <!-- Pulsanti Social -->
+            <div class="mt-6">
+                <p class="text-lg font-medium mb-4 text-primary-content opacity-90">Seguici sui social</p>
+                <div class="flex flex-wrap justify-center gap-4 max-w-md mx-auto">
+                    <!-- Facebook -->
+                    <a
+                        href={WebsiteConfig.FACEBOOK_PAGE}
+                        target="_blank"
+                        class="group flex items-center justify-center w-14 h-14 bg-[#1877F2] hover:bg-[#166FE5] text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-110"
+                        aria-label="Facebook"
+                    >
+                        <img src="/assets/vectors/facebook_logo.svg" alt="Facebook" class="w-7 h-7 filter brightness-0 invert" />
+                    </a>
+                    
+                    <!-- Instagram -->
+                    <a
+                        href={WebsiteConfig.INSTAGRAM_PAGE}
+                        target="_blank"
+                        class="group flex items-center justify-center w-14 h-14 bg-gradient-to-br from-[#E4405F] via-[#C13584] to-[#833AB4] hover:from-[#D63384] hover:via-[#B02A5B] hover:to-[#7209B7] text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-110"
+                        aria-label="Instagram"
+                    >
+                        <img src="/assets/vectors/instagram_logo.svg" alt="Instagram" class="w-7 h-7 filter brightness-0 invert" />
+                    </a>
+                    
+                    <!-- LinkedIn -->
+                    <a
+                        href={WebsiteConfig.LINKEDIN_PAGE}
+                        target="_blank"
+                        class="group flex items-center justify-center w-14 h-14 bg-[#0A66C2] hover:bg-[#0958A5] text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-110"
+                        aria-label="LinkedIn"
+                    >
+                        <img src="/assets/vectors/linkedin_logo.svg" alt="LinkedIn" class="w-7 h-7 filter brightness-0 invert" />
+                    </a>
+                    
+                    <!-- Website -->
+                    <a
+                        href={WebsiteConfig.WEBSITE}
+                        target="_blank"
+                        class="group flex items-center justify-center w-14 h-14 bg-gray-700 hover:bg-gray-600 text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 hover:scale-110"
+                        aria-label="Website"
+                    >
+                        <img src="/assets/vectors/web_logo.svg" alt="Website" class="w-7 h-7 filter brightness-0 invert" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+  </body>
+</html>
