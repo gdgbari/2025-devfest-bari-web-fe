@@ -1,3 +1,4 @@
+import { WebsiteConfig } from "../config";
 
 export const faqEng = [
   {
@@ -92,12 +93,12 @@ export const faqEng = [
       {
         question: "I am a teacher; do I also need to register?",
         answer:
-          'Yes, if you are a teacher, you must still register using the school ticket. Remember to use your institutional email. Also, remember to register the class by filling out the form <a href="https://forms.gle/NM2boABkkXr4R3N96">schools@devfest bari 2024</a>.',
+          `Yes, if you are a teacher, you must still register using the school ticket. Remember to use your institutional email. Also, remember to register the class by filling out the form <a href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}">schools@devfest bari 2024</a>.`,
       },
       {
         question: "I am a teacher; how can I register the class?",
         answer:
-          'To register the class, you need to fill out the form <a href="https://forms.gle/NM2boABkkXr4R3N96">schools@devfest bari 2024</a>. The form is an expression of interest that allows us to have a better view of the classes that want to participate. It is still necessary for each student to individually get a ticket to participate. The spots are limited, so we recommend doing it as soon as possible.',
+          `To register the class, you need to fill out the form <a href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}">schools@devfest bari 2024</a>. The form is an expression of interest that allows us to have a better view of the classes that want to participate. It is still necessary for each student to individually get a ticket to participate. The spots are limited, so we recommend doing it as soon as possible.`,
       },
     ],
   },
@@ -197,12 +198,12 @@ export const faqIta = [
       {
         question:
           "Sono un docente, devo iscrivermi anche io?",
-        answer: "Sì, se sei un docente devi comunque iscriverti utilizzando il biglietto scuola. Ricorda di utilizzare la mail istituzionale.Ricorda inoltre di registrare la classe compilando il form <a href=\"https://forms.gle/NM2boABkkXr4R3N96\">scuole@devfest bari 2024</a>.", 
+        answer: `Sì, se sei un docente devi comunque iscriverti utilizzando il biglietto scuola. Ricorda di utilizzare la mail istituzionale.Ricorda inoltre di registrare la classe compilando il form <a href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}">scuole@devfest bari 2024</a>.`, 
       },
       {
         question: "Sono un docente, come posso registrare la classe?",
         answer:
-          "Per registrare la classe occorre compilare il form <a href=\"https://forms.gle/NM2boABkkXr4R3N96\">scuole@devfest bari 2024</a>. Il form è una manifestazione di interesse che ci permette di avere una visione migliore delle classi che vogliono partecipare. E' comunque necessario che ogni alunno prenda singolarmente il biglietto per partecipare. I posti sono limitati, consigliamo di farlo quanto prima.",
+          `Per registrare la classe occorre compilare il form <a href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}">scuole@devfest bari 2024</a>. Il form è una manifestazione di interesse che ci permette di avere una visione migliore delle classi che vogliono partecipare. E' comunque necessario che ogni alunno prenda singolarmente il biglietto per partecipare. I posti sono limitati, consigliamo di farlo quanto prima.`,
       },
     ],
   },

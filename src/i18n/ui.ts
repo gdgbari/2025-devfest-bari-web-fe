@@ -124,7 +124,7 @@ export const ui = {
             <p class="mt-4 text-3xl mb-2 font-medium">Are you a high school?</p>
                 <p>
                 <a
-                    href="https://forms.gle/NM2boABkkXr4R3N96">Contact us</a
+                    href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}">Contact us</a
                 > to organize your participation.
                 </p>
                 <p class="mt-4 text-3xl font-medium mb-2">
@@ -282,7 +282,7 @@ export const ui = {
             </p>
             <p>
                 <a
-                href="https://forms.gle/NM2boABkkXr4R3N96"
+                href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}"
                 target="_blank"
                 >Scrivici</a
                 > per organizzare la vostra partecipazione.
