@@ -65,14 +65,13 @@ export class WebsiteConfig {
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     public static readonly FIREBASE_CONFIG = {
-        apiKey: "AIzaSyDiPsb6Iw_JSB5dGZmwOflGbk8ndfMz9xw",
-        authDomain: "devfest-bari-24-app.firebaseapp.com",
-        databaseURL: "https://devfest-bari-24-app-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "devfest-bari-24-app",
-        storageBucket: "devfest-bari-24-app.appspot.com",
-        messagingSenderId: "33508282460",
-        appId: "1:33508282460:web:fa730002a967adbb5a5699",
-        measurementId: "G-7M75EC4PZB"
+        apiKey: "AIzaSyADKLclqnv-y4N7Lh5VBsDlLVKon2bUDX8",
+        authDomain: "devfest25-83004.firebaseapp.com",
+        projectId: "devfest25-83004",
+        storageBucket: "devfest25-83004.firebasestorage.app",
+        messagingSenderId: "1025838144406",
+        appId: "1:1025838144406:web:0f95f1be54a1fcc8ae5bb7",
+        measurementId: "G-9DY1FZMBBX"
     };
 
 }
