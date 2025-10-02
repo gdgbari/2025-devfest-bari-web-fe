@@ -9,9 +9,11 @@ import {
 
 interface Props {
   value: ScheduleSlotRoom;
+  blockStartTime?: string;
+  blockEndTime?: string;
 }
 
-const { value } = Astro.props;
+const { value, blockStartTime, blockEndTime } = Astro.props;
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const getPath = useTranslatedPath(lang);
@@ -22,6 +24,11 @@ const url = !value.session.isServiceSession
   ? `/sessions/${value.session.info?.slug}`
   : null;
 
+// Debug option - set to true to show timing data in title
+const DEBUG_SHOW_TIMING = false;
+const sessionStart = blockStartTime || value.session.startsAt;
+const sessionEnd = blockEndTime || value.session.endsAt;
+
 const translationIcon = await ImportSvg("translation");
 ---
 
@@ -29,10 +36,28 @@ const translationIcon = await ImportSvg("translation");
   href={url ? getPath(url) : null}
   class={`not-colored p-4 border border-gray-400 rounded-md ${
     value.session.isServiceSession ? "h-52" : "xl:h-full md:h-52"
-  } flex flex-col`}
+  } flex flex-col transition-all duration-200`}
+  data-session-start={blockStartTime || value.session.startsAt}
+  data-session-end={blockEndTime || value.session.endsAt}
+  data-room-id={value.id}
+  data-original-start={value.session.startsAt}
+  data-original-end={value.session.endsAt}
+  data-is-block-part={blockStartTime ? 'true' : 'false'}
 >
   {!value.session.isServiceSession && <p class="mb-2">{value.name}</p>}
-  <p class="text-xl font-medium">{value.session.title}</p>
+  <p class="text-xl font-medium">
+    {DEBUG_SHOW_TIMING ? 
+      `${value.session.title} ${blockStartTime ? '🔗' : '📅'} [${new Date(sessionStart).toLocaleTimeString('it-IT', {hour: '2-digit', minute: '2-digit'})} - ${new Date(sessionEnd).toLocaleTimeString('it-IT', {hour: '2-digit', minute: '2-digit'})}]` 
+      : value.session.title
+    }
+  </p>
+  {DEBUG_SHOW_TIMING && (
+    <div class="text-xs opacity-60 mt-1">
+      <span class="bg-gray-800 px-2 py-1 rounded text-yellow-300">
+        DEBUG: start={sessionStart} | end={sessionEnd}
+      </span>
+    </div>
+  )}
   <div class="flex-1" />
   <div class="flex-flex-col gap-2 mt-4 text-sm">
     {

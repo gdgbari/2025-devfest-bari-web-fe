@@ -8,43 +8,720 @@ const schedule = await getSchedule()
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
-//const tab1Rooms = [51235, 51236, 51237, 53347, 53346];
-//const tab2Rooms = [53348, 53349, 53350];
+// ========================
+// CONFIGURAZIONE DURATE
+// ========================
+// Durata massima per considerare una sessione un "talk" (in minuti)
+const TALK_MAX_DURATION = 45;
+// Durata minima per considerare una sessione un "workshop" (in minuti)
+const WORKSHOP_MIN_DURATION = 60;
+
+// Funzione per calcolare la durata di una sessione in minuti
+const getSessionDuration = (session: any) => {
+  if (!session.startsAt || !session.endsAt) return 0;
+  const start = new Date(session.startsAt);
+  const end = new Date(session.endsAt);
+  return Math.round((end.getTime() - start.getTime()) / (1000 * 60));
+};
+
+// Funzione per categorizzare una sessione in base alla durata
+const categorizeSession = (session: any) => {
+  // Ignora sessioni di servizio (pause, lunch, ecc.)
+  if (session.isServiceSession) return 'service';
+  
+  const duration = getSessionDuration(session);
+  
+  // Priorità al sessionType se disponibile e chiaro
+  const sessionType = session.info?.sessionType?.toLowerCase() || '';
+  if (sessionType.includes('workshop')) return 'workshop';
+  if (sessionType.includes('talk') || sessionType.includes('session')) return 'talk';
+  
+  // Categorizzazione in base alla durata
+  if (duration >= WORKSHOP_MIN_DURATION) return 'workshop';
+  if (duration <= TALK_MAX_DURATION) return 'talk';
+  
+  // Durata intermedia: usa euristica basata su contenuto
+  const title = session.title?.toLowerCase() || '';
+  if (title.includes('workshop') || title.includes('lab') || title.includes('hands-on')) {
+    return 'workshop';
+  }
+  
+  // Default: considera talk se durata ragionevole
+  return 'talk';
+};
+
+// Separazione dei contenuti per tipo
+const talkRooms: number[] = [];
+const workshopRooms: number[] = [];
+
+// Analizza gli schedule per identificare i tipi di sessioni in base alla durata
+schedule.forEach(day => {
+  day.rooms.forEach(room => {
+    const sessionCategories = room.sessions.map(session => {
+      const category = categorizeSession(session);
+      return category;
+    });
+    
+    const hasTalks = sessionCategories.includes('talk');
+    const hasWorkshops = sessionCategories.includes('workshop');
+    
+    if (hasTalks && !talkRooms.includes(room.id)) {
+      talkRooms.push(room.id);
+    }
+    if (hasWorkshops && !workshopRooms.includes(room.id)) {
+      workshopRooms.push(room.id);
+    }
+  });
+});
 
 ---
 
 <BaseLayout pageTitle="Schedule">
-  <div class="text-white">
-    <ScheduleTab schedule={schedule} />
-    {/*
-    <div role="tablist" class="tabs tabs-boxed bg-transparent w-full tabs-lg mt-[-20px]">
-      <input
-        type="radio"
-        name="schedule_tabs"
-        role="tab"
-        class="tab text-white rounded-md"
-        aria-label="Talks"
-        checked="checked"
-      />
-      <div role="tabpanel" class="tab-content mt-3">
-        <ScheduleTab schedule={schedule} />
+  <div class="text-white pb-20">
+    <!-- Toggle per mostrare eventi passati -->
+    <div id="past-events-toggle" class="mb-6 flex justify-center">
+      <label class="flex items-center space-x-3 cursor-pointer bg-gray-800/60 backdrop-blur-sm border border-gray-600 rounded-xl p-4 hover:bg-gray-700/60 transition-all duration-200">
+        <input 
+          type="checkbox" 
+          id="show-past-events" 
+          class="w-5 h-5 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 focus:ring-2" 
+        />
+        <span class="text-sm font-medium text-gray-200">📅 {t("schedule.showPastEvents")}</span>
+      </label>
+    </div>
+    
+    <!-- Messaggio quando tutti gli eventi sono conclusi -->
+    <div id="all-events-ended-message" class="mb-6 justify-center hidden">
+      <div class="bg-blue-800/60 backdrop-blur-sm border border-blue-600 rounded-xl p-4 max-w-md mx-auto text-center">
+        <span class="text-sm font-medium text-blue-200">ℹ️ {t("schedule.allEventsEnded")}</span>
+      </div>
+    </div>
+
+    <!-- Container per i contenuti dei tab -->
+    <div id="tab-content">
+      <!-- Solo Talk (default attivo) -->
+      <div id="tab-talks" class="tab-panel" data-rooms={JSON.stringify(talkRooms)}>
+        <ScheduleTab schedule={schedule} rooms={talkRooms} />
       </div>
       
-      <input
-        type="radio"
-        name="schedule_tabs"
-        role="tab"
-        class="tab text-white rounded-xl"
-        aria-label="Workshops"
-      />
-      <div role="tabpanel" class="tab-content mt-3">
-        <ScheduleTab schedule={schedule} rooms={tab2Rooms} />
+      <!-- Solo Workshop -->
+      <div id="tab-workshops" class="tab-panel hidden" data-rooms={JSON.stringify(workshopRooms)}>
+        <ScheduleTab schedule={schedule} rooms={workshopRooms} />
       </div>
-    
+      
+      <!-- Tutti gli eventi -->
+      <div id="tab-all" class="tab-panel hidden" data-rooms={JSON.stringify([...talkRooms, ...workshopRooms])}>
+        <ScheduleTab schedule={schedule} />
+      </div>
     </div>
-    */}
     
-    {schedule.length == 0?<h3 class="underline">{t("scheduling.noschedule")}</h3>:null}
-
+    {schedule.length == 0 ? <h3 class="underline">{t("scheduling.noschedule")}</h3> : null}
   </div>
+
+  <!-- Barra di navigazione fissata in basso -->
+  <div class="fixed bottom-0 left-0 right-0 backdrop-blur-lg border-t shadow-2xl z-50" style="background: rgba(24, 24, 24, 0.85); border-top-color: rgba(64, 64, 64, 0.3);">
+    <div class="max-w-4xl mx-auto px-6 py-4">
+      <div class="flex justify-center space-x-3">
+        <button 
+          class="tab-btn active px-6 py-3 rounded-lg font-medium transition-all duration-200 text-sm" 
+          data-tab="talks"
+        >
+          🎙️ {t("schedule.talks")}
+        </button>
+        <button 
+          class="tab-btn px-6 py-3 rounded-lg font-medium transition-all duration-200 text-sm" 
+          data-tab="workshops"
+        >
+          🛠️ {t("schedule.workshops")}
+        </button>
+        <button 
+          class="tab-btn px-6 py-3 rounded-lg font-medium transition-all duration-200 text-sm" 
+          data-tab="all"
+        >
+          📅 {t("schedule.all")}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .tab-btn {
+      background: rgba(32, 32, 32, 0.7);
+      color: rgba(200, 200, 200, 0.9);
+      border: 1px solid rgba(80, 80, 80, 0.4);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s ease;
+    }
+    
+    .tab-btn:hover {
+      background: rgba(48, 48, 48, 0.85);
+      border-color: rgba(120, 120, 120, 0.6);
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+    
+    .tab-btn.active {
+      background: linear-gradient(135deg, rgba(48, 48, 48, 0.95), rgba(32, 32, 32, 0.95));
+      color: white;
+      border-color: rgba(160, 160, 160, 0.6);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    
+    .session-current {
+      @apply ring-4 ring-emerald-400 bg-gradient-to-br from-emerald-500/40 to-green-400/30 shadow-2xl;
+      border: 3px solid #10b981;
+      animation: pulse-glow 2s ease-in-out infinite alternate;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(1px);
+      transform: translateY(-2px);
+      z-index: 5;
+    }
+    
+    .session-current::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, 
+        transparent, 
+        rgba(16, 185, 129, 0.15), 
+        rgba(52, 211, 153, 0.1),
+        transparent
+      );
+      animation: shimmer 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    .session-current::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border: 2px solid transparent;
+      border-radius: inherit;
+      background: linear-gradient(45deg, #10b981, #34d399, #6ee7b7) border-box;
+      -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      animation: rainbow-border 3s linear infinite;
+      pointer-events: none;
+    }
+    
+    .session-past {
+      @apply opacity-30 grayscale;
+    }
+    
+    .session-future {
+      @apply opacity-100;
+    }
+    
+    @keyframes pulse-glow {
+      0% {
+        box-shadow: 
+          0 0 20px rgba(16, 185, 129, 0.5), 
+          0 10px 30px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: #10b981;
+        transform: translateY(-2px) scale(1);
+      }
+      100% {
+        box-shadow: 
+          0 0 40px rgba(16, 185, 129, 0.8), 
+          0 0 60px rgba(52, 211, 153, 0.4),
+          0 15px 40px rgba(0, 0, 0, 0.4),
+          inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        border-color: #34d399;
+        transform: translateY(-3px) scale(1.02);
+      }
+    }
+    
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-150%) translateY(-150%) rotate(45deg);
+        opacity: 0;
+      }
+      25% {
+        opacity: 1;
+      }
+      50% {
+        transform: translateX(0%) translateY(0%) rotate(45deg);
+        opacity: 0.8;
+      }
+      75% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(150%) translateY(150%) rotate(45deg);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes rainbow-border {
+      0% {
+        background: linear-gradient(45deg, #10b981, #34d399, #6ee7b7);
+      }
+      33% {
+        background: linear-gradient(45deg, #34d399, #6ee7b7, #10b981);
+      }
+      66% {
+        background: linear-gradient(45deg, #6ee7b7, #10b981, #34d399);
+      }
+      100% {
+        background: linear-gradient(45deg, #10b981, #34d399, #6ee7b7);
+      }
+    }
+    
+    @keyframes heartbeat {
+      0% {
+        transform: scale(1);
+      }
+      14% {
+        transform: scale(1.05);
+      }
+      28% {
+        transform: scale(1);
+      }
+      42% {
+        transform: scale(1.05);
+      }
+      70% {
+        transform: scale(1);
+      }
+    }
+    
+    .live-badge {
+      animation: heartbeat 2s ease-in-out infinite;
+    }
+    
+    .time-slot-past {
+      @apply opacity-30 text-gray-500;
+    }
+    
+    .time-slot-current {
+      @apply text-green-400 font-bold;
+      text-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+      animation: time-pulse 1.5s ease-in-out infinite alternate;
+      position: relative;
+    }
+    
+    .time-slot-current::after {
+      content: '🔴';
+      position: absolute;
+      right: -15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 8px;
+      animation: blink 1s infinite;
+    }
+    
+    .time-slot-future {
+      @apply text-white;
+    }
+    
+    @keyframes time-pulse {
+      0% {
+        color: #10b981;
+        text-shadow: 0 0 5px rgba(16, 185, 129, 0.4);
+      }
+      100% {
+        color: #34d399;
+        text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
+      }
+    }
+    
+    @keyframes blink {
+      0%, 50% {
+        opacity: 1;
+      }
+      51%, 100% {
+        opacity: 0.3;
+      }
+    }
+    
+    @keyframes pulse-live {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+      }
+      50% {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.6);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+      }
+    }
+    
+    .live-badge {
+      animation: pulse-live 2s ease-in-out infinite;
+      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.5), 0 0 20px rgba(239, 68, 68, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .live-badge span:first-child {
+      animation: blink 1.5s infinite;
+    }
+  </style>
+
+  <script>
+import { WebsiteConfig } from "../config";
+
+
+    // Funzione principale per inizializzare la pagina dello schedule
+    function initializeSchedulePage() {
+      const showPastEventsCheckbox = document.getElementById('show-past-events');
+      
+      // Gestisci i tab
+      initializeTabs();
+      
+      // Gestisci la visualizzazione degli eventi
+      updateEventVisibility();
+      
+      // Event listener per il toggle degli eventi passati
+      if (showPastEventsCheckbox) {
+        showPastEventsCheckbox.addEventListener('change', updateEventVisibility);
+      }
+      
+      // Aggiorna ogni 30 secondi per gestire eventi live
+      setInterval(updateEventVisibility, 30000);
+    }
+    
+    function initializeTabs() {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const target = e.target as HTMLElement;
+          if (!target) return;
+          
+          const targetTab = target.getAttribute('data-tab');
+          
+          // Rimuovi classe active da tutti i bottoni
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          // Aggiungi classe active al bottone cliccato
+          target.classList.add('active');
+          
+          // Nascondi tutti i pannelli
+          tabPanels.forEach(panel => panel.classList.add('hidden'));
+          // Mostra il pannello target
+          const targetPanel = document.getElementById(`tab-${targetTab}`);
+          if (targetPanel) {
+            targetPanel.classList.remove('hidden');
+          }
+          
+          // Aggiorna la visualizzazione degli eventi per il nuovo tab
+          setTimeout(updateEventVisibility, 100);
+        });
+      });
+    }
+    
+    function updateEventVisibility() {
+      const currentTime = new Date();
+      //currentTime.setHours(12,35,0,0) Useful for testing
+      const showPastEventsElement = document.getElementById('show-past-events') as HTMLInputElement;
+      let showPastEvents = showPastEventsElement?.checked || false;
+      const activeTabPanel = document.querySelector('.tab-panel:not(.hidden)');
+      const allEventsEndedMessage = document.getElementById('all-events-ended-message');
+      
+      if (!activeTabPanel) return;
+      
+      // Trova tutti i session cards nel tab attivo
+      const sessionCards = activeTabPanel.querySelectorAll('a[data-session-start][data-session-end]');
+      const timeSlots = activeTabPanel.querySelectorAll('.font-medium.text-2xl p');
+      
+      let hasVisibleEvents = false;
+      let hasCurrentEvents = false;
+      let allEventsEnded = true;
+      let hasStartedOrCurrentEvents = false;
+      
+      // Prima passata: determina se tutti gli eventi sono finiti
+      sessionCards.forEach(cardElement => {
+        const card = cardElement as HTMLAnchorElement;
+        const endTimeAttr = card.getAttribute('data-session-end');
+        if (!endTimeAttr) return;
+        
+        const endTime = new Date(endTimeAttr);
+        
+        // Se non è passata e non è una service session, allora non tutti gli eventi sono finiti
+        if (endTime > currentTime) {
+          allEventsEnded = false;
+        }
+      });
+      
+      // Se tutti gli eventi sono finiti, forza la visualizzazione di tutti gli eventi
+      if (allEventsEnded) {
+        showPastEvents = true;
+      }
+      
+      // Elabora ogni session card
+      sessionCards.forEach(cardElement => {
+        const card = cardElement as HTMLAnchorElement;
+        const startTimeAttr = card.getAttribute('data-session-start');
+        const endTimeAttr = card.getAttribute('data-session-end');
+        
+        if (!startTimeAttr || !endTimeAttr) return;
+        
+        const startTime = new Date(startTimeAttr);
+        const endTime = new Date(endTimeAttr);
+        
+        // Determina lo stato temporale della sessione
+        const isPast = endTime <= currentTime;
+        const isCurrent = startTime <= currentTime && currentTime <= endTime;
+        const hasStarted = startTime <= currentTime; // Evento iniziato (può essere passato o in corso)
+        
+        // Se non è passata, allora non tutti gli eventi sono finiti
+        if (!isPast) {
+          allEventsEnded = false;
+        }
+        
+        // Se l'evento è iniziato o in corso, abbiamo eventi da mostrare nel toggle
+        if (hasStarted) {
+          hasStartedOrCurrentEvents = true;
+        }
+        
+        // Rimuovi classi esistenti
+        card.classList.remove('session-past', 'session-current', 'session-future', 'grayscale', 'opacity-30');
+        
+        // Rimuovi badge LIVE esistenti
+        const existingLiveBadge = card.querySelector('.live-badge');
+        if (existingLiveBadge) {
+          existingLiveBadge.remove();
+        }
+        
+        // Applica stili in base allo stato temporale
+        if (isPast && !showPastEvents) {
+          // Nascondi eventi passati quando il toggle è disattivato
+          (card as HTMLElement).style.display = 'none';
+        } else {
+          (card as HTMLElement).style.display = '';
+          hasVisibleEvents = true;
+          
+          if (isPast) {
+            card.classList.add('session-past');
+          } else if (isCurrent) {
+            card.classList.add('session-current');
+            hasCurrentEvents = true;
+            
+            // Aggiungi badge LIVE per eventi correnti (solo se non è service session)
+            addLiveBadge(card);
+          } else {
+            card.classList.add('session-future');
+          }
+        }
+      });
+      
+      // Gestisci gli slot temporali
+      timeSlots.forEach(timeSlot => {
+        const timeText = timeSlot.textContent.trim();
+        if (!timeText) return;
+        
+        try {
+          // Parse dell'orario (formato HH:MM)
+          const [hours, minutes] = timeText.split(':').map(Number);
+          const slotTime = new Date(currentTime);
+          slotTime.setHours(hours, minutes, 0, 0);
+          
+          // Rimuovi classi esistenti
+          timeSlot.classList.remove('time-slot-past', 'time-slot-current', 'time-slot-future');
+          
+          // Applica stili in base allo stato temporale
+          if (slotTime.getTime() < currentTime.getTime() - 60000) { // 1 minuto di tolleranza
+            timeSlot.classList.add('time-slot-past');
+          } else if (Math.abs(slotTime.getTime() - currentTime.getTime()) < 60000) { // Entro 1 minuto
+            timeSlot.classList.add('time-slot-current');
+          } else {
+            timeSlot.classList.add('time-slot-future');
+          }
+        } catch (error) {
+          // Se il parsing fallisce, considera come futuro
+          timeSlot.classList.add('time-slot-future');
+        }
+      });
+      
+      // Nascondi time slot che non hanno più blocchi visibili
+      hideEmptyTimeSlots();
+      
+      // Gestisci il messaggio "tutti gli eventi sono finiti"
+      if (allEventsEndedMessage) {
+        if (allEventsEnded && !showPastEventsElement?.checked) {
+          // Mostra il messaggio informativo che tutti gli eventi sono visualizzati
+          allEventsEndedMessage.classList.remove('hidden');
+          allEventsEndedMessage.classList.add('flex');
+        } else {
+          allEventsEndedMessage.classList.add('hidden');
+          allEventsEndedMessage.classList.remove('flex');
+        }
+      }
+      
+      // Gestisci la visibilità del toggle "Mostra eventi passati"
+      const pastEventsToggle = document.getElementById('past-events-toggle');
+      if (pastEventsToggle) {
+        if (hasStartedOrCurrentEvents && !allEventsEnded) {
+          // Ci sono eventi iniziati o in corso, mostra il toggle
+          pastEventsToggle.style.display = '';
+        } else {
+          // Nessun evento è ancora iniziato, nascondi il toggle
+          pastEventsToggle.style.display = 'none';
+        }
+      }
+    }
+    
+    function addLiveBadge(card: HTMLElement) {
+      // Controlla se esiste già un badge LIVE
+      if (card.querySelector('.live-badge')) return;
+      
+      // Crea il badge LIVE
+      const liveBadge = document.createElement('div');
+      liveBadge.className = 'live-badge absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 z-10';
+      liveBadge.innerHTML = `
+        <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+        <span>LIVE</span>
+      `;
+      
+      // Assicurati che il card abbia position relative
+      if (getComputedStyle(card).position === 'static') {
+        card.style.position = 'relative';
+      }
+      
+      // Aggiungi il badge al card
+      card.appendChild(liveBadge);
+    }
+    
+    function hideEmptyTimeSlots() {
+      const activeTabPanel = document.querySelector('.tab-panel:not(.hidden)');
+      if (!activeTabPanel) return;
+      
+      const scheduleGrid = activeTabPanel.querySelector('[class*="grid-cols-layout"]');
+      if (!scheduleGrid) return;
+      
+      // Trova tutti gli elementi del grid
+      const allGridElements = Array.from(scheduleGrid.children) as HTMLElement[];
+      
+      // Trova tutte le righe del grid raggruppando elementi per time slot
+      const timeSlotElements = activeTabPanel.querySelectorAll('[data-slot-time]');
+      
+      timeSlotElements.forEach(timeSlotElement => {
+        const slotTime = timeSlotElement.getAttribute('data-slot-time');
+        if (!slotTime) return;
+        
+        // Trova l'indice del time slot element nell'array degli elementi del grid
+        const timeSlotIndex = allGridElements.indexOf(timeSlotElement as HTMLElement);
+        if (timeSlotIndex === -1) return;
+        
+        // Trova tutte le session cards che iniziano in questo slot time
+        const sessionCards = activeTabPanel.querySelectorAll('a[data-session-start][data-session-end]');
+        let hasVisibleSessions = false;
+        
+        sessionCards.forEach(card => {
+          const cardElement = card as HTMLElement;
+          const startTimeAttr = card.getAttribute('data-session-start');
+          
+          // Verifica se la sessione è visibile e se il suo orario corrisponde a questo slot
+          if (startTimeAttr && cardElement.style.display !== 'none') {
+            const startTime = new Date(startTimeAttr);
+            const sessionSlotTime = startTime.toLocaleTimeString('it-IT', {
+              hour: '2-digit', 
+              minute: '2-digit',
+              timeZone: WebsiteConfig.EVENT_TIMEZONE
+            });
+            
+            // Se l'orario del card corrisponde a questo time slot ed è visibile
+            if (sessionSlotTime === slotTime) {
+              hasVisibleSessions = true;
+            }
+          }
+        });
+        
+        // Calcola quante colonne ha il grid per determinare quanti elementi formano una riga
+        const gridStyle = window.getComputedStyle(scheduleGrid);
+        const gridColumns = gridStyle.gridTemplateColumns.split(' ').length;
+        
+        // Trova il prossimo time slot per determinare dove finisce questa riga
+        let nextTimeSlotIndex = allGridElements.length;
+        for (let i = timeSlotIndex + 1; i < allGridElements.length; i++) {
+          if (allGridElements[i].hasAttribute('data-slot-time')) {
+            nextTimeSlotIndex = i;
+            break;
+          }
+        }
+        
+        // Nascondi/mostra tutti gli elementi di questa riga del time slot
+        for (let i = timeSlotIndex; i < nextTimeSlotIndex; i++) {
+          const element = allGridElements[i];
+          if (element) {
+            if (hasVisibleSessions) {
+              element.style.display = '';
+            } else {
+              element.style.display = 'none';
+            }
+          }
+        }
+      });
+    }
+
+    // Gestione del cambio lingua e inizializzazione
+    document.addEventListener('DOMContentLoaded', initializeSchedulePage);
+
+    // Rileva quando la pagina viene mostrata di nuovo (dopo navigazione back/forward)
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) {
+        // La pagina è stata caricata dalla cache, re-inizializza
+        setTimeout(initializeSchedulePage, 100);
+      }
+    });
+
+    // Rileva cambi nell'URL (cambio lingua)
+    let currentLanguage = window.location.pathname.split('/')[1] || 'it';
+    
+    function checkLanguageChange() {
+      const newLanguage = window.location.pathname.split('/')[1] || 'it';
+      if (newLanguage !== currentLanguage) {
+        currentLanguage = newLanguage;
+        setTimeout(initializeSchedulePage, 200);
+      }
+    }
+
+    // Controlla cambi di lingua ogni 500ms
+    setInterval(checkLanguageChange, 500);
+
+    // Rileva anche cambi di hash nell'URL
+    window.addEventListener('hashchange', () => {
+      setTimeout(initializeSchedulePage, 100);
+    });
+  </script>
+  
+  <style>
+    /* Miglioramenti per la gestione delle righe vuote nel grid */
+    [class*="grid-cols-layout"] {
+      /* Rimuove automaticamente le righe vuote */
+      grid-template-rows: auto;
+      /* Assicura che gli elementi nascosti non occupino spazio */
+      gap: 0.5rem;
+    }
+    
+    /* Transizioni fluide per gli elementi che vengono nascosti/mostrati */
+    .time-slot, 
+    .schedule-card,
+    [data-slot-time] {
+      transition: all 0.2s ease-in-out;
+    }
+    
+    /* Rimuove completamente lo spazio degli elementi nascosti */
+    [style*="display: none"] {
+      height: 0 !important;
+      min-height: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+    }
+  </style>
 </BaseLayout>

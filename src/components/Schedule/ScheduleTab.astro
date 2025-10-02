@@ -55,7 +55,16 @@ const calcSlotsTaken = (timeSlots, tsr, ts_idx) => {
 <div>
   {schedule.map((s) => {
         const roomsSelected = rooms?s.rooms.filter((r) => rooms.includes(r.id)):s.rooms
-        const timeSlotSelected = s.timeSlots.filter((ts) => ts.rooms.some((tsr) => roomsSelected.map(r => r.id).includes(tsr.id)) || isServiceTimeSlot(ts));
+        const timeSlotSelected = s.timeSlots.filter((ts, index) => {
+          const hasSelectedRoom = ts.rooms.some((tsr) => roomsSelected.map(r => r.id).includes(tsr.id));
+          const isService = isServiceTimeSlot(ts);
+          
+          // Include anche il primo timeslot tra due sessioni di servizio
+          const isFirstSlotAfterService = index > 0 && index < s.timeSlots.length - 1 &&
+            isServiceTimeSlot(s.timeSlots[index - 1]);
+          
+          return hasSelectedRoom || isService || isFirstSlotAfterService;
+        });
         const totalScheduleCols = roomsSelected.length;
         let skipPadding: {[key:string]:number} = roomsSelected.map((room) => ({[room.id]:0})).reduce((a,b)=>({...a,...b}),{});
         return <>
@@ -74,16 +83,61 @@ const calcSlotsTaken = (timeSlots, tsr, ts_idx) => {
   
                 const hasServiceSession = isServiceTimeSlot(ts)
                 
-                const sessionsInTimeSlot = ts.rooms.map((tsr) => {
+                // Filtra le room: include le room selezionate + tutte le sessioni di servizio
+                const roomsToRender = ts.rooms.filter((tsr) => 
+                  tsr.session.isServiceSession || roomsSelected.map(r => r.id).includes(tsr.id)
+                );
+                
+                const sessionsInTimeSlot = roomsToRender.map((tsr) => {
                   const slots = !hasServiceSession? calcSlotsTaken(timeSlotSelected, tsr, ts_idx) : 1;
                   if (slots > 1){
                     skipPadding[tsr.id.toString()] = slots-1
                   }
+                  
+                  // Calcola i timestamp specifici per questo blocco grafico
+                  // Usa direttamente i tempi della sessione originale
+                  const sessionStartTime = new Date(tsr.session.startsAt);
+                  const sessionEndTime = new Date(tsr.session.endsAt);
+                  
+                  // Per sessioni multi-slot, usa il tempo di inizio del primo slot e calcola la fine
+                  let blockStartTime, blockEndTime;
+                  
+                  // Calcola il tempo di inizio del blocco considerando service sessions precedenti
+                  blockStartTime = sessionStartTime; // Default: inizio naturale della sessione
+                  for (let i = ts_idx - 1; i >= 0; i--) {
+                    const prevSlot = timeSlotSelected[i].rooms.find(r => r.session.isServiceSession);
+                    if (prevSlot) {
+                      // Trova la service session più recente, usa la sua fine come inizio del blocco
+                      const endSessionTime = new Date(prevSlot.session.endsAt)
+                      if (endSessionTime > blockStartTime) {
+                        blockStartTime = endSessionTime;
+                      }
+                      break; // Prendi la più recente e fermati
+                    }
+                  }
+                                      
+                  // Cerca il prossimo slot non vuoto tra tutti i successivi
+                  blockEndTime = sessionEndTime; // Default fallback
+                  for (let i = ts_idx + 1; i < timeSlotSelected.length; i++) {
+                    const nextSlot = timeSlotSelected[i].rooms.find(r => r.session.isServiceSession);
+                    if (nextSlot) {
+                      const nextServiceStart = new Date(nextSlot.session.startsAt);
+                      if (nextServiceStart < blockEndTime) {
+                        blockEndTime = nextServiceStart;
+                      }
+                      break;
+                    }
+                  }
+                  
                   return {
                     data: tsr,
                     html: <>
                       <div class={`xl:col-span-${ hasServiceSession ? totalScheduleCols : 1 } row-span-${slots}`}>
-                        <ScheduleCard value={tsr} />
+                        <ScheduleCard 
+                          value={tsr} 
+                          blockStartTime={blockStartTime.toISOString()}
+                          blockEndTime={blockEndTime.toISOString()}
+                        />
                       </div>
                     </>,
                   };
@@ -106,11 +160,19 @@ const calcSlotsTaken = (timeSlots, tsr, ts_idx) => {
                   ).filter((ele)=>ele!=null) : sessionsInTimeSlot.map((session) => session.html)
               )
                   
-                  return [
-                  <div class="font-medium text-2xl">
+                  const timeSlotElement = (
+                    <div 
+                      class="font-medium text-2xl time-slot" 
+                      data-slot-time={ts.slotStart}
+                      data-schedule-date={s.date}
+                    >
                       <p>{ts.slotStart}</p>
-                  </div>,
-                  ...orderedSessions
+                    </div>
+                  );
+                  
+                  return [
+                    timeSlotElement,
+                    ...orderedSessions
                   ];
               })}
             </div>

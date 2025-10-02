@@ -62,6 +62,13 @@ export class WebsiteConfig {
 
     public static readonly SESSIONIZE_API_KEY = "i9otum6s";
 
+    /*--------------------------------------------
+    |              DEBUG SETTINGS                |  
+    --------------------------------------------*/
+
+    // Set to true to force events to appear as happening today (for testing past events hiding)
+    public static readonly DEBUG_FORCE_EVENT_TODAY = false;
+
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     public static readonly FIREBASE_CONFIG = {
