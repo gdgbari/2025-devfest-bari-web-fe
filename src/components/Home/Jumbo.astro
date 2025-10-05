@@ -6,12 +6,12 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<div class="jumbo h-[700px] md:h-[85vh] flex flex-col content-center justify-center">
-  <div class="flex flex-col content-center justify-center top-0 left-0 right-0 h-[700px] md:h-[85vh] w-full">
+<div class="jumbo h-[90vh] md:h-[100vh] flex flex-col content-center justify-center border-b-yellow border-b-4">
+  <div class="flex flex-col content-center justify-center top-0 left-0 right-0 h-[100%] w-full">
     <div
       class="absolute left-1/2 top-[80px] transform -translate-x-1/2 p-10 text-center text-primary-content flex flex-col align-center z-20 w-full"
     >
-      <img src="/assets/vectors/logo_big.svg" class="h-36 m-1 my-12 md:m-12" />
+      <img src="/assets/vectors/logo_blue.svg" class="h-36 m-1 my-12 md:m-12" />
       <p class="text-2xl md:text-4xl font-semibold">
         {
           WebsiteConfig.EVENT_START.toLocaleDateString(lang, {
@@ -39,16 +39,17 @@ const t = useTranslations(lang);
       </div>
     </div>
     <div class="wheel-container max-w-[2500px] flex content-center justify-center mx-auto">
+      <!-- <div class="bg-black md:block hidden absolute bottom-0 left-0 right-0 w-full h-full z-10 bg-opacity-50"></div> -->
       <img
-        src="/assets/vectors/skyline-parts/skyline-base.png"
+        src="/assets/vectors/skyline-parts/skyline-fireworks.png"
         alt=""
         class="mt-auto absolute bottom-0 left-0 right-0 w-full"
       />
-      <img
+      <!-- <img
         src="/assets/vectors/skyline-parts/skyline-inner-wheel.png"
         alt=""
         class="mt-auto absolute bottom-0 left-0 right-0 w-full wheel-rotate-animation"
-      />
+      /> -->
     </div>
 
   </div>

@@ -168,15 +168,15 @@ export const useLeaderboard = () => {
     return leaderboardData
 }
 
-export const COLORS_LIST = ["green", "blue", "red", "yellow"]
+export const COLORS_LIST = ["green", "yellow", "yellow", "yellow"]
 export const colorConverter = (color: string) => {
     if (color === "green") {
         return "#34A853"
     }
-    if (color === "blue") {
+    if (color === "yellow") {
         return "#4285F4"
     }
-    if (color === "red") {
+    if (color === "yellow") {
         return "#EA4335"
     }
     if (color === "yellow") {

@@ -84,7 +84,7 @@ schedule.forEach(day => {
         <input 
           type="checkbox" 
           id="show-past-events" 
-          class="w-5 h-5 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500 focus:ring-2" 
+          class="w-5 h-5 text-yellow-600 bg-gray-700 border-gray-600 rounded focus:ring-yellow-500 focus:ring-2" 
         />
         <span class="text-sm font-medium text-gray-200">📅 {t("schedule.showPastEvents")}</span>
       </label>
@@ -92,8 +92,8 @@ schedule.forEach(day => {
     
     <!-- Messaggio quando tutti gli eventi sono conclusi -->
     <div id="all-events-ended-message" class="mb-6 justify-center hidden">
-      <div class="bg-blue-800/60 backdrop-blur-sm border border-blue-600 rounded-xl p-4 max-w-md mx-auto text-center">
-        <span class="text-sm font-medium text-blue-200">ℹ️ {t("schedule.allEventsEnded")}</span>
+      <div class="bg-yellow-800/60 backdrop-blur-sm border border-yellow-600 rounded-xl p-4 max-w-md mx-auto text-center">
+        <span class="text-sm font-medium text-yellow-200">ℹ️ {t("schedule.allEventsEnded")}</span>
       </div>
     </div>
 
@@ -581,7 +581,7 @@ import { WebsiteConfig } from "../config";
       
       // Crea il badge LIVE
       const liveBadge = document.createElement('div');
-      liveBadge.className = 'live-badge absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 z-10';
+      liveBadge.className = 'live-badge absolute top-2 right-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded-full flex items-center gap-1 z-10';
       liveBadge.innerHTML = `
         <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
         <span>LIVE</span>

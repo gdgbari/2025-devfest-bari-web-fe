@@ -14,7 +14,7 @@ const getPath = useTranslatedPath(lang);
 
 ---
 <div
-    class={`block py-1 px-2 rounded-md text-black border-2 border-red cursor-pointer bg-white`}
+    class={`block py-1 px-2 rounded-md text-black border-2 border-yellow cursor-pointer bg-white`}
     onclick={`event.stopPropagation(); window.location.href = '${getPath("/sessions/topics/"+topicSlug)}'`}
 >
     <span class="text-sm">{topic}</span>

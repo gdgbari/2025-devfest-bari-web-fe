@@ -40,7 +40,7 @@ html{
 }
 
 .btn.btn-primary{
-    @apply bg-red text-white text-2xl px-10 py-3 h-auto rounded-lg hover:bg-red-dark border-0;
+    @apply bg-yellow text-white text-2xl px-10 py-3 h-auto rounded-lg hover:bg-yellow-dark border-0;
 }
 
 .category-item {
@@ -52,16 +52,16 @@ html{
 }
 
 .speaker-card {
-    @apply flex flex-col card items-stretch bg-red-pastel md:hover:scale-110 h-full w-full text-center animated max-w-[400px];
+    @apply flex flex-col card items-stretch bg-yellow-pastel md:hover:scale-110 h-full w-full text-center animated max-w-[400px];
 }
 
 a:not(.not-colored) {
-    @apply text-red;
+    @apply text-yellow;
     transition: 0.3s;
 }
 
 a:not(.not-colored):hover {
-    @apply text-red-pastel;
+    @apply text-yellow-pastel;
     transition: 0.3s;
 }
 

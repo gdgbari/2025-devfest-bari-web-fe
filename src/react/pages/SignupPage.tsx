@@ -39,7 +39,7 @@ export const SignupPage = ({ token }: { token: string }) => {
             showNotification({
                 title: "Form error",
                 message: Object.values(form.errors).join(", "),
-                color: "red"
+                color: "yellow"
             })
         }
     }
@@ -108,7 +108,7 @@ export const SignupPage = ({ token }: { token: string }) => {
                             loading: false,
                             title: `Registration error [${error.code}]`,
                             message: error.message,
-                            color: "red",
+                            color: "yellow",
                             autoClose: true
                         });
                         setPageStatus(SignUpPageStatus.SignUpError);
