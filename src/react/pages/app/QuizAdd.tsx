@@ -112,7 +112,7 @@ export const QuizAdd = () => {
             showNotification({
                 title: "Form error",
                 message: Object.values(form.errors).join(", "),
-                color: "red"
+                color: "yellow"
             })
         }
     }
@@ -131,7 +131,7 @@ export const QuizAdd = () => {
                 title: "Creating quiz",
                 message: "Please wait...",
                 autoClose: false,
-                color: "blue",
+                color: "yellow",
                 loading: true
             })
             createQuiz({
@@ -147,7 +147,7 @@ export const QuizAdd = () => {
                 showNotification({
                     title: "Quiz created",
                     message: "Quiz has been created successfully",
-                    color: "blue"
+                    color: "yellow"
                 })
                 queryClient.invalidateQueries({ queryKey: ["quizzes"] })
                 navigate("app")
@@ -155,7 +155,7 @@ export const QuizAdd = () => {
                 showNotification({
                     title: `Error creating quiz [${error.errorCode}]`,
                     message: error.details,
-                    color: "red"
+                    color: "yellow"
                 })
             }).finally(() => {
                 setSubmitting(false)

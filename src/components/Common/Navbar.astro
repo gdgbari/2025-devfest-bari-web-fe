@@ -42,7 +42,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
   <div class="drawer-content flex flex-col">
     <!-- Navbar -->
     <div
-      class="navbar bg-base-100 w-full fixed top-0 z-30 border-b-4 border-b-red"
+      class="navbar bg-base-100 w-full fixed top-0 z-30 border-b-4 border-b-yellow"
     >
       <div class="flex-none lg:hidden">
         <label
@@ -80,7 +80,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
             links.map((item) => (
               <li>
                 <a
-                  class="btn btn-ghost hover:bg-red-pastel hover:text-black not-colored"
+                  class="btn btn-ghost hover:bg-yellow-pastel hover:text-black not-colored"
                   href={item.link}
                 >
                   {item.name}
@@ -93,7 +93,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
               <div
                 tabindex="0"
                 role="button"
-                class="btn btn-ghost hover:bg-red-pastel hover:text-black"
+                class="btn btn-ghost hover:bg-yellow-pastel hover:text-black"
               >
                 {t("nav.editions")}
               </div>
@@ -105,7 +105,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
                   editions.map((event) => (
                     <li>
                       <a
-                        class="not-colored hover:bg-red-pastel hover:text-black"
+                        class="not-colored hover:bg-yellow-pastel hover:text-black"
                         href={event.link}
                       >
                         {event.year}
@@ -121,7 +121,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
               <div
                 tabindex="0"
                 role="button"
-                class="btn btn-ghost hover:bg-red-pastel hover:text-black"
+                class="btn btn-ghost hover:bg-yellow-pastel hover:text-black"
               >
                 <svg class="fill-current h-6 w-6" set:html={translationIcon} />
               </div>
@@ -133,7 +133,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
                   Object.keys(languages).map((lang) => (
                     <li>
                       <a
-                        class="not-colored hover:bg-red-pastel hover:text-black"
+                        class="not-colored hover:bg-yellow-pastel hover:text-black"
                         href={translatePath(currentPath, lang)}
                       >
                         {languages[lang]}
@@ -151,7 +151,7 @@ const currentPath = getUrlPathWithoutLang(lang, Astro.url);
   <div class="drawer-side z-40">
     <label for="my-drawer-3" aria-label="close sidebar" class="drawer-overlay"
     ></label>
-    <ul class="menu min-h-full w-80 p-4 bg-red-pastel">
+    <ul class="menu min-h-full w-80 p-4 bg-yellow-pastel">
       {
         links.map((item) => (
           <li class="hover:bg-black/10">

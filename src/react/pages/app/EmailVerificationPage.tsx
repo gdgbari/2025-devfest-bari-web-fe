@@ -18,13 +18,13 @@ export const EmailVerificationPage = ({ user }:{ user: User }) => {
                         showNotification({
                             title: "Verification email sent",
                             message: "Check your inbox",
-                            color: "blue"
+                            color: "yellow"
                         })
                     }).catch((error) => {
                         showNotification({
                             title: `Error sending verification email [${error.code}]`,
                             message: error.message,
-                            color: "red"
+                            color: "yellow"
                         })
                     })
                 }}>

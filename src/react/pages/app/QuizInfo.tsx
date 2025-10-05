@@ -93,7 +93,7 @@ const QuizDetails = ({ quiz }: { quiz: Quiz }) => {
                     queryClient.refetchQueries({ queryKey: ["quizzes"]})
                 })
             }} loading={quizToggled} disabled={quizToggled}>
-                {quizToggled? null: quiz.isOpen ? <FaLockOpen size={20} color="lime" /> : <FaLock size={20} color='red' />}
+                {quizToggled? null: quiz.isOpen ? <FaLockOpen size={20} color="lime" /> : <FaLock size={20} color='yellow' />}
             </Button>
             
         </h2>

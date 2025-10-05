@@ -31,7 +31,7 @@ const UserRowInfo = ({ uid, removeUser }: { uid: string, removeUser: (uid: strin
                     <small>{user.data?.nickname}</small>
                 </div>
                 <Button style={{
-                    backgroundColor: colorConverter("red")
+                    backgroundColor: colorConverter("yellow")
                 }} onClick={()=>removeUser(uid)} >
                     <FaTrashAlt size={26} />
                 </Button>
@@ -118,7 +118,7 @@ export const QRScan = () => {
                                     autoClose: 3000,
                                     title: "Error",
                                     message: e.message,
-                                    color: "red"
+                                    color: "yellow"
                                 })
                             }).finally(()=>{
                                 setIsLoading(false)
@@ -130,7 +130,7 @@ export const QRScan = () => {
                                 title: "Please fill all the fields",
                                 message: Object.values(form.errors).join(", "),
                                 autoClose: 3000,
-                                color: "red"
+                                color: "yellow"
                             })
                         }
                     }}
@@ -187,7 +187,7 @@ export const QRScan = () => {
                     />: <div className="flex">Camera disabled<Space w="md" /><FiCameraOff size={26} /></div>}
                 </div>
             </div>
-            {form.values.userIdList.length == 0 && <div className="text-red-500">No users selected</div>}
+            {form.values.userIdList.length == 0 && <div className="text-yellow-500">No users selected</div>}
             {form.values.userIdList.sort((a,b) => {
                 if (addOrder.find((o) => o.uid == a) == undefined){
                     return 1

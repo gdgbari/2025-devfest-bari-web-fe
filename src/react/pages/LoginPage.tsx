@@ -42,7 +42,7 @@ export const LoginPage = () => {
             showNotification({
                 title: "Form error",
                 message: Object.values(form.errors).join(", "),
-                color: "red"
+                color: "yellow"
             })
         }
     }
@@ -83,7 +83,7 @@ export const LoginPage = () => {
                                     loading: false,
                                     title: `Error [${error.code}]`,
                                     message: error.message,
-                                    color: "red",
+                                    color: "yellow",
                                     autoClose: true
                                 })
                             }).finally(() => {
@@ -113,7 +113,7 @@ export const LoginPage = () => {
                                     loading: false,
                                     title: `Login error [${error.code}]`,
                                     message: error.message,
-                                    color: "red",
+                                    color: "yellow",
                                     autoClose: true
                                 })
                             }).finally(() => {

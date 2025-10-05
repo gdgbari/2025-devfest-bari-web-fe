@@ -35,7 +35,7 @@ const t = useTranslations(lang);
     <p class="text-xl font-medium mb-3">{session.title}</p>
   </div>
   <div class="flex flex-wrap gap-2">
-    <div class="py-1 px-2 rounded-md bg-red text-white flex items-center">
+    <div class="py-1 px-2 rounded-md bg-yellow text-white flex items-center">
       <span class="text-sm">{session.sessionLevel}</span>
     </div>
     {session.topics.map((t) => <SessionTopic topic={t} brightness="light" />)}

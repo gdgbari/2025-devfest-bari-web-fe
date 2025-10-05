@@ -9,7 +9,6 @@ const defaultProfileImage = "/assets/vectors/user_circle.svg"
  */
 function forceToToday(originalDateString: string): string {
     if (!WebsiteConfig.DEBUG_FORCE_EVENT_TODAY) {
-        console.log(`🔧 DEBUG_FORCE_EVENT_TODAY is disabled, returning original date: ${originalDateString}`);
         return originalDateString;
     }
     
@@ -109,8 +108,6 @@ export async function getSessions(includeSpeakers: boolean = false): Promise<Ses
         sessions.slice(0, 3).forEach((session, i) => {
             console.log(`📝 Session ${i + 1}: ${session.title} - ${new Date(session.startsAt).toLocaleString('it-IT')}`);
         });
-    } else {
-        console.log('❌ DEBUG_FORCE_EVENT_TODAY is disabled in WebsiteConfig');
     }
 
     return sessions;
