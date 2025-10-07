@@ -5,12 +5,12 @@ import StaffMemberCard from "./StaffMemberCard.astro";
 
 const staffCollection = await getCollection("staff");
 
-const organizers = staffCollection.filter(
-  (staff) => staff.data.role === "organizer",
-);
-const collaborators = staffCollection.filter(
-  (staff) => staff.data.role === "collaborator",
-);
+const organizers = staffCollection
+  .filter((staff) => staff.data.role === "organizer")
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+const collaborators = staffCollection
+  .filter((staff) => staff.data.role === "collaborator")
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
 ---
 
 <div class="my-3 text-white">

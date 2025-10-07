@@ -5,8 +5,9 @@ interface Props {
   links: SpeakerLinks;
 }
 
-const { links:{ websites, ...known_links} }:Props = Astro.props;
+const { links:{ websites, website, ...known_links} }:Props = Astro.props;
 
+const allWebsites = [...(websites??[]), ...(website?[website]:[])]
 
 ---
 
@@ -25,8 +26,8 @@ const { links:{ websites, ...known_links} }:Props = Astro.props;
     }
   })}
   {
-    websites &&
-      websites.map((website:string) => (
+    allWebsites.length > 0 &&
+      allWebsites.map((website:string) => (
         <a
           class="not-colored p-1 mr-2 cursor-pointer hover:opacity-75 transition-opacity"
           href={website}

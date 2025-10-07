@@ -59,7 +59,8 @@ export interface SpeakerLinks {
     twitter?: string,
     github?: string,
     company?: string,
-    websites: string[],
+    websites?: string[],
+    website?: string,
     facebook?: string,
     instagram?: string
 }

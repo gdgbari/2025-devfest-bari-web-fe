@@ -5,6 +5,7 @@ const linksSchema = z.object({
     instagram: z.string().optional(),
     facebook: z.string().optional(),
     websites: z.array(z.string()).optional(),
+    website: z.string().optional(),
     linkedin: z.string().optional(),
     github: z.string().optional(),
     company: z.string().optional(),

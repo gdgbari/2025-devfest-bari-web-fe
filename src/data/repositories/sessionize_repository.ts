@@ -211,7 +211,7 @@ function parseSpeaker(speakerRaw: any, sessions: SessionInfo[] | null) {
                     break;
                 case 'blog':
                 default:
-                    speaker.links.websites.push(link.url);
+                    speaker.links.websites?.push(link.url);
                     break;
 
 
