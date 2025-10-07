@@ -1,8 +1,13 @@
 ---
 name: "Anna Labellarte"
-tagline: "Mobile Engineer @ YAZIO"
+tagline: "Mobile Engineer @ Yazio"
 role: "organizer"
-image: "anna.webp"
+image: "anna.jpg"
 links:
-    twitter: "https://x.com/anna_labe"
+    linkedin: "https://www.linkedin.com/in/annalabellarte"
+    twitter: "https://x.com/annalabellarte"
+    github: "https://github.com/annalabellarte"
+    facebook: "https://www.facebook.com/anna.labellarte.5"
+    instagram: "https://www.instagram.com/anna_labe"
+    website: "https://www.yazio.com/it"
 ---

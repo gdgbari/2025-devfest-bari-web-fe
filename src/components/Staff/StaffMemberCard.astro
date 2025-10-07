@@ -9,16 +9,13 @@ interface Props {
 }
 
 const { value }: Props = Astro.props;
-
-var imgs = import.meta.glob('../../assets/images/staff/*', { eager: true });
-const img = (imgs[`../../assets/images/staff/${value.data.image}`] as any).default;
 ---
 
 <div class="flex flex-row">
   <div class="flex-none w-32 pr-3">
     <Image
       class={"rounded-full"}
-      src={img}
+      src={`/assets/images/staff/${value.data.image}`}
       alt={value.data.name}
       width={400}
       height={400}

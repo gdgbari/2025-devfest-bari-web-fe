@@ -6,4 +6,6 @@ image: "domingo.jpg"
 links:
     twitter: "https://x.com/domy_sh"
     linkedin: "https://www.linkedin.com/in/domysh"
+    instagram: "https://instagram.com/domy.sh"
+    website: "https://domy.sh"
 ---

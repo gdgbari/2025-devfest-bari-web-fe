@@ -1,11 +1,13 @@
 ---
 name: "Simone Bonfrate"
-tagline: "XR Engineer @ Wideverse"
+tagline: "@Wideverse - AI Engineer"
 role: "organizer"
-image: "simone.webp"
+image: "simone.jpg"
 links:
+    linkedin: "https://www.linkedin.com/in/simone-bonfrate/"
+    github: "https://github.com/bonfry"
+    website: "https://wideverse.com/"
     twitter: "https://x.com/bonfry_dev"
     instagram: "https://instagram.com/bonfry"
-    facebook: "https://facebook.com/GDGBari"
 ---
 

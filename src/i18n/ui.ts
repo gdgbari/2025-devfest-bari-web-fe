@@ -198,7 +198,7 @@ export const ui = {
         'nav.speakers': 'Speaker',
         'nav.location': 'Sede',
         'nav.lang': 'Lingua',
-        'nav.faq': 'FAQ',
+        'nav.faq': 'Faq',
         'nav.team': 'Team',
         'nav.editions': 'Edizioni',
         'footer.share': 'Condividi',

@@ -1,8 +1,10 @@
 ---
 name: "Federico Carrozzino"
-tagline: "Engagement, App, Design and Marketing Team"
+tagline: "Mobile & Cloud Engineer @ Datwave"
 role: "collaborator"
 image: "federico.png"
 links:
-    linkedin: "https://www.linkedin.com/in/fedecarroz/"
+    linkedin: "https://www.linkedin.com/in/fedecarroz"
+    github: "https://github.com/fedecarroz"
+    website: "https://datwave.ai/"
 ---
