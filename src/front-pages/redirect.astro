@@ -14,7 +14,18 @@ const t = useTranslations(lang);
     <script>
         import { WebsiteConfig } from "../config";
         let toUrl = "";
-        
+
+	function startTimer(){
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                const instructions = document.getElementById('instructions');
+                const homeButton = document.getElementById('home-button');
+                if (homeButton) homeButton.style.display = 'block';
+                if (loader) loader.style.display = 'none';
+                if (instructions) instructions.style.display = 'block';
+            }, 2500);
+	}
+
         try{
             toUrl = atob(new URLSearchParams(window.location.search).get("to")?.replace(/_/g, '/').replace(/-/g, '+') || "")
             if (!WebsiteConfig.ALLOWED_REDIRECT_HOSTS.includes(new URL(toUrl).hostname)){
@@ -34,27 +45,22 @@ const t = useTranslations(lang);
         if (isInstagram || isFacebook){
             if (!isIOS){
                 const originalSchema = new URL(toUrl).protocol.replace(':', '');
-                location.href = toUrl.replace(/https?/, "intent") + "#Intent;scheme="+ originalSchema + ";end" // for android 
+		    location.href = toUrl.replace(/https?/, "intent") + "#Intent;scheme="+ originalSchema + ";end" // for android
+		    startTimer()
             }else{
                 // IOS 16+
                 location.href = `x-safari-https://${toUrl.replace(/^https?:\/\//, '')}`
                 // LEGACY IOS <16
-                setTimeout(() => { location.href = `com-apple-mobilesafari-tab:${toUrl}`; }, 500);
+		    setTimeout(() => { location.href = `com-apple-mobilesafari-tab:${toUrl}`; }, 500);
+		    startTimer();
             }
         }else{
-            location.href = toUrl;
+		location.href = toUrl;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Show fallback instructions after 3 seconds if redirect hasn't happened
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                const instructions = document.getElementById('instructions');
-                const homeButton = document.getElementById('home-button');
-                if (homeButton) homeButton.style.display = 'block';
-                if (loader) loader.style.display = 'none';
-                if (instructions) instructions.style.display = 'block';
-            }, 4000);
+		// Show fallback instructions after 3 seconds if redirect hasn't happened
+		startTimer()
         })
 
     </script>
