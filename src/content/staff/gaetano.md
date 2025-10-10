@@ -1,6 +1,6 @@
 ---
 name: "Gaetano Illuzzi"
-tagline: "Mai stabile, sempre scalabile"
+tagline: "Team Engagement"
 role: "collaborator"
 image: "gaetano.png"
 links:
