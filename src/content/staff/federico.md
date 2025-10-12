@@ -2,7 +2,7 @@
 name: "Federico Carrozzino"
 tagline: "Mobile & Cloud Engineer @ Datwave"
 role: "collaborator"
-image: "federico.png"
+image: "federico.jpg"
 links:
     linkedin: "https://www.linkedin.com/in/fedecarroz"
     github: "https://github.com/fedecarroz"
