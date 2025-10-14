@@ -1,6 +1,6 @@
 import { FaPlus } from "react-icons/fa";
 import { useAppRouter } from "../../utils/store";
-import { Button, Checkbox, Loading } from "react-daisyui";
+import { Button, Loading } from "react-daisyui";
 import { MdLeaderboard } from "react-icons/md";
 import { TitleBar } from "../../components/TitleBar";
 import { QuizCard } from "../../components/QuizCard";
@@ -10,7 +10,8 @@ import { SegmentedControl, Space } from "@mantine/core";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { TbReload } from "react-icons/tb";
-import { capitalizeString, QUIZ_TYPES } from "../../utils";
+import { capitalizeString } from "../../utils";
+import { QUIZ_TYPES } from "../../utils/types";
 
 export const QuizList = () => {
 
@@ -24,7 +25,7 @@ export const QuizList = () => {
     return <div className="h-full mb-5">
         <TitleBar title="Quizzes" actions={[
             <Button className="btn-circle mr-4" onClick={() => queryClient.invalidateQueries()} loading={quizzes.isFetching}>
-                { !quizzes.isFetching && <TbReload size={32} /> }
+                {!quizzes.isFetching && <TbReload size={32} />}
             </Button>,
             <Button className="btn-circle mr-4" onClick={() => navigate("qrscan")} >
                 <BsQrCodeScan size={26} />

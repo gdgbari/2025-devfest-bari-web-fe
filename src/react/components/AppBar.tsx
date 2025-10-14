@@ -3,7 +3,6 @@ import { firebase } from "../utils"
 
 export const AppBar = () => {
 
-
     return <Navbar className='bg-base-100 w-full border-b-4 border-b-yellow mb-4 mx-0'>
         <div className='flex-1 lg:ml-5 ml-3'>
             <img

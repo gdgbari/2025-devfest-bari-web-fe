@@ -1,9 +1,9 @@
 import { sendEmailVerification, type User } from "firebase/auth"
 import { Button } from "react-daisyui"
-import { showNotification } from "@mantine/notifications"
+import { notifications } from "@mantine/notifications"
 import { AppMain } from "../../AppMain"
 
-export const EmailVerificationPage = ({ user }:{ user: User }) => {
+export const EmailVerificationPage = ({ user }: { user: User }) => {
     return <AppMain>
         <div className="h-full flex flex-col justify-center items-center">
             <div className="max-w-[60vw]">
@@ -15,17 +15,19 @@ export const EmailVerificationPage = ({ user }:{ user: User }) => {
 
                 <Button onClick={() => {
                     sendEmailVerification(user!).then(() => {
-                        showNotification({
+                        notifications.show({
                             title: "Verification email sent",
                             message: "Check your inbox",
                             color: "yellow"
                         })
                     }).catch((error) => {
-                        showNotification({
+                        notifications.show({
                             title: `Error sending verification email [${error.code}]`,
                             message: error.message,
                             color: "yellow"
                         })
+                    }).finally(() => {
+
                     })
                 }}>
                     Resend verification email
