@@ -2,8 +2,8 @@
 import { WebsiteConfig } from "../../config";
 
 const { DEVFEST_NAME } = WebsiteConfig;
-import { ViewTransitions } from 'astro:transitions';
-import GlobalScripts from './GlobalScripts.astro';
+import { ViewTransitions } from "astro:transitions";
+import GlobalScripts from "./GlobalScripts.astro";
 
 import "../../style/fonts.css";
 import "../../style/base.scss";
@@ -21,43 +21,62 @@ const {
   keywords = "android, mobile, flutter, ai, conference, developer, machine learning, web, back-end, front-end, soft skills",
   author = "Google Developer Group Bari",
 } = Astro.props;
-
 ---
 
-<!-- Google tag (gtag.js) -->
-<script type="text/partytown" async src="https://www.googletagmanager.com/gtag/js?id=G-KMWB4M8E6V"></script>
-<script type="text/partytown">
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    type="text/partytown"
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-KMWB4M8E6V"></script>
+  <script type="text/partytown">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
 
-  gtag('config', 'G-KMWB4M8E6V');
-</script>
-
-<script type="text/javascript">
-  var _iub = _iub || [];
-  _iub.csConfiguration = {"siteId":3746707,"cookiePolicyId":86405163,"lang":"it"};
+    gtag("config", "G-KMWB4M8E6V");
   </script>
-  <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3746707.js"></script>
+
+  <script type="text/javascript">
+    var _iub = _iub || [];
+    _iub.csConfiguration = {
+      siteId: 3746707,
+      cookiePolicyId: 86405163,
+      lang: "it",
+    };
+  </script>
+  <script
+    type="text/javascript"
+    src="https://cs.iubenda.com/autoblocking/3746707.js"></script>
   <script type="text/javascript" src="/sw.js" async></script>
-  <script type="text/javascript" src="//cdn.iubenda.com/cs/stable/iubenda_cs.js" charset="UTF-8" async></script>
+  <script
+    type="text/javascript"
+    src="//cdn.iubenda.com/cs/stable/iubenda_cs.js"
+    charset="UTF-8"
+    async></script>
 
-<title>  {title ?? DEVFEST_NAME}</title>
+  <title>{title ?? DEVFEST_NAME}</title>
 
-<link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content={description} />
-<meta name="keywords" content={keywords} />
-<meta name="author" content={author} />
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<link rel="apple-touch-icon" href="/pwa-192x192.webp" />
-<link rel="mask-icon" href="/favicon.svg" color="#FFFFFF" />
-<meta name="msapplication-TileColor" content="#FFFFFF" />
-<meta name="theme-color" content="#ffffff" />
-
-<meta property="og:title" content={title ?? DEVFEST_NAME}>
-<meta property="og:description" content={description}>
-<meta property="og:image" content="/assets/images/social_thumb.webp">
-<ViewTransitions />
-<GlobalScripts />
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <meta name="keywords" content={keywords} />
+  <meta name="author" content={author} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/pwa-192x192.webp" />
+  <link rel="mask-icon" href="/favicon.svg" color="#FFFFFF" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta
+    name="google-site-verification"
+    content="SaSyBfpIxFhB9JKSVFm0N9OTR9DAbv1KUgWG2QOmlcE"
+  />
+  <meta property="og:title" content={title ?? DEVFEST_NAME} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content="/assets/images/social_thumb.webp" />
+  <ViewTransitions />
+  <GlobalScripts />
+</head>
