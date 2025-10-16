@@ -25,7 +25,7 @@ export const QUIZ_TYPES = ["talk", "sponsor", "special", "hidden", "custom"] as 
 
 export type QuizType = typeof QUIZ_TYPES[number]
 
-enum Role {
+export enum Role {
     ADMIN = "admin",
     STAFF = "staff",
     SPEACKER = "speaker",
