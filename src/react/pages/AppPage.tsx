@@ -16,6 +16,52 @@ import { Role } from "../utils/types";
 //import { QuizInfo } from "./app/QuizInfo";
 
 
+// Returns a list of users using the same wrapper format as `this_user`
+export const getMockUsers = () => {
+  return [
+    {
+      data: {
+        uid: "Test",
+        name: "Gabriele",
+        surname: "Dellino",
+        role: Role.STAFF,
+        nickname: "gdellino",
+        group: "group",
+        email: "gdellino37@gmail.com",
+      },
+      isFetched: true,
+      isFetching: false,
+    },
+    {
+      data: {
+        uid: "User2",
+        name: "Mario",
+        surname: "Rossi",
+        role: Role.ATTENDEE,
+        nickname: "mrossi",
+        group: "group-a",
+        email: "mario.rossi@example.com",
+      },
+      isFetched: true,
+      isFetching: false,
+    },
+    {
+      data: {
+        uid: "User3",
+        name: "Lucia",
+        surname: "Bianchi",
+        role: Role.STAFF,
+        nickname: "lbianchi",
+        group: "group-b",
+        email: "lucia.bianchi@example.com",
+      },
+      isFetched: true,
+      isFetching: false,
+    },
+  ]
+}
+
+
 export const AppPage = () => {
 
     const { user, hasLoaded } = useFirebaseUserInfo()
@@ -23,7 +69,7 @@ export const AppPage = () => {
     const emailVerified = true //firebase.auth.currentUser?.emailVerified ?? false
     const this_user = {
         data: {
-            uid: "TESTETESTTESTTEST",
+            uid: "Test",
             name: "Gabriele",
             surname: "Dellino",
             role: Role.STAFF,
