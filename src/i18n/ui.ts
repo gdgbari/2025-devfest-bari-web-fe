@@ -121,20 +121,25 @@ export const ui = {
             conference including all talks and workshops.
         `,
         'ticket.schools': `
-            <p class="mt-4 text-3xl mb-2 font-medium">Are you a high school?</p>
-                <p>
-                <a
-                    href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}">Contact us</a
-                > to organize your participation.
-                </p>
-                <p class="mt-4 text-3xl font-medium mb-2">
+            <p class="mt-4 text-3xl mb-2 font-medium">
+                Are you a high school teacher?
+            </p>
+            <p>
+                Fill out <a
+                href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}"
+                target="_blank"
+                >this form</a
+                > to bring your class to the event.
+            </p>
+            <p class="mt-4 text-3xl font-medium mb-2">
                 Are you a high school student?
-                </p>
-                <p>
+            </p>
+            <p>
                 Talk to your teachers and have them contact us. If you want to
                 participate independently, <a
-                    href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2025/#QeHcv97kND"
-                >Contact us</a
+                target="_blank"
+                href="mailto:gdgbari42@gmail.com"
+                >contact us</a
                 > and we will assist you.
             </p>`,
         'ticket.checkFAQFirstPart': "Check out the",
@@ -163,7 +168,7 @@ export const ui = {
         'schedule.showPastEvents': 'Show past events',
         'schedule.allEventsEnded': 'All events have ended',
         'schedule.talks': 'Talks',
-        'schedule.workshops': 'Workshops', 
+        'schedule.workshops': 'Workshops',
         'schedule.all': 'All',
         'schedule.live': 'LIVE',
         'schedule.upcoming': 'Upcoming',
@@ -308,14 +313,14 @@ export const ui = {
         `,
         'ticket.schools': `
             <p class="mt-4 text-3xl mb-2 font-medium">
-                Sei una scuola superiore?
+                Sei docente di una scuola superiore?
             </p>
             <p>
-                <a
+                Compila <a
                 href="${WebsiteConfig.DEVFEST_SCHOOL_LINK}"
                 target="_blank"
-                >Scrivici</a
-                > per organizzare la vostra partecipazione.
+                >questo form</a
+                > per portare la tua classe all'evento.
             </p>
             <p class="mt-4 text-3xl font-medium mb-2">
                 Sei uno studente delle scuole superiori?
@@ -324,8 +329,8 @@ export const ui = {
                 Parlane con con i tuoi professori e facci contattare da loro. Se
                 invece vuoi partecipare in autonomia, <a
                 target="_blank"
-                href="https://gdg.community.dev/events/details/google-gdg-bari-presents-devfest-bari-2025/#QeHcv97kND"
-                >Contattaci</a
+                href="mailto:gdgbari42@gmail.com"
+                >contattaci</a
                 > e ti aiuteremo noi.
             </p>`,
         'ticket.checkFAQFirstPart': "Consulta le",
