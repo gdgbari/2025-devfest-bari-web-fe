@@ -9,25 +9,84 @@ import { useAppRouter } from "../utils/store";
 //import { QuizList } from "./app/QuizList";
 import { Container } from "@mantine/core";
 import { Dashboard } from "./Dashboard";
+import { Role } from "../utils/types";
 //import { QuizAdd } from "./app/QuizAdd";
 //import { LeaderBoard } from "./app/LeaderBoard";
 //import { QRScan } from "./app/QRScan";
 //import { QuizInfo } from "./app/QuizInfo";
 
 
+// Returns a list of users using the same wrapper format as `this_user`
+export const getMockUsers = () => {
+  return [
+    {
+      data: {
+        uid: "Test",
+        name: "Gabriele",
+        surname: "Dellino",
+        role: Role.STAFF,
+        nickname: "gdellino",
+        group: "group",
+        email: "gdellino37@gmail.com",
+      },
+      isFetched: true,
+      isFetching: false,
+    },
+    {
+      data: {
+        uid: "User2",
+        name: "Mario",
+        surname: "Rossi",
+        role: Role.ATTENDEE,
+        nickname: "mrossi",
+        group: "group-a",
+        email: "mario.rossi@example.com",
+      },
+      isFetched: true,
+      isFetching: false,
+    },
+    {
+      data: {
+        uid: "User3",
+        name: "Lucia",
+        surname: "Bianchi",
+        role: Role.STAFF,
+        nickname: "lbianchi",
+        group: "group-b",
+        email: "lucia.bianchi@example.com",
+      },
+      isFetched: true,
+      isFetching: false,
+    },
+  ]
+}
+
+
 export const AppPage = () => {
 
     const { user, hasLoaded } = useFirebaseUserInfo()
     const { currentPage, navigate } = useAppRouter()
-    const emailVerified = firebase.auth.currentUser?.emailVerified ?? false
-    const this_user = useUserProfile()
+    const emailVerified = true //firebase.auth.currentUser?.emailVerified ?? false
+    const this_user = {
+        data: {
+            uid: "Test",
+            name: "Gabriele",
+            surname: "Dellino",
+            role: Role.STAFF,
+            nickname: "gdellino",
+            group: "group",
+            email: "gdellino37@gmail.com"
+        },
+        isFetched: true,
+        isFetching: false
+    }//useUserProfile()
 
     useEffect(() => {
         if (hasLoaded) {
             if (user == null) {
                 location.href = "/login"
             }
-            if (user && false && currentPage !== "verify-email") { //!emailVerified TODO
+            if (user && !emailVerified && currentPage !== "verify-email") {
                 navigate("verify-email")
             }
         }
