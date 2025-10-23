@@ -28,7 +28,7 @@ export type QuizType = typeof QUIZ_TYPES[number]
 export enum Role {
     ADMIN = "admin",
     STAFF = "staff",
-    SPEACKER = "speaker",
+    SPEAKER = "speaker",
     ATTENDEE = "attendee",
 }
 
