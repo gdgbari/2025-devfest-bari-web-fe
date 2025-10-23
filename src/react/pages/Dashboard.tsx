@@ -3,29 +3,35 @@ import { useEffect, useState } from "react"
 import { onValue, ref } from "firebase/database"
 import { firebase } from "../utils"
 import { getMockUsers } from "./AppPage"
-
+import {
+    Container,
+    Title,
+    Text,
+    Tabs,
+    TextInput,
+    Stack,
+    Group,
+    Card,
+    Badge,
+    Button,
+    Paper,
+    Center,
+    ActionIcon,
+    SimpleGrid,
+    CopyButton,
+    Tooltip,
+    Menu,
+} from "@mantine/core"
+import { IoAdd, IoPencil, IoTrash, IoPersonCircle, IoSearch } from "react-icons/io5"
 
 type DashboardProps = {
     user: UserProfile
 }
 
-const sanitizeInput = (input: string): string => {
-    return input
-        .replace(/<[^>]*>?/gm, '')
-        .substring(0, 100);
-}
-
 export const Dashboard = ({ user }: DashboardProps) => {
-    const [activeTab, setActiveTab] = useState<'users' | 'quiz' | 'leaderboard'>('users')
+    const [activeTab, setActiveTab] = useState<string | null>('users')
     const [query, setQuery] = useState("")
     const [users, setUsers] = useState<UserProfile[]>(() => getMockUsers().map(u => u.data))
-    const getBtnClass = (tab: 'users' | 'quiz' | 'leaderboard') => {
-        const isActive = activeTab === tab
-        const base = "btn w-44 h-12 border rounded-none transition-all duration-200 font-semibold text-base md:text-lg tracking-wide"
-        const active = "bg-base-200 border-base-200 text-black ring-2 ring-base-300"
-        const inactive = "bg-base-100 border-base-200 text-gray-300 hover:bg-base-200/70 hover:text-gray-100"
-        return `${base} ${isActive ? active : inactive}`
-    }
 
     useEffect(() => {
         const unsubscribe = onValue(ref(firebase.database, "users"), (snap) => {
@@ -48,117 +54,214 @@ export const Dashboard = ({ user }: DashboardProps) => {
         return () => unsubscribe()
     }, [])
 
-    return <div className="px-3 sm:px-4 md:px-6">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center">
-            Benvenuto/a {user.name} {user.surname} <span className="text-xl sm:text-2xl md:text-3xl text-gray-300"></span>
-        </h1>
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-center">Ruolo: {user.role}</h2>
+    const filteredUsers = users.filter(u => {
+        const q = query.trim().toLowerCase()
+        if (!q) return true
+        return (
+            u.name.toLowerCase().includes(q) ||
+            u.surname.toLowerCase().includes(q) ||
+            u.email.toLowerCase().includes(q) ||
+            u.nickname.toLowerCase().includes(q) ||
+            u.uid.toLowerCase().includes(q)
+        )
+    })
 
-        <div className="mt-6 flex flex-wrap gap-4 sm:gap-6 md:gap-8 justify-center w-full">
-            {/* Pulsante Utenti */}
-            <button
-                type="button"
-                aria-pressed={activeTab === 'users'}
-                className={getBtnClass('users')}
-                onClick={() => setActiveTab('users')}
+    return (
+        <Container size="xl" py="xl">
+            {/* Header Section */}
+            <Stack gap="lg" mb="xl">
+                <Group justify="center" gap="xs">
+                    <Title order={1} size="h1" fw={700}>
+                        Benvenuto/a {user.name} {user.surname}
+                    </Title>
+                </Group>
+                <Center>
+                    <Badge size="lg" variant="light" leftSection={<IoPersonCircle size={16} />}>
+                        Ruolo: {user.role}
+                    </Badge>
+                </Center>
+            </Stack>
+
+            {/* Tabs Section */}
+            <Tabs
+                value={activeTab}
+                onChange={setActiveTab}
+                defaultValue="users"
+                variant="outline"
+                mb="xl"
             >
-                Utenti
-            </button>
+                <Tabs.List grow>
+                    <Tabs.Tab value="users">
+                        Utenti
+                    </Tabs.Tab>
+                    <Tabs.Tab value="quiz">
+                        Quiz
+                    </Tabs.Tab>
+                    <Tabs.Tab value="leaderboard">
+                        Leaderboard
+                    </Tabs.Tab>
+                </Tabs.List>
 
-            {/* Pulsante Quiz */}
-            <button
-                type="button"
-                aria-pressed={activeTab === 'quiz'}
-                className={getBtnClass('quiz')}
-                onClick={() => setActiveTab('quiz')}
-            >
-                Quiz
-            </button>
+                <Tabs.Panel value="users" py="xl">
+                    <Stack gap="lg">
+                        {/* Search Bar and Add Button */}
+                        <Group justify="space-between" wrap="wrap" gap="md">
+                            <TextInput
+                                placeholder="Cerca per nome, email, nickname o ID..."
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                size="md"
+                                radius="md"
+                                style={{ flex: 1, minWidth: 250 }}
+                                leftSection={<IoSearch size={18} />}
+                            />
+                            <Tooltip label="Aggiungi nuovo utente" withArrow position="left">
+                                <ActionIcon
+                                    size="lg"
+                                    radius="md"
+                                    variant="filled"
+                                    color="green"
+                                    aria-label="Aggiungi nuovo utente"
+                                    title="Aggiungi nuovo utente"
+                                >
+                                    <IoAdd size={20} />
+                                </ActionIcon>
+                            </Tooltip>
+                        </Group>
 
-            {/* Pulsante Leaderboard */}
-            <button
-                type="button"
-                aria-pressed={activeTab === 'leaderboard'}
-                className={getBtnClass('leaderboard')}
-                onClick={() => setActiveTab('leaderboard')}
-            >
-                Leaderboard
-            </button>
-        </div>
-        {/* Barra di ricerca */}
-        <div className="mt-6 w-full flex justify-center px-2 sm:px-0">
-            <div className="w-full max-w-2xl relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg 
-                        className="h-5 w-5 text-gray-400" 
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path 
-                            strokeLinecap="round" 
-                            strokeLinejoin="round" 
-                            strokeWidth={2} 
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" 
-                        />
-                    </svg>
-                </div>
-                <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => {
-                        const sanitizedValue = sanitizeInput(e.target.value);
-                        setQuery(sanitizedValue);
-                    }}
-                    placeholder="Cerca"
-                    className="pl-10 input input-bordered w-full rounded-none bg-base-100 border-base-200 text-gray-200 placeholder:text-gray-500 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-white focus:border-white"
-                />
-            </div>
-        </div>
-        {/* Tabella utenti */}
-        <div className="mt-6 w-full flex justify-center">
-            <div className="w-full max-w-3xl flex flex-col gap-4">
-                {users
-                    .filter(u => {
-                        const q = query.trim().toLowerCase()
-                        if (!q) return true
-                        return (
-                            u.name.toLowerCase().includes(q) ||
-                            u.surname.toLowerCase().includes(q) ||
-                            u.email.toLowerCase().includes(q) ||
-                            u.nickname.toLowerCase().includes(q) ||
-                            u.uid.toLowerCase().includes(q)
-                        )
-                    })
-                    .map(u => (
-                        <div key={u.uid} className="relative w-full bg-base-100 border border-base-200 p-3 sm:p-4 md:p-5 rounded-none hover:bg-base-100/80 transition-colors">
-                            <div className="flex flex-col gap-1 sm:gap-2 text-gray-100 items-start text-left pr-10">
-                                <div className="text-sm sm:text-base">
-                                    <span className="font-semibold">Nome e Cognome: </span>
-                                    <span>{u.name} {u.surname}</span>
-                                </div>
-                                <div className="text-sm sm:text-base">
-                                    <span className="font-semibold">Email: </span>
-                                    <span className="break-all">{u.email}</span>
-                                </div>
-                                <div className="text-sm sm:text-base">
-                                    <span className="font-semibold">Nickname: </span>
-                                    <span>{u.nickname}</span>
-                                </div>
-                            </div>
-                            <button
-                                type="button"
-                                aria-label="Aggiungi"
-                                className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 btn btn-sm w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 min-h-0 p-0 rounded-sm bg-base-200 hover:bg-base-300 border-base-200 text-black text-lg flex items-center justify-center"
-                            >
-                                +
-                            </button>
-                            <div className="absolute right-2 sm:right-3 bottom-2 text-[10px] sm:text-xs text-gray-500">ID: {u.uid}</div>
-                        </div>
-                    ))}
-            </div>
-        </div>
-    </div>
+                        {/* Users List */}
+                        {filteredUsers.length > 0 ? (
+                            <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 3 }} spacing="lg">
+                                {filteredUsers.map((u) => (
+                                    <Card
+                                        key={u.uid}
+                                        padding="md"
+                                        radius="md"
+                                        withBorder
+                                        shadow="sm"
+                                        className="hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer"
+                                        onClick={() => console.log("Visualizza dettagli:", u.uid)}
+                                    >
+                                        {/* Header con nome e tasti azioni */}
+                                        <Group justify="space-between" mb="sm" wrap="nowrap">
+                                            <div style={{ flex: 1, minWidth: 0 }}>
+                                                <Text fw={600} size="sm" truncate>
+                                                    {u.name} {u.surname}
+                                                </Text>
+                                                <Text size="xs" c="dimmed" truncate>
+                                                    @{u.nickname}
+                                                </Text>
+                                            </div>
+                                            <Group gap={4} wrap="nowrap">
+                                                <Menu shadow="md" width={140} position="bottom-end">
+                                                    <Menu.Target>
+                                                        <ActionIcon
+                                                            variant="light"
+                                                            size="sm"
+                                                            radius="sm"
+                                                            aria-label="Altre azioni"
+                                                        >
+                                                            ⋮
+                                                        </ActionIcon>
+                                                    </Menu.Target>
+                                                    <Menu.Dropdown>
+                                                        <Menu.Item onClick={() => console.log("Modifica:", u.uid)}>
+                                                            <Group gap={8}>
+                                                                <IoPencil size={16} />
+                                                                <span>Modifica</span>
+                                                            </Group>
+                                                        </Menu.Item>
+                                                        <Menu.Divider />
+                                                        <Menu.Item color="red" onClick={() => console.log("Elimina:", u.uid)}>
+                                                            <Group gap={8}>
+                                                                <IoTrash size={16} />
+                                                                <span>Elimina</span>
+                                                            </Group>
+                                                        </Menu.Item>
+                                                    </Menu.Dropdown>
+                                                </Menu>
+                                            </Group>
+                                        </Group>
 
+                                        {/* Email con copy button */}
+                                        <Stack gap={4} mb="sm">
+                                            <Group gap={4} wrap="nowrap">
+                                                <Text size="xs" fw={500} c="dimmed" style={{ flexShrink: 0 }}>
+                                                    Email:
+                                                </Text>
+                                                <CopyButton value={u.email}>
+                                                    {({ copied, copy }) => (
+                                                        <Tooltip label={copied ? "Copiato!" : "Copia"} withArrow position="right">
+                                                            <Text
+                                                                size="xs"
+                                                                c={copied ? "green" : "blue"}
+                                                                className="cursor-pointer hover:underline truncate"
+                                                                onClick={copy}
+                                                            >
+                                                                {u.email}
+                                                            </Text>
+                                                        </Tooltip>
+                                                    )}
+                                                </CopyButton>
+                                            </Group>
+
+                                            {/* Gruppo */}
+                                            {u.group && (
+                                                <Group gap={4} wrap="nowrap">
+                                                    <Text size="xs" fw={500} c="dimmed" style={{ flexShrink: 0 }}>
+                                                        Gruppo:
+                                                    </Text>
+                                                    <Badge size="xs" variant="light">
+                                                        {u.group}
+                                                    </Badge>
+                                                </Group>
+                                            )}
+                                        </Stack>
+
+                                        {/* Footer con ID */}
+                                        <Group justify="space-between" pt="xs" style={{ borderTop: "1px solid var(--mantine-color-gray-2)" }}>
+                                            <CopyButton value={u.uid}>
+                                                {({ copied, copy }) => (
+                                                    <Tooltip label={copied ? "Copiato!" : "Copia ID"} withArrow position="bottom">
+                                                        <Text
+                                                            size="xs"
+                                                            c="dimmed"
+                                                            className="cursor-pointer hover:text-blue-500 truncate"
+                                                            onClick={copy}
+                                                        >
+                                                            ID: {u.uid}
+                                                        </Text>
+                                                    </Tooltip>
+                                                )}
+                                            </CopyButton>
+                                        </Group>
+                                    </Card>
+                                ))}
+                            </SimpleGrid>
+                        ) : (
+                            <Center py="xl">
+                                <Text c="dimmed">Nessun utente trovato</Text>
+                            </Center>
+                        )}
+                    </Stack>
+                </Tabs.Panel>
+
+                <Tabs.Panel value="quiz" py="xl">
+                    <Center py="xl">
+                        <Text c="dimmed" size="lg">
+                            Sezione Quiz in sviluppo
+                        </Text>
+                    </Center>
+                </Tabs.Panel>
+
+                <Tabs.Panel value="leaderboard" py="xl">
+                    <Center py="xl">
+                        <Text c="dimmed" size="lg">
+                            Sezione Leaderboard in sviluppo
+                        </Text>
+                    </Center>
+                </Tabs.Panel>
+            </Tabs>
+        </Container>
+    )
 }
