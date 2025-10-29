@@ -11,7 +11,6 @@ let sponsorship = [
       ext.data.type.startsWith("sponsor_platinum"),
     ),
   },
-  /*
   {
     name: "Gold",
     values: external.filter((ext) => ext.data.type.startsWith("sponsor_gold")),
@@ -32,7 +31,6 @@ let sponsorship = [
     name: "Partner",
     values: external.filter((ext) => ext.data.type === "partner"),
   },
-  */
 ];
 
 sponsorship = sponsorship.filter((sp) => sp.values.length > 0);

@@ -1,6 +1,6 @@
 ---
 name: Knime
 image: /assets/images/partner-sponsor/knime.png
-type: sponsor_bronze
+type: none
 url: https://www.knime.com/
 ---

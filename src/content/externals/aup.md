@@ -1,6 +1,6 @@
 ---
 name:  Associazione Ulisse Politecnico
 image: /assets/images/partner-sponsor/AUP_LOGO.webp
-type: partner
+type: none
 url: https://aup.it/
 ---
