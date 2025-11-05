@@ -156,7 +156,7 @@ export const ui = {
             Create vital connections by expanding your network with professionals
             and enthusiasts like you.`,
         'home.theVenue': 'The venue',
-        'home.theVenueDesc': "Located on the Bari University campus, it is known for its innovative and industry-oriented research.",
+        'home.theVenueDesc': "Located on the University Campus \"Ernesto Quagliarello\", it is known for its innovative and industry-oriented research.",
         'home.joinCommunity': 'Join the Community',
         'home.joinCommunityDesc': `
             Join us to be part of a growing community, improve your knowledge and
@@ -301,9 +301,9 @@ export const ui = {
             La <b>DevFest Bari</b> è un evento annuale organizzato dal Google
             Developers Group di Bari, destinato a sviluppatori, tecnologi e appassionati
             del mondo Google. L'evento si terrà a fine ottobre e comprende un giorno
-            di ispirazione, apprendimento e networking. Gli partecipanti potranno esplorare
+            di ispirazione, apprendimento e networking. I partecipanti potranno esplorare
             le ultime innovazioni tecnologiche, con un focus su Android, Web e Cloud
-            technologies, AI, tra gli altri.`,
+            technologies, AI, tra le altre.`,
         'home.photosTitle': 'Foto della DevFest Bari 2024',
         'home.officialPhotos': 'Ufficiali',
         'home.communityPhotos': 'Community',
@@ -345,7 +345,7 @@ export const ui = {
         'home.whyPartecipateNetworkingTitle': 'Networking',
         'home.whyPartecipateNetworkingDesc': "Crea connessioni vitali espandendo la tua rete con professionisti e appassionati come te.",
         'home.theVenue': 'La Sede',
-        'home.theVenueDesc': "Situato nel campus dell'Università di Bari, è noto per la sua ricerca innovativa e orientata all'industria.",
+        'home.theVenueDesc': "Situato nel Campus Universitario \"Ernesto Quagliarello\", è noto per la sua ricerca innovativa e orientata all'industria.",
         'home.joinCommunity': 'Entra nella Community',
         'home.joinCommunityDesc': `
             Unisciti a noi per far parte di una comunità in crescita, migliorare
