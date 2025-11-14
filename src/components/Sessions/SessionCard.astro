@@ -29,12 +29,12 @@ const t = useTranslations(lang);
 
 <a
   href={getPath(`/sessions/${session.slug}`)}
-  class="not-colored p-3 card bg-white text-base-content md:hover:scale-110 rounded-lg animated flex flex-col h-[22rem]"
+  class="not-colored p-3 card bg-white text-base-content md:hover:scale-110 rounded-lg animated flex flex-col h-full"
 >
   <div class="flex justify-between gap-4">
     <p class="text-xl font-medium mb-3">{session.title}</p>
   </div>
-  <div class="flex flex-wrap gap-2">
+  <div class="flex flex-wrap gap-2 mb-3">
     <div class="py-1 px-2 rounded-md bg-yellow text-white flex items-center">
       <span class="text-sm">{session.sessionLevel}</span>
     </div>
@@ -58,7 +58,7 @@ const t = useTranslations(lang);
             <div class="w-4">
               <img src="/assets/vectors/pin.svg" alt="session duration" />
             </div>
-            <div>{session.room ?? t("sessions.toBeAnnunced")}</div>
+            <div>{session.room ?? "TBA"}</div>
           </div>
         )
       }
