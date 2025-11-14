@@ -752,6 +752,9 @@ schedule.forEach((day) => {
     // Gestione del cambio lingua e inizializzazione
     document.addEventListener("DOMContentLoaded", initializeSchedulePage);
 
+    // Evento Astro View Transitions - triggerato dopo ogni navigazione
+    document.addEventListener("astro:page-load", initializeSchedulePage);
+
     // Rileva quando la pagina viene mostrata di nuovo (dopo navigazione back/forward)
     window.addEventListener("pageshow", (event) => {
       if (event.persisted) {
