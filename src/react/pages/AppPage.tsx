@@ -3,18 +3,13 @@ import { firebase } from "../utils"
 import { useEffect } from "react"
 import { useFirebaseUserInfo, useUserProfile } from "../utils/query";
 import { AppBar } from "../components/AppBar";
-//import { UserInfoPage } from "./app/UserInfoPage";
-import { EmailVerificationPage } from "./app/EmailVerificationPage";
+import { EmailVerificationPage } from "./EmailVerificationPage";
 import { useAppRouter } from "../utils/store";
-//import { QuizList } from "./app/QuizList";
 import { Container } from "@mantine/core";
 import { Dashboard } from "./Dashboard";
 import { Role } from "../utils/types";
 import { canAccessPage, setPagePermissions } from "../utils/permissions";
-//import { QuizAdd } from "./app/QuizAdd";
-//import { LeaderBoard } from "./app/LeaderBoard";
 //import { QRScan } from "./app/QRScan";
-//import { QuizInfo } from "./app/QuizInfo";
 
 
 // Returns a list of users using the same wrapper format as `this_user`
@@ -68,29 +63,13 @@ export const AppPage = () => {
   const { user, hasLoaded } = useFirebaseUserInfo()
   const { currentPage, navigate } = useAppRouter()
   const emailVerified = firebase.auth.currentUser?.emailVerified ?? false
-  const this_user = {
-    data: {
-      uid: "Test",
-      name: "Gabriele",
-      surname: "Dellino",
-      role: Role.STAFF,
-      nickname: "gdellino",
-      group: "group",
-      email: "gdellino37@gmail.com"
-    },
-    isFetched: true,
-    isFetching: false
-  }//useUserProfile()
+  const this_user = useUserProfile()
 
   // Definisci le pagine con i loro permessi
   const pagesWithPermissions = {
     "verify-email": { component: <EmailVerificationPage user={user!} />, minRole: Role.ATTENDEE },
     "app": { component: <Dashboard user={this_user.data!} />, minRole: Role.STAFF },
-    "add-quiz": { component: <div />, minRole: Role.STAFF },
-    "profile": { component: <div />, minRole: Role.STAFF },
     "qrscan": { component: <div />, minRole: Role.STAFF },
-    "leaderboard": { component: <div />, minRole: Role.STAFF },
-    "quiz-info": { component: <div />, minRole: Role.STAFF },
     "not-allowed": { component: <div className="text-2xl">You are not allowed to access this page</div>, minRole: Role.ATTENDEE },
   }
 

@@ -1,35 +1,279 @@
 import { onAuthStateChanged } from "firebase/auth"
 import { useEffect, useState } from "react"
 import { firebase } from "."
-import { useQuery } from "@tanstack/react-query"
-import { getCurrentUserRequest } from "./requests"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import {
+    getCurrentUserRequest,
+    getAllUsersRequest,
+    getUserRequest,
+    createUserRequest,
+    updateUserRequest,
+    deleteUserRequest,
+    checkInRequest,
+    getAllGroupsRequest,
+    getGroupRequest,
+    createGroupRequest,
+    updateGroupRequest,
+    deleteGroupRequest,
+    deleteAllGroupsRequest,
+    getAllQuizzesRequest,
+    getQuizRequest,
+    createQuizRequest,
+    updateQuizRequest,
+    deleteQuizRequest,
+    submitQuizRequest,
+} from "./requests"
+import type {
+    CreateUserRequest,
+    UpdateUserRequest,
+    CreateGroupRequest,
+    UpdateGroupRequest,
+    CreateQuizRequest,
+    UpdateQuizRequest,
+    SubmitQuizRequest,
+} from "./types"
 
+// ========================
+// Firebase Auth Hook
+// ========================
 
 export const useFirebaseUserInfo = () => {
     const [hasLoaded, setHasLoaded] = useState(false)
+    const [user, setUser] = useState(firebase.auth.currentUser)
+
     useEffect(() => {
-        onAuthStateChanged(firebase.auth, (user) => {
+        const unsubscribe = onAuthStateChanged(firebase.auth, (user) => {
             setUser(user)
             setHasLoaded(true)
         })
+        return () => unsubscribe()
     }, [])
-    const [user, setUser] = useState(firebase.auth.currentUser)
+
     return { user, hasLoaded }
 }
 
-
-export const useQuizzes = () => {
-    return useQuery({
-        queryKey: ["quizzes"],
-        queryFn: () => ([]),
-        staleTime: 1000 * 60 * 5
-    })
-}
+// ========================
+// User Queries
+// ========================
 
 export const useUserProfile = () => {
     return useQuery({
         queryKey: ["user-profile"],
-        queryFn: getCurrentUserRequest
+        queryFn: getCurrentUserRequest,
+        staleTime: 1000 * 60 * 5, // 5 minutes
     })
 }
+
+export const useAllUsers = () => {
+    return useQuery({
+        queryKey: ["users"],
+        queryFn: getAllUsersRequest,
+        staleTime: 1000 * 60 * 2, // 2 minutes
+    })
+}
+
+export const useUser = (uid: string) => {
+    return useQuery({
+        queryKey: ["user", uid],
+        queryFn: () => getUserRequest(uid),
+        enabled: !!uid,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    })
+}
+
+// ========================
+// User Mutations
+// ========================
+
+export const useCreateUser = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (data: CreateUserRequest) => createUserRequest(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] })
+        },
+    })
+}
+
+export const useUpdateUser = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ uid, data }: { uid: string; data: UpdateUserRequest }) =>
+            updateUserRequest(uid, data),
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ["users"] })
+            queryClient.invalidateQueries({ queryKey: ["user", variables.uid] })
+            queryClient.invalidateQueries({ queryKey: ["user-profile"] })
+        },
+    })
+}
+
+export const useDeleteUser = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (uid: string) => deleteUserRequest(uid),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] })
+        },
+    })
+}
+
+export const useCheckIn = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: () => checkInRequest(),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["user-profile"] })
+        },
+    })
+}
+
+// ========================
+// Group Queries
+// ========================
+
+export const useAllGroups = () => {
+    return useQuery({
+        queryKey: ["groups"],
+        queryFn: getAllGroupsRequest,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    })
+}
+
+export const useGroup = (gid: string) => {
+    return useQuery({
+        queryKey: ["group", gid],
+        queryFn: () => getGroupRequest(gid),
+        enabled: !!gid,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    })
+}
+
+// ========================
+// Group Mutations
+// ========================
+
+export const useCreateGroup = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (data: CreateGroupRequest) => createGroupRequest(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["groups"] })
+        },
+    })
+}
+
+export const useUpdateGroup = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ gid, data }: { gid: string; data: UpdateGroupRequest }) =>
+            updateGroupRequest(gid, data),
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ["groups"] })
+            queryClient.invalidateQueries({ queryKey: ["group", variables.gid] })
+        },
+    })
+}
+
+export const useDeleteGroup = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (gid: string) => deleteGroupRequest(gid),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["groups"] })
+        },
+    })
+}
+
+export const useDeleteAllGroups = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: () => deleteAllGroupsRequest(),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["groups"] })
+        },
+    })
+}
+
+// ========================
+// Quiz Queries
+// ========================
+
+export const useQuizzes = () => {
+    return useQuery({
+        queryKey: ["quizzes"],
+        queryFn: getAllQuizzesRequest,
+        staleTime: 1000 * 60 * 2, // 2 minutes
+    })
+}
+
+export const useQuiz = (quiz_id: string) => {
+    return useQuery({
+        queryKey: ["quiz", quiz_id],
+        queryFn: () => getQuizRequest(quiz_id),
+        enabled: !!quiz_id,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    })
+}
+
+// ========================
+// Quiz Mutations
+// ========================
+
+export const useCreateQuiz = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (data: CreateQuizRequest) => createQuizRequest(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["quizzes"] })
+        },
+    })
+}
+
+export const useUpdateQuiz = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ quiz_id, data }: { quiz_id: string; data: UpdateQuizRequest }) =>
+            updateQuizRequest(quiz_id, data),
+        onSuccess: (_, variables) => {
+            queryClient.invalidateQueries({ queryKey: ["quizzes"] })
+            queryClient.invalidateQueries({ queryKey: ["quiz", variables.quiz_id] })
+        },
+    })
+}
+
+export const useDeleteQuiz = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (quiz_id: string) => deleteQuizRequest(quiz_id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["quizzes"] })
+        },
+    })
+}
+
+export const useSubmitQuiz = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: ({ quiz_id, data }: { quiz_id: string; data: SubmitQuizRequest }) =>
+            submitQuizRequest(quiz_id, data),
+        onSuccess: () => {
+            // Invalidate user profile to update score
+            queryClient.invalidateQueries({ queryKey: ["user-profile"] })
+        },
+    })
+}
+
 

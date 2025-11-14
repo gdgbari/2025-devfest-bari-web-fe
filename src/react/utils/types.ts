@@ -1,22 +1,22 @@
 export type LeaderBoardUser = {
     nickname: string,
     score: number,
-    groupColor: string,
-    timestamp: number,
+    group_color: string,
+    updated_at: number,
 }
 
 export type LeaderBoardGroup = {
     name: string,
     score: number,
-    timestamp: number,
+    updated_at: number,
     color: string
 }
 
 export type LeaderBoardData = {
-    users: {
+    leaderboard_users: {
         [uid: string]: LeaderBoardUser
     },
-    groups: {
+    leaderboard_groups: {
         [gid: string]: LeaderBoardGroup
     }
 }
@@ -63,7 +63,7 @@ export type UserProfile = {
     email: string,
     name: string,
     surname: string,
-    group: string,
+    group?: GetGroupResponse | null,
     role: Role
 }
 
@@ -72,3 +72,160 @@ export type AddPointRequest = {
     value: number,
     userIdList: string[]
 }
+
+// ========================
+// Backend API Types (from OpenAPI)
+// ========================
+
+export type AnswerSchema = {
+    id: string
+    text: string
+}
+
+export type QuestionSchema = {
+    text: string
+    answer_list: AnswerSchema[]
+    correct_answer: string
+    value?: number
+}
+
+export type ReadAnswerSchema = {
+    id: string
+    text: string
+}
+
+export type ReadQuestionSchema = {
+    text: string
+    answer_list: ReadAnswerSchema[]
+    value?: number
+}
+
+export type ReadQuestionWithCorrectSchema = {
+    text: string
+    answer_list: ReadAnswerSchema[]
+    correct_answer: string
+    value?: number
+}
+
+export type GetUserResponse = {
+    email: string
+    name: string
+    surname: string
+    nickname: string
+    uid: string
+    group?: GetGroupResponse | null
+}
+
+export type GetUserListResponse = {
+    users: GetUserResponse[]
+    total: number
+}
+
+export type CreateUserRequest = {
+    email: string
+    name: string
+    surname: string
+    nickname: string
+    password: string
+}
+
+export type CreateUserResponse = {
+    email: string
+    name: string
+    surname: string
+    nickname: string
+    uid: string
+}
+
+export type UpdateUserRequest = {
+    email?: string | null
+    name?: string | null
+    surname?: string | null
+}
+
+export type UpdateUserResponse = GetUserResponse
+
+export type CheckInResponse = {
+    group: GetGroupResponse
+}
+
+export type GetGroupResponse = {
+    name: string
+    color: string
+    image_url: string
+    user_count: number
+    gid: string
+}
+
+export type GetGroupListResponse = {
+    groups: GetGroupResponse[]
+    total: number
+}
+
+export type CreateGroupRequest = {
+    name: string
+    color: string
+    image_url: string
+    user_count: number
+}
+
+export type CreateGroupResponse = GetGroupResponse
+
+export type UpdateGroupRequest = {
+    name?: string | null
+    color?: string | null
+    image_url?: string | null
+}
+
+export type UpdateGroupResponse = GetGroupResponse
+
+export type GetQuizResponse = {
+    quiz_id: string
+    title: string
+    question_list: ReadQuestionSchema[]
+    timer_duration: number
+}
+
+export type GetQuizWithCorrectResponse = {
+    quiz_id: string
+    title: string
+    question_list: ReadQuestionWithCorrectSchema[]
+    is_open: boolean
+    timer_duration: number
+}
+
+export type GetQuizListWithCorrectResponse = {
+    quizzes: GetQuizWithCorrectResponse[]
+    total: number
+}
+
+export type CreateQuizRequest = {
+    title: string
+    question_list: QuestionSchema[]
+}
+
+export type CreateQuizResponse = {
+    title: string
+    question_list: QuestionSchema[]
+    quiz_id: string
+    is_open: boolean
+    timer_duration: number
+}
+
+export type UpdateQuizRequest = {
+    title?: string | null
+    question_list?: QuestionSchema[] | null
+    is_open?: boolean | null
+}
+
+export type UpdateQuizResponse = CreateQuizResponse
+
+export type SubmitQuizRequest = {
+    answer_list: string[]
+}
+
+export type SubmitQuizResponse = {
+    score: number
+    max_score: number
+}
+

@@ -3,13 +3,13 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { WebsiteConfig } from "../../config";
-import { getDatabase } from "firebase/database";
+import { getFirestore } from "firebase/firestore";
 
 
 export const firebaseApp = initializeApp(WebsiteConfig.FIREBASE_CONFIG);
 export const firebase = {
     auth: getAuth(firebaseApp),
-    database: getDatabase(firebaseApp)
+    firestore: getFirestore(firebaseApp)
 }
 
 
@@ -51,21 +51,21 @@ export const secondDurationToString = (duration: number): string => {
     return durationToString(date)
 }
 
-export const COLORS_LIST = ["green", "yellow", "yellow", "yellow"]
+export const COLORS_LIST = ["green", "blue", "red", "yellow"]
 export const colorConverter = (color: string) => {
     if (color === "green") {
         return "#34A853"
     }
-    if (color === "yellow") {
+    if (color === "blue") {
         return "#4285F4"
     }
-    if (color === "yellow") {
+    if (color === "red") {
         return "#EA4335"
     }
     if (color === "yellow") {
         return "#F9AB00"
     }
-    return "#000000"
+    return color // Ritorna il colore direttamente se è già un hex/rgb
 }
 
 //By https://emailregex.com/

@@ -1,7 +1,7 @@
 import { sendEmailVerification, type User } from "firebase/auth"
 import { Button } from "react-daisyui"
 import { notifications } from "@mantine/notifications"
-import { AppMain } from "../../AppMain"
+import { AppMain } from "../AppMain"
 
 export const EmailVerificationPage = ({ user }: { user: User }) => {
     return <AppMain>
