@@ -19,8 +19,8 @@ const WORKSHOP_MIN_DURATION = 60;
 // Funzione per calcolare la durata di una sessione in minuti
 const getSessionDuration = (session: any) => {
   if (!session.startsAt || !session.endsAt) return 0;
-  const start = new Date(session.startsAt);
-  const end = new Date(session.endsAt);
+  const start = new Date(session.startsAt + "Z");
+  const end = new Date(session.endsAt + "Z");
   return Math.round((end.getTime() - start.getTime()) / (1000 * 60));
 };
 

@@ -11,12 +11,12 @@ function forceToToday(originalDateString: string): string {
     if (!WebsiteConfig.DEBUG_FORCE_EVENT_TODAY) {
         return originalDateString;
     }
-    
+
     console.log(`🔧 DEBUG: Processing date ${originalDateString}`);
-    
+
     const originalDate = new Date(originalDateString);
     const today = new Date();
-    
+
     // Preserve the original time but set to today's date
     const forcedDate = new Date(
         today.getFullYear(),
@@ -27,11 +27,11 @@ function forceToToday(originalDateString: string): string {
         originalDate.getSeconds(),
         originalDate.getMilliseconds()
     );
-    
+
     const forcedDateString = forcedDate.toISOString();
-    
+
     console.log(`🔧 DEBUG: Original: ${originalDateString} -> Forced: ${forcedDateString}`);
-    
+
     return forcedDateString;
 }
 
@@ -45,32 +45,31 @@ export async function getSchedule(): Promise<Promise<ScheduleDay[]>> {
     schedule.forEach(
         (day, dayIdx) => {
             console.log(`📅 Processing day ${dayIdx + 1} with ${day.timeSlots.length} time slots`);
-            
+
             // Apply debug date forcing to the day itself if enabled
             if (WebsiteConfig.DEBUG_FORCE_EVENT_TODAY) {
                 const originalDate = day.date;
                 day.date = forceToToday(day.date);
                 console.log(`📅 DEBUG: Day date ${originalDate} -> ${day.date}`);
             }
-            
+
             day.timeSlots.forEach((slot, slot_idx) => {
                 // Apply debug date forcing if enabled
                 if (WebsiteConfig.DEBUG_FORCE_EVENT_TODAY) {
                     console.log(`🔧 DEBUG: Processing slot ${slot_idx + 1} with ${slot.rooms.length} rooms`);
-                    
+
                     slot.rooms.forEach((room, roomIdx) => {
                         const originalStart = room.session.startsAt;
                         const originalEnd = room.session.endsAt;
-                        
+
                         room.session.startsAt = forceToToday(room.session.startsAt);
                         room.session.endsAt = forceToToday(room.session.endsAt);
-                        
+
                         console.log(`🏠 Room ${roomIdx + 1}: ${originalStart} -> ${room.session.startsAt}`);
                     });
                 }
-                
-                day.timeSlots[slot_idx].slotStart = new Date(slot.rooms[0].session.startsAt).toLocaleString("it", {timeZone: WebsiteConfig.EVENT_TIMEZONE, hour:"numeric", minute:"numeric"})
-                
+                day.timeSlots[slot_idx].slotStart = new Date(slot.rooms[0].session.startsAt + "Z").toLocaleString("it", { timeZone: WebsiteConfig.EVENT_TIMEZONE, hour: "numeric", minute: "numeric" })
+
                 slot.rooms.forEach(
                     room => {
                         const sessionInfoFound = sessionsInfo.find((_s) => _s.id == room.session.id);
@@ -97,13 +96,13 @@ export async function getSessions(includeSpeakers: boolean = false): Promise<Ses
         console.log('🐛 DEBUG MODE: Forcing all event dates to today for testing');
         console.log(`📅 Today is: ${new Date().toLocaleDateString('it-IT')} (${new Date().toISOString()})`);
         console.log(`📊 Total sessions processed: ${sessions.length}`);
-        
+
         if (sessions.length > 0) {
             console.log(`🕐 First session original dates:`, sessionsRaw[0].startsAt, '->', sessionsRaw[0].endsAt);
             console.log(`🕐 First session forced dates:`, sessions[0].startsAt, '->', sessions[0].endsAt);
             console.log(`🕐 First session formatted: ${new Date(sessions[0].startsAt).toLocaleString('it-IT')}`);
         }
-        
+
         // Log a few session examples
         sessions.slice(0, 3).forEach((session, i) => {
             console.log(`📝 Session ${i + 1}: ${session.title} - ${new Date(session.startsAt).toLocaleString('it-IT')}`);
@@ -148,7 +147,7 @@ function parseSession(sessionRaw: any, speakers: Speaker[] | null): SessionInfo 
     session.topics = additionalProperties.topic;
     session.sessionType = additionalProperties['session_type'][0];
     session.sessionLevel = additionalProperties['session_level'][0];
-    
+
     if (speakers) {
         const sessionIds: string[] = sessionRaw.speakers.map(s => s.id);
         const speakersFound = speakers.filter(({ id }) => sessionIds.includes(id));

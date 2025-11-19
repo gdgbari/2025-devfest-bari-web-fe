@@ -42,23 +42,26 @@ const translationIcon = await ImportSvg("translation");
   data-room-id={value.id}
   data-original-start={value.session.startsAt}
   data-original-end={value.session.endsAt}
-  data-is-block-part={blockStartTime ? 'true' : 'false'}
+  data-is-block-part={blockStartTime ? "true" : "false"}
 >
   {!value.session.isServiceSession && <p class="mb-2">{value.name}</p>}
   <p class="text-xl font-medium">
-    {DEBUG_SHOW_TIMING ? 
-      `${value.session.title} ${blockStartTime ? '🔗' : '📅'} [${new Date(sessionStart).toLocaleTimeString('it-IT', {hour: '2-digit', minute: '2-digit'})} - ${new Date(sessionEnd).toLocaleTimeString('it-IT', {hour: '2-digit', minute: '2-digit'})}]` 
-      : value.session.title
+    {
+      DEBUG_SHOW_TIMING
+        ? `${value.session.title} ${blockStartTime ? "🔗" : "📅"} [${new Date(sessionStart + "Z").toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })} - ${new Date(sessionEnd + "Z").toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}]`
+        : value.session.title
     }
   </p>
-  {DEBUG_SHOW_TIMING && (
-    <div class="text-xs opacity-60 mt-1">
-      <span class="bg-gray-800 px-2 py-1 rounded text-yellow-300">
-        DEBUG: start={sessionStart} | end={sessionEnd}
-      </span>
-    </div>
-  )}
-  <div class="flex-1" />
+  {
+    DEBUG_SHOW_TIMING && (
+      <div class="text-xs opacity-60 mt-1">
+        <span class="bg-gray-800 px-2 py-1 rounded text-yellow-300">
+          DEBUG: start={sessionStart} | end={sessionEnd}
+        </span>
+      </div>
+    )
+  }
+  <div class="flex-1"></div>
   <div class="flex-flex-col gap-2 mt-4 text-sm">
     {
       value.session.info?.language && (
@@ -72,13 +75,7 @@ const translationIcon = await ImportSvg("translation");
     }
   </div>
   <div class="flex flex-row mt-auto justify-between align-center">
-    {
-      value.session.isServiceSession && (
-        <p class="opacity-60">
-          {value.name}
-        </p>
-      )
-    }
+    {value.session.isServiceSession && <p class="opacity-60">{value.name}</p>}
     <div class="mt-4 flex flex-col gap-2">
       {
         hasSpeakers &&

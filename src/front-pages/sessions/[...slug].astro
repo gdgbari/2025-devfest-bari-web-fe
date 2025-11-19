@@ -1,13 +1,17 @@
 ---
-import { getSessions } from '../../data/repositories/sessionize_repository';
-import type { SessionInfo } from '../../data/types/sessionize';
-import { getLangFromUrl, useTranslatedPath, useTranslations } from '../../i18n/utils';
-import AddToCalendar from '../../components/Common/AddToCalendar.astro';
-import BaseLayout from '../../components/Common/BaseLayout.astro';
-import SessionTopic from '../../components/Sessions/SessionTopic.astro';
+import { getSessions } from "../../data/repositories/sessionize_repository";
+import type { SessionInfo } from "../../data/types/sessionize";
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  useTranslations,
+} from "../../i18n/utils";
+import AddToCalendar from "../../components/Common/AddToCalendar.astro";
+import BaseLayout from "../../components/Common/BaseLayout.astro";
+import SessionTopic from "../../components/Sessions/SessionTopic.astro";
 import { capitalizeFirstLetter } from "../../react/utils";
-import { WebsiteConfig } from '../../config';
-import { ImportSvg } from '../../helpers/svgimport';
+import { WebsiteConfig } from "../../config";
+import { ImportSvg } from "../../helpers/svgimport";
 
 interface Props {
   entry: SessionInfo;
@@ -28,17 +32,18 @@ const getPath = useTranslatedPath(lang);
 // 2. When it's time to render, you can get the entry directly from the prop
 const { entry } = Astro.props;
 
-
-const dateStart = new Date(entry.startsAt);
-const dateEnd = new Date(entry.endsAt);
+const dateStart = new Date(entry.startsAt + "Z");
+const dateEnd = new Date(entry.endsAt + "Z");
 
 const isScheduled = dateStart.getTime() != 0;
 
-var date = capitalizeFirstLetter(dateStart.toLocaleDateString(lang, {
-  timeZone: WebsiteConfig.EVENT_TIMEZONE,
-  day: "numeric",
-  month: "short",
-}));
+var date = capitalizeFirstLetter(
+  dateStart.toLocaleDateString(lang, {
+    timeZone: WebsiteConfig.EVENT_TIMEZONE,
+    day: "numeric",
+    month: "short",
+  }),
+);
 
 const start = dateStart.toLocaleTimeString(lang, {
   timeZone: WebsiteConfig.EVENT_TIMEZONE,
@@ -65,77 +70,77 @@ const translationIcon = await ImportSvg("translation");
 >
   <div class="text-white">
     <div
-    class="flex flex-row md:justify-between md:items-center gap-2 mb-6 text-white justify-center items-center"
-  >
-    <h2 class="text-4xl mb-3">{entry.title}</h2>
+      class="flex flex-row md:justify-between md:items-center gap-2 mb-6 text-white justify-center items-center"
+    >
+      <h2 class="text-4xl mb-3">{entry.title}</h2>
 
-    {
-      isScheduled && (
-        <AddToCalendar
-          dateStart={dateStart}
-          dateEnd={dateEnd}
-          sessionDetails={`Speaker: ${entry.speakers?.map((ele) => ele.fullName).join(", ")} \nTopics: ${entry.topics.join(" ")}\n\n${entry.description}`}
-          sessionTitle={entry.title}
-          sessionLocation={entry.room??t("sessions.toBeAnnunced")}
-        />
-      )
-    }
-  </div>
-  <div class="flex flex-wrap gap-2 mb-6">
-    <div class="py-1 px-2 rounded-md bg-yellow text-white flex items-center">
-      <span class="text-sm">{entry.sessionLevel}</span>
+      {
+        isScheduled && (
+          <AddToCalendar
+            dateStart={dateStart}
+            dateEnd={dateEnd}
+            sessionDetails={`Speaker: ${entry.speakers?.map((ele) => ele.fullName).join(", ")} \nTopics: ${entry.topics.join(" ")}\n\n${entry.description}`}
+            sessionTitle={entry.title}
+            sessionLocation={entry.room ?? t("sessions.toBeAnnunced")}
+          />
+        )
+      }
+    </div>
+    <div class="flex flex-wrap gap-2 mb-6">
+      <div class="py-1 px-2 rounded-md bg-yellow text-white flex items-center">
+        <span class="text-sm">{entry.sessionLevel}</span>
+      </div>
+
+      {entry.topics.map((t) => <SessionTopic brightness="dark" topic={t} />)}
+    </div>
+    <>
+      <p class="text-lg">{entry.room}</p>
+      {
+        isScheduled && (
+          <p class="text-lg">
+            {date}, {start} - {end}
+          </p>
+        )
+      }
+    </>
+
+    <div class="flex-flex-col gap-2 mb-6">
+      {
+        entry.language && (
+          <div class="flex gap-3 items-center">
+            <div class="w-4">
+              <svg class="fill-current h-6 w-6" set:html={translationIcon} />
+            </div>
+            <div>{entry.language}</div>
+          </div>
+        )
+      }
     </div>
 
-    {entry.topics.map((t) => <SessionTopic brightness="dark" topic={t} />)}
-  </div>
-  <>
-    <p class="text-lg">{entry.room}</p>
-    {
-      isScheduled && (
-        <p class="text-lg">
-          {date}, {start} - {end}
-        </p>
-      )
-    }
-  </>
+    <p style="white-space: pre-wrap;">{entry.description}</p>
 
-  <div class="flex-flex-col gap-2 mb-6">
-    {
-      entry.language && (
-        <div class="flex gap-3 items-center">
-          <div class="w-4">
-            <svg class="fill-current h-6 w-6" set:html={translationIcon} />
-          </div>
-          <div>{entry.language}</div>
-        </div>
-      )
-    }
-  </div>
-
-  <p style="white-space: pre-wrap;">{entry.description}</p>
-
-  <div class="mt-10">
-    <p class="text-3xl mb-6">{t("session.speakers")}</p>
-    {
-      entry.speakers?.map((speaker) => (
-        <a
-          href={getPath(`/speakers/${speaker.slug}`)}
-          class="not-colored flex md:flex-row flex-col items-center mb-6"
-        >
-          <div class="flex-none w-24 mb-2">
-            <img
-              src={speaker.profilePicture}
-              alt={speaker.fullName}
-              class="rounded-full"
-            />
-          </div>
-          <div class="flex-1 pl-6 flex flex-col md:items-start items-center">
-            <h2 class="text-4xl mb-1">{speaker.fullName}</h2>
-            <p class="text-lg mb-3">{speaker.tagLine}</p>
-          </div>
-        </a>
-      ))
-    }
-  </div>
+    <div class="mt-10">
+      <p class="text-3xl mb-6">{t("session.speakers")}</p>
+      {
+        entry.speakers?.map((speaker) => (
+          <a
+            href={getPath(`/speakers/${speaker.slug}`)}
+            class="not-colored flex md:flex-row flex-col items-center mb-6"
+          >
+            <div class="flex-none w-24 mb-2">
+              <img
+                src={speaker.profilePicture}
+                alt={speaker.fullName}
+                class="rounded-full"
+              />
+            </div>
+            <div class="flex-1 pl-6 flex flex-col md:items-start items-center">
+              <h2 class="text-4xl mb-1">{speaker.fullName}</h2>
+              <p class="text-lg mb-3">{speaker.tagLine}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
   </div>
 </BaseLayout>
