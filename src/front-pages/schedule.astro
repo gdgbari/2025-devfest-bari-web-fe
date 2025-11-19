@@ -111,10 +111,10 @@ schedule.forEach((day) => {
 
     <!-- Container per i contenuti dei tab -->
     <div id="tab-content">
-      <!-- Solo Talk (default attivo) -->
+      <!-- Solo Talk -->
       <div
         id="tab-talks"
-        class="tab-panel"
+        class="tab-panel hidden"
         data-rooms={JSON.stringify(talkRooms)}
       >
         <ScheduleTab schedule={schedule} rooms={talkRooms} />
@@ -129,10 +129,10 @@ schedule.forEach((day) => {
         <ScheduleTab schedule={schedule} rooms={workshopRooms} />
       </div>
 
-      <!-- Tutti gli eventi -->
+      <!-- Tutti gli eventi (default attivo) -->
       <div
         id="tab-all"
-        class="tab-panel hidden"
+        class="tab-panel"
         data-rooms={JSON.stringify([...talkRooms, ...workshopRooms])}
       >
         <ScheduleTab schedule={schedule} />
@@ -146,6 +146,26 @@ schedule.forEach((day) => {
     }
   </div>
 
+  <!-- Popup per scroll orizzontale -->
+  <div
+    id="scroll-hint-popup"
+    class="fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-blue-600/95 backdrop-blur-sm border border-blue-400 rounded-xl px-6 py-4 shadow-2xl z-40 hidden animate-bounce-subtle"
+  >
+    <div class="flex items-center gap-3">
+      <span class="text-2xl">👉</span>
+      <span class="text-white font-medium text-sm"
+        >{t("schedule.scrollHint")}</span
+      >
+      <button
+        id="dismiss-scroll-hint"
+        class="ml-2 text-white/80 hover:text-white font-bold"
+        aria-label="Chiudi"
+      >
+        ✕
+      </button>
+    </div>
+  </div>
+
   <!-- Barra di navigazione fissata in basso -->
   <div
     class="fixed bottom-0 left-0 right-0 backdrop-blur-lg border-t shadow-2xl z-50"
@@ -155,6 +175,12 @@ schedule.forEach((day) => {
       <div class="flex justify-center space-x-3">
         <button
           class="tab-btn active px-6 py-3 rounded-lg font-medium transition-all duration-200 text-sm"
+          data-tab="all"
+        >
+          📅 {t("schedule.all")}
+        </button>
+        <button
+          class="tab-btn px-6 py-3 rounded-lg font-medium transition-all duration-200 text-sm"
           data-tab="talks"
         >
           🎙️ {t("schedule.talks")}
@@ -164,12 +190,6 @@ schedule.forEach((day) => {
           data-tab="workshops"
         >
           🛠️ {t("schedule.workshops")}
-        </button>
-        <button
-          class="tab-btn px-6 py-3 rounded-lg font-medium transition-all duration-200 text-sm"
-          data-tab="all"
-        >
-          📅 {t("schedule.all")}
         </button>
       </div>
     </div>
@@ -415,6 +435,20 @@ schedule.forEach((day) => {
     .live-badge span:first-child {
       animation: blink 1.5s infinite;
     }
+
+    @keyframes bounce-subtle {
+      0%,
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+    }
+
+    .animate-bounce-subtle {
+      animation: bounce-subtle 2s ease-in-out infinite;
+    }
   </style>
 
   <script>
@@ -430,6 +464,9 @@ schedule.forEach((day) => {
 
       // Gestisci la visualizzazione degli eventi
       updateEventVisibility();
+
+      // Inizializza il rilevamento dello scroll orizzontale
+      initializeScrollHint();
 
       // Event listener per il toggle degli eventi passati
       if (showPastEventsCheckbox) {
@@ -471,6 +508,108 @@ schedule.forEach((day) => {
           setTimeout(updateEventVisibility, 100);
         });
       });
+    }
+
+    function initializeScrollHint() {
+      const scrollHintPopup = document.getElementById("scroll-hint-popup");
+      const dismissButton = document.getElementById("dismiss-scroll-hint");
+
+      if (!scrollHintPopup || !dismissButton) return;
+
+      // Controlla se l'utente ha già chiuso il popup in questa sessione
+      const hintDismissed = sessionStorage.getItem("scrollHintDismissed");
+
+      // Funzione per verificare se un container è scrollabile orizzontalmente
+      function isScrollable(element: HTMLElement) {
+        return element.scrollWidth > element.clientWidth;
+      }
+
+      // Funzione per mostrare il popup
+      function showScrollHint() {
+        if (hintDismissed === "true") return;
+        if (!scrollHintPopup) return;
+
+        // Riseleziona i container ogni volta (potrebbero essere cambiati)
+        const scrollContainers = document.querySelectorAll(
+          ".schedule-scroll-container",
+        );
+
+        // Verifica se almeno un container è scrollabile
+        let hasScrollableContent = false;
+        scrollContainers.forEach((container) => {
+          if (isScrollable(container as HTMLElement)) {
+            hasScrollableContent = true;
+          }
+        });
+
+        // Mostra il popup SOLO se c'è contenuto scrollabile
+        if (hasScrollableContent) {
+          scrollHintPopup.classList.remove("hidden");
+
+          // Nascondi automaticamente dopo 8 secondi
+          setTimeout(() => {
+            if (scrollHintPopup) {
+              scrollHintPopup.classList.add("hidden");
+            }
+          }, 8000);
+        } else {
+          // Nascondi se non c'è contenuto scrollabile
+          scrollHintPopup.classList.add("hidden");
+        }
+      }
+
+      // Event listener per il bottone di chiusura
+      dismissButton.addEventListener("click", () => {
+        scrollHintPopup.classList.add("hidden");
+        sessionStorage.setItem("scrollHintDismissed", "true");
+      });
+
+      // Aggiungi listener per scroll sui container esistenti
+      function attachScrollListeners() {
+        const scrollContainers = document.querySelectorAll(
+          ".schedule-scroll-container",
+        );
+        scrollContainers.forEach((container) => {
+          container.addEventListener("scroll", () => {
+            if (scrollHintPopup) {
+              scrollHintPopup.classList.add("hidden");
+            }
+            sessionStorage.setItem("scrollHintDismissed", "true");
+          });
+        });
+      }
+
+      attachScrollListeners();
+
+      // Mostra il popup dopo un breve ritardo (per permettere al DOM di renderizzare)
+      setTimeout(showScrollHint, 1000);
+
+      // Ri-controlla quando cambia il tab
+      const tabButtons = document.querySelectorAll(".tab-btn");
+      tabButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setTimeout(() => {
+            attachScrollListeners();
+            showScrollHint();
+          }, 500);
+        });
+      });
+
+      // Osserva i cambiamenti nel DOM per rilevare nuovi container
+      const observer = new MutationObserver(() => {
+        setTimeout(() => {
+          attachScrollListeners();
+          showScrollHint();
+        }, 500);
+      });
+
+      const tabContent = document.getElementById("tab-content");
+      if (tabContent) {
+        observer.observe(tabContent, {
+          childList: true,
+          subtree: true,
+        });
+      }
     }
 
     function updateEventVisibility() {
