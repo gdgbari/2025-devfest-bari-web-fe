@@ -14,8 +14,8 @@ interface Props {
 
 const { session } = Astro.props;
 
-const dateStart = new Date(session.startsAt + "Z");
-const dateEnd = new Date(session.endsAt + "Z");
+const dateStart = new Date(session.startsAt);
+const dateEnd = new Date(session.endsAt);
 
 const duration = dateEnd.getTime() - dateStart.getTime();
 const minDuration = Math.floor(duration / (1000 * 60));

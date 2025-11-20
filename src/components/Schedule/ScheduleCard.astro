@@ -56,7 +56,7 @@ const translationIcon = await ImportSvg("translation");
   <p class="text-xl font-medium break-words overflow-wrap-anywhere">
     {
       DEBUG_SHOW_TIMING
-        ? `${value.session.title} ${blockStartTime ? "🔗" : "📅"} [${new Date(sessionStart + "Z").toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })} - ${new Date(sessionEnd + "Z").toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}]`
+        ? `${value.session.title} ${blockStartTime ? "🔗" : "📅"} [${new Date(sessionStart).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })} - ${new Date(sessionEnd).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}]`
         : value.session.title
     }
   </p>

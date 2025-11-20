@@ -19,8 +19,8 @@ const WORKSHOP_MIN_DURATION = 60;
 // Funzione per calcolare la durata di una sessione in minuti
 const getSessionDuration = (session: any) => {
   if (!session.startsAt || !session.endsAt) return 0;
-  const start = new Date(session.startsAt + "Z");
-  const end = new Date(session.endsAt + "Z");
+  const start = new Date(session.startsAt);
+  const end = new Date(session.endsAt);
   return Math.round((end.getTime() - start.getTime()) / (1000 * 60));
 };
 
@@ -614,7 +614,7 @@ schedule.forEach((day) => {
 
     function updateEventVisibility() {
       const currentTime = new Date();
-      //currentTime.setHours(12,35,0,0) Useful for testing
+      //currentTime.setHours(12, 55, 0, 0); // Useful for testing
       const showPastEventsElement = document.getElementById(
         "show-past-events",
       ) as HTMLInputElement;

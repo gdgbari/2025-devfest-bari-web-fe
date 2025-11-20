@@ -66,8 +66,8 @@ const pageTitle = `${speaker.fullName} @ ${WebsiteConfig.DEVFEST_NAME}`;
         {
           speaker.sessions &&
             speaker.sessions!.map((session) => {
-              const dateStart = new Date(session.startsAt + "Z");
-              const dateEnd = new Date(session.endsAt + "Z");
+              const dateStart = new Date(session.startsAt);
+              const dateEnd = new Date(session.endsAt);
 
               const date = dateStart.toLocaleDateString(lang, {
                 timeZone: WebsiteConfig.EVENT_TIMEZONE,

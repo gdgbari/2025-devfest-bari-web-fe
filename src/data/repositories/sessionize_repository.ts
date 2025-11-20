@@ -5,16 +5,50 @@ import type { ScheduleDay, SessionInfo, Speaker } from "../types/sessionize";
 const defaultProfileImage = "/assets/vectors/user_circle.svg"
 
 /**
+ * Normalizza le stringhe di date da Sessionize aggiungendo il timezone se manca
+ */
+function normalizeSessionizeDate(dateString: string): string {
+    if (!dateString) return dateString;
+
+    // Se termina già con 'Z' o ha un offset timezone, non modificare
+    if (dateString.endsWith('Z') || /[+-]\d{2}:\d{2}$/.test(dateString)) {
+        return dateString;
+    }
+
+    // Se il timezone configurato è UTC, basta aggiungere 'Z'
+    if (WebsiteConfig.EVENT_TIMEZONE === 'UTC') {
+        return dateString + 'Z';
+    }
+
+    // Per altri timezone, calcoliamo l'offset rispetto a UTC
+    // Creiamo una data di riferimento dalla stringa
+    const referenceDate = new Date(dateString + 'Z'); // Temporaneamente come UTC per il parsing
+
+    // Otteniamo l'offset del timezone dell'evento in minuti
+    const utcDate = new Date(referenceDate.toLocaleString('en-US', { timeZone: 'UTC' }));
+    const tzDate = new Date(referenceDate.toLocaleString('en-US', { timeZone: WebsiteConfig.EVENT_TIMEZONE }));
+    const offsetMinutes = (tzDate.getTime() - utcDate.getTime()) / (1000 * 60);
+
+    // Convertiamo l'offset in formato ISO (+HH:MM o -HH:MM)
+    const offsetHours = Math.floor(Math.abs(offsetMinutes) / 60);
+    const offsetMins = Math.abs(offsetMinutes) % 60;
+    const sign = offsetMinutes >= 0 ? '+' : '-';
+    const offsetString = `${sign}${String(offsetHours).padStart(2, '0')}:${String(offsetMins).padStart(2, '0')}`;
+
+    // Aggiungiamo l'offset alla stringa originale
+    return dateString + offsetString;
+}
+/**
  * Debug helper: Forces a date to today while preserving the original time
  */
 function forceToToday(originalDateString: string): string {
     if (!WebsiteConfig.DEBUG_FORCE_EVENT_TODAY) {
-        return originalDateString;
+        return normalizeSessionizeDate(originalDateString);
     }
 
     console.log(`🔧 DEBUG: Processing date ${originalDateString}`);
 
-    const originalDate = new Date(originalDateString);
+    const originalDate = new Date(normalizeSessionizeDate(originalDateString));
     const today = new Date();
 
     // Preserve the original time but set to today's date
@@ -39,22 +73,29 @@ export async function getSchedule(): Promise<Promise<ScheduleDay[]>> {
     schedule.forEach(
         (day, dayIdx) => {
 
+            // Normalizza la data del giorno
+            day.date = normalizeSessionizeDate(day.date);
+
             // Apply debug date forcing to the day itself if enabled
             if (WebsiteConfig.DEBUG_FORCE_EVENT_TODAY) {
-                const originalDate = day.date;
                 day.date = forceToToday(day.date);
             }
 
             day.timeSlots.forEach((slot, slot_idx) => {
-                // Apply debug date forcing if enabled
-                if (WebsiteConfig.DEBUG_FORCE_EVENT_TODAY) {
 
-                    slot.rooms.forEach((room) => {
+                slot.rooms.forEach((room) => {
+                    // Normalizza le date delle sessioni
+                    room.session.startsAt = normalizeSessionizeDate(room.session.startsAt);
+                    room.session.endsAt = normalizeSessionizeDate(room.session.endsAt);
+
+                    // Apply debug date forcing if enabled
+                    if (WebsiteConfig.DEBUG_FORCE_EVENT_TODAY) {
                         room.session.startsAt = forceToToday(room.session.startsAt);
                         room.session.endsAt = forceToToday(room.session.endsAt);
-                    });
-                }
-                day.timeSlots[slot_idx].slotStart = new Date(slot.rooms[0].session.startsAt + "Z").toLocaleString("it", { timeZone: WebsiteConfig.EVENT_TIMEZONE, hour: "numeric", minute: "numeric" })
+                    }
+                });
+
+                day.timeSlots[slot_idx].slotStart = new Date(slot.rooms[0].session.startsAt).toLocaleString("it", { timeZone: WebsiteConfig.EVENT_TIMEZONE, hour: "numeric", minute: "numeric" })
 
                 slot.rooms.forEach(
                     room => {

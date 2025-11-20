@@ -32,8 +32,8 @@ const getPath = useTranslatedPath(lang);
 // 2. When it's time to render, you can get the entry directly from the prop
 const { entry } = Astro.props;
 
-const dateStart = new Date(entry.startsAt + "Z");
-const dateEnd = new Date(entry.endsAt + "Z");
+const dateStart = new Date(entry.startsAt);
+const dateEnd = new Date(entry.endsAt);
 
 const isScheduled = dateStart.getTime() != 0;
 

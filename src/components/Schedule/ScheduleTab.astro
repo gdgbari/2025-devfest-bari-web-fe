@@ -14,7 +14,7 @@ const lang = getLangFromUrl(Astro.url);
 const { schedule, rooms } = Astro.props;
 
 const calcSlotsTaken = (timeSlots, tsr, ts_idx) => {
-  const endDate = new Date(tsr.session.endsAt + "Z");
+  const endDate = new Date(tsr.session.endsAt);
   endDate.setSeconds(0);
   endDate.setMilliseconds(0);
   //Calculate the space to take (how many timeSlot takes this session (until a service session))
@@ -25,7 +25,7 @@ const calcSlotsTaken = (timeSlots, tsr, ts_idx) => {
     if (timeSlots[i].rooms.length == 0) continue;
     //Take time from one of the sessions
     //Get next start date
-    const next_date = new Date(timeSlots[i].rooms[0].session.startsAt + "Z");
+    const next_date = new Date(timeSlots[i].rooms[0].session.startsAt);
     next_date.setSeconds(0);
     next_date.setMilliseconds(0);
     //If it's a service session, can't take this space
@@ -93,7 +93,7 @@ const isServiceTimeSlot = (ts) =>
           <div class="mb-5">
             <p class="text-3xl font-bold mb-5">
               {capitalizeFirstLetter(
-                new Date(s.date + "Z").toLocaleDateString(lang, {
+                new Date(s.date).toLocaleDateString(lang, {
                   timeZone: WebsiteConfig.EVENT_TIMEZONE,
                   day: "numeric",
                   month: "long",
@@ -130,10 +130,8 @@ const isServiceTimeSlot = (ts) =>
 
                       // Calcola i timestamp specifici per questo blocco grafico
                       // Usa direttamente i tempi della sessione originale
-                      const sessionStartTime = new Date(
-                        tsr.session.startsAt + "Z",
-                      );
-                      const sessionEndTime = new Date(tsr.session.endsAt + "Z");
+                      const sessionStartTime = new Date(tsr.session.startsAt);
+                      const sessionEndTime = new Date(tsr.session.endsAt);
 
                       // Per sessioni multi-slot, usa il tempo di inizio del primo slot e calcola la fine
                       let blockStartTime, blockEndTime;
@@ -147,7 +145,7 @@ const isServiceTimeSlot = (ts) =>
                         if (prevSlot) {
                           // Trova la service session più recente, usa la sua fine come inizio del blocco
                           const endSessionTime = new Date(
-                            prevSlot.session.endsAt + "Z",
+                            prevSlot.session.endsAt,
                           );
                           if (endSessionTime > blockStartTime) {
                             blockStartTime = endSessionTime;
@@ -168,7 +166,7 @@ const isServiceTimeSlot = (ts) =>
                         );
                         if (nextSlot) {
                           const nextServiceStart = new Date(
-                            nextSlot.session.startsAt + "Z",
+                            nextSlot.session.startsAt,
                           );
                           if (nextServiceStart < blockEndTime) {
                             blockEndTime = nextServiceStart;
