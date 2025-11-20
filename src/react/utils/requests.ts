@@ -86,9 +86,6 @@ export const useLeaderboard = () => {
 
 export const backendRequest = async (method: string, path: string, body?: any) => {
     const tokenId = await firebase.auth.currentUser?.getIdToken()
-    if (import.meta.env.DEV) {
-        console.log("Token ID:", tokenId)
-    }
     const response = await fetch(BACKEND_URL + "/api/" + path, {
         method,
         headers: {
