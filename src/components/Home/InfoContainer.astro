@@ -12,7 +12,12 @@ const sessions = await getSessions();
 const categories = sessions.map(s => s.topics).flat()
                     .map(ele => ele.toLocaleLowerCase())
                     .filter((value, index, array) => array.indexOf(value) === index)
-const tracks = schedule.map(s => s.rooms.length).reduce((a, b) => a + b, 0)
+// Conta solo le room che hanno almeno una sessione non plenaria/service
+const tracks = schedule.map(s => 
+  s.rooms.filter(room => 
+    room.sessions.some(session => !session.isServiceSession)
+  ).length
+).reduce((a, b) => a + b, 0)
 
 const showIfNotZero = (num: number, fallback:number = 0) => {
   if (num > 0) return num
