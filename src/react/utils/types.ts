@@ -229,3 +229,73 @@ export type SubmitQuizResponse = {
     max_score: number
 }
 
+
+// ========================
+// Tag Types
+// ========================
+
+export type GetTagResponse = {
+    points: number
+    tag_id: string
+}
+
+export type GetTagListResponse = {
+    tags: GetTagResponse[]
+    total: number
+}
+
+export type CreateTagRequest = {
+    points: number
+    tag_id?: string | null
+}
+
+export type CreateTagResponse = GetTagResponse
+
+export type UpdateTagRequest = {
+    points?: number | null
+}
+
+export type UpdateTagResponse = GetTagResponse
+
+// ========================
+// Sessionize Types
+// ========================
+
+export type SessionizeSession = {
+    id: string
+    title: string
+    description: string
+    startsAt: string
+    endsAt: string
+    isServiceSession: boolean
+    isPlenumSession: boolean
+    speakers: {
+        id: string
+        name: string
+    }[]
+    roomId: number
+    room: string
+}
+
+export type SessionizeSpeaker = {
+    id: string
+    firstName: string
+    lastName: string
+    fullName: string
+    bio: string
+    tagLine: string
+    profilePicture: string
+    sessions: {
+        id: number
+        name: string
+    }[]
+    links: {
+        title: string
+        url: string
+        linkType: string
+    }[]
+}
+
+export type SessionizeGridSmart = any // The structure can be complex, using any for now as per request "acquisition"
+
+export type SessionizeSpeakerWall = any

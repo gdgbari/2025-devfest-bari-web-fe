@@ -29,13 +29,23 @@ import type {
     UpdateQuizResponse,
     SubmitQuizRequest,
     SubmitQuizResponse,
+    GetTagListResponse,
+    GetTagResponse,
+    CreateTagRequest,
+    CreateTagResponse,
+    UpdateTagRequest,
+    UpdateTagResponse,
+    SessionizeGridSmart,
+    SessionizeSession,
+    SessionizeSpeaker,
+    SessionizeSpeakerWall,
 } from "./types"
 import { Role } from "./types"
 import { firebase } from "."
 
 const BACKEND_URL = import.meta.env.DEV
-    ? "http://127.0.0.1:8000"
-    : "https://devfest-bari-2025-be-service-1025838144406.europe-west8.run.app"
+    ? "http://127.0.0.1:8080"
+    : "https://devfest-bari-2025-be-service-1025838144406.europe-west1.run.app"
 
 // ========================
 // Leaderboard (from Firestore)
@@ -202,4 +212,52 @@ export const deleteQuizRequest = async (quiz_id: string): Promise<null> => {
 
 export const submitQuizRequest = async (quiz_id: string, data: SubmitQuizRequest): Promise<SubmitQuizResponse> => {
     return await backendRequest("POST", `quizzes/${quiz_id}/submit`, data)
+}
+
+// ========================
+// Tag Endpoints
+// ========================
+
+export const getAllTagsRequest = async (): Promise<GetTagListResponse> => {
+    return await backendRequest("GET", "tags")
+}
+
+export const getTagRequest = async (tag_id: string): Promise<GetTagResponse> => {
+    return await backendRequest("GET", `tags/${tag_id}`)
+}
+
+export const createTagRequest = async (data: CreateTagRequest): Promise<CreateTagResponse> => {
+    return await backendRequest("POST", "tags", data)
+}
+
+export const updateTagRequest = async (tag_id: string, data: UpdateTagRequest): Promise<UpdateTagResponse> => {
+    return await backendRequest("PUT", `tags/${tag_id}`, data)
+}
+
+export const deleteTagRequest = async (tag_id: string): Promise<null> => {
+    return await backendRequest("DELETE", `tags/${tag_id}`)
+}
+
+// ========================
+// Sessionize Endpoints
+// ========================
+
+export const getSessionizeAllRequest = async (): Promise<any> => {
+    return await backendRequest("GET", "sessionize/all")
+}
+
+export const getSessionizeGridSmartRequest = async (): Promise<SessionizeGridSmart> => {
+    return await backendRequest("GET", "sessionize/grid-smart")
+}
+
+export const getSessionizeSessionsRequest = async (): Promise<SessionizeSession[]> => {
+    return await backendRequest("GET", "sessionize/sessions")
+}
+
+export const getSessionizeSpeakersRequest = async (): Promise<SessionizeSpeaker[]> => {
+    return await backendRequest("GET", "sessionize/speakers")
+}
+
+export const getSessionizeSpeakerWallRequest = async (): Promise<SessionizeSpeakerWall> => {
+    return await backendRequest("GET", "sessionize/speaker-wall")
 }
