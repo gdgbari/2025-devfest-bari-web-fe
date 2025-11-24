@@ -20,6 +20,7 @@ import { useLeaderboard } from "../../utils/requests";
 import { useAllUsers } from "../../utils/query";
 import { colorConverter, COLORS_LIST, shuffle, capitalizeFirstLetter } from "../../utils";
 import type { LeaderBoardUser, GetUserResponse } from "../../utils/types";
+import { compareLeaderboardUsers } from "../../utils/sorting";
 import { ViewUserModal } from "./modals/ViewUserModal";
 import { UserCard } from "./components/UserCard";
 
@@ -52,17 +53,6 @@ export const WheelPanel = () => {
         return res[0];
     };
 
-    const sortLogic = (
-        a: { score: number; updated_at: number; name: string },
-        b: { score: number; updated_at: number; name: string }
-    ) => {
-        const diff_point = b.score - a.score;
-        if (diff_point !== 0) return diff_point;
-        const diff_time = b.updated_at - a.updated_at;
-        if (diff_time !== 0) return diff_time;
-        return a.name.localeCompare(b.name);
-    };
-
     const filteredAndSortedUsers = users
         .filter((ele) => {
             if (groupFilter.length === 0) return true;
@@ -70,7 +60,7 @@ export const WheelPanel = () => {
             if (userGroup === null) return false;
             return groupFilter.includes(userGroup.name);
         })
-        .sort((a, b) => sortLogic({ ...a, name: a.nickname }, { ...b, name: b.nickname }))
+        .sort(compareLeaderboardUsers)
         .slice(0, usersToShow === null ? undefined : usersToShow);
 
     const isUserSelected = (userIndex: number): boolean => {

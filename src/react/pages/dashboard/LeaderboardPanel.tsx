@@ -18,6 +18,7 @@ import { colorConverter } from "../../utils"
 import { ViewUserModal } from "./modals/ViewUserModal"
 import { UserCard } from "./components/UserCard"
 import type { GetUserResponse } from "../../utils/types"
+import { compareLeaderboardUsers } from "../../utils/sorting"
 
 export const LeaderboardPanel = () => {
     const leaderboardData = useLeaderboard()
@@ -36,18 +37,7 @@ export const LeaderboardPanel = () => {
     const users = leaderboardData.leaderboard_users
         ? Object.entries(leaderboardData.leaderboard_users)
             .map(([uid, user]) => ({ uid, ...user }))
-            .sort((a, b) => {
-                // Prima ordina per score (decrescente)
-                const scoreDiff = b.score - a.score
-                if (scoreDiff !== 0) return scoreDiff
-
-                // Se score uguale, ordina per updated_at (più recente prima)
-                const timeDiff = b.updated_at - a.updated_at
-                if (timeDiff !== 0) return timeDiff
-
-                // Se anche il tempo è uguale, ordina per nickname (alfabetico)
-                return a.nickname.localeCompare(b.nickname)
-            })
+            .sort(compareLeaderboardUsers)
         : []
 
     const groups = leaderboardData.leaderboard_groups
