@@ -516,9 +516,6 @@ schedule.forEach((day) => {
 
       if (!scrollHintPopup || !dismissButton) return;
 
-      // Controlla se l'utente ha già chiuso il popup in questa sessione
-      const hintDismissed = sessionStorage.getItem("scrollHintDismissed");
-
       // Funzione per verificare se un container è scrollabile orizzontalmente
       function isScrollable(element: HTMLElement) {
         return element.scrollWidth > element.clientWidth;
@@ -526,7 +523,6 @@ schedule.forEach((day) => {
 
       // Funzione per mostrare il popup
       function showScrollHint() {
-        if (hintDismissed === "true") return;
         if (!scrollHintPopup) return;
 
         // Riseleziona i container ogni volta (potrebbero essere cambiati)
@@ -545,13 +541,6 @@ schedule.forEach((day) => {
         // Mostra il popup SOLO se c'è contenuto scrollabile
         if (hasScrollableContent) {
           scrollHintPopup.classList.remove("hidden");
-
-          // Nascondi automaticamente dopo 8 secondi
-          setTimeout(() => {
-            if (scrollHintPopup) {
-              scrollHintPopup.classList.add("hidden");
-            }
-          }, 8000);
         } else {
           // Nascondi se non c'è contenuto scrollabile
           scrollHintPopup.classList.add("hidden");
@@ -561,7 +550,6 @@ schedule.forEach((day) => {
       // Event listener per il bottone di chiusura
       dismissButton.addEventListener("click", () => {
         scrollHintPopup.classList.add("hidden");
-        sessionStorage.setItem("scrollHintDismissed", "true");
       });
 
       // Aggiungi listener per scroll sui container esistenti
@@ -574,7 +562,6 @@ schedule.forEach((day) => {
             if (scrollHintPopup) {
               scrollHintPopup.classList.add("hidden");
             }
-            sessionStorage.setItem("scrollHintDismissed", "true");
           });
         });
       }
