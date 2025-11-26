@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
     Stack,
     Text,
@@ -139,6 +139,10 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const { data: usersData } = useAllUsers();
 
+    // Track last scan time for each UID to prevent rapid re-scans
+    const lastScanTimes = useRef<Map<string, number>>(new Map());
+    const COOLDOWN_MS = 5000; // 5 seconds cooldown
+
     const handleScan = (results: any[]) => {
         results.forEach((result) => {
             if (!result.rawValue.startsWith("user:")) {
@@ -153,12 +157,24 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
                 return;
             }
 
+            // Check cooldown period
+            const now = Date.now();
+            const lastScanTime = lastScanTimes.current.get(uid);
+
+            if (lastScanTime && (now - lastScanTime) < COOLDOWN_MS) {
+                // Still in cooldown, ignore silently
+                return;
+            }
+
             const alreadyScanned = scannedUsers.some((u) => u.uid === uid);
 
             // Se è già stato scansionato, ignora completamente
             if (alreadyScanned) {
                 return;
             }
+
+            // Update last scan time
+            lastScanTimes.current.set(uid, now);
 
             // Cerca l'utente nel backend
             const user = usersData?.users.find(u => u.uid === uid);

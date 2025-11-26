@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
     Modal,
     Stack,
@@ -12,6 +12,7 @@ import {
     Card,
     Divider,
     Select,
+    Checkbox,
 } from "@mantine/core"
 import { IoAdd, IoTrash } from "react-icons/io5"
 import { useCreateQuiz, useSessionizeSessions } from "../../../utils/query"
@@ -25,6 +26,7 @@ interface CreateQuizModalProps {
 export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
     const [title, setTitle] = useState("")
     const [sessionId, setSessionId] = useState<string | null>(null)
+    const [useCustomTitle, setUseCustomTitle] = useState(false)
     const [questions, setQuestions] = useState<QuestionSchema[]>([
         {
             text: "",
@@ -39,6 +41,16 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
 
     const createQuizMutation = useCreateQuiz()
     const { data: sessions } = useSessionizeSessions()
+
+    // Auto-populate title from session when session changes
+    useEffect(() => {
+        if (sessionId && !useCustomTitle) {
+            const selectedSession = sessions?.find(s => String(s.id) === sessionId)
+            if (selectedSession) {
+                setTitle(selectedSession.title)
+            }
+        }
+    }, [sessionId, useCustomTitle, sessions])
 
     const handleAddQuestion = () => {
         setQuestions([
@@ -132,6 +144,7 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
     const handleClose = () => {
         setTitle("")
         setSessionId(null)
+        setUseCustomTitle(false)
         setQuestions([
             {
                 text: "",
@@ -155,14 +168,6 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
             centered
         >
             <Stack gap="md">
-                <TextInput
-                    label="Titolo Quiz"
-                    required
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Inserisci il titolo del quiz"
-                />
-
                 <Select
                     label="Sessione"
                     placeholder="Seleziona una sessione"
@@ -172,6 +177,22 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
                     searchable
                     required
                 />
+
+                <Checkbox
+                    label="Usa titolo personalizzato"
+                    checked={useCustomTitle}
+                    onChange={(e) => setUseCustomTitle(e.currentTarget.checked)}
+                />
+
+                {useCustomTitle && (
+                    <TextInput
+                        label="Titolo Quiz"
+                        required
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Inserisci il titolo del quiz"
+                    />
+                )}
 
                 <Divider label="Domande" />
 

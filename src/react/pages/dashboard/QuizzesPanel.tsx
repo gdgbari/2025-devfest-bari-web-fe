@@ -23,48 +23,6 @@ import { EditQuizModal } from "./modals/EditQuizModal"
 import { ViewQuizModal } from "./modals/ViewQuizModal"
 import { QuizQRCodeModal } from "./modals/QuizQRCodeModal"
 
-// Aggiungi le animazioni CSS
-const addAnimationStyles = () => {
-    if (typeof document === 'undefined') return
-
-    const styleId = 'quiz-animations'
-    if (document.getElementById(styleId)) return
-
-    const style = document.createElement('style')
-    style.id = styleId
-    style.textContent = `
-        @keyframes pulseGreen {
-            0% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
-                border-color: rgba(34, 197, 94, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 0 15px rgba(34, 197, 94, 0);
-                border-color: rgba(34, 197, 94, 1);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-                border-color: rgba(34, 197, 94, 0.5);
-            }
-        }
-        
-        @keyframes pulseGray {
-            0% {
-                box-shadow: 0 0 0 0 rgba(156, 163, 175, 0.7);
-                border-color: rgba(156, 163, 175, 0.5);
-            }
-            50% {
-                box-shadow: 0 0 0 15px rgba(156, 163, 175, 0);
-                border-color: rgba(156, 163, 175, 1);
-            }
-            100% {
-                box-shadow: 0 0 0 0 rgba(156, 163, 175, 0);
-                border-color: rgba(156, 163, 175, 0.5);
-            }
-        }
-    `
-    document.head.appendChild(style)
-}
 
 // Helper per formattare il tempo in modo dinamico
 const formatDuration = (milliseconds: number): string => {
@@ -106,11 +64,6 @@ export const QuizzesPanel = () => {
     const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [quizToDelete, setQuizToDelete] = useState<string | null>(null)
-
-    // Aggiungi le animazioni CSS quando il componente viene montato
-    useEffect(() => {
-        addAnimationStyles()
-    }, [])
 
     const handleOpenEditModal = (quiz: GetQuizWithCorrectResponse) => {
         setSelectedQuiz(quiz)

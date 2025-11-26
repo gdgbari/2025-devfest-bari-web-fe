@@ -4,29 +4,34 @@
 @tailwind variants;
 
 
- @layer utilities{
-    .animated{
+@layer utilities {
+    .animated {
         @apply duration-150 ease-in;
     }
 
-    .max-w-8xl { max-width: 88rem; }
-    .max-w-7xl { max-width: 78rem; }
+    .max-w-8xl {
+        max-width: 88rem;
+    }
+
+    .max-w-7xl {
+        max-width: 78rem;
+    }
 
     .rounded-3xl {
         border-radius: 1.25rem;
     }
- }
+}
 
 
 
 @layer components {
-    .card{
+    .card {
         @apply rounded-lg;
     }
 }
 
-html{
-    scrollbar-color: white #1e1e1e!important;
+html {
+    scrollbar-color: white #1e1e1e !important;
 }
 
 /*------------------------------------
@@ -35,11 +40,11 @@ html{
 
 
 
-.btn-content{
- @apply btn  bg-white text-2xl px-10 py-3 h-auto rounded-lg;
+.btn-content {
+    @apply btn bg-white text-2xl px-10 py-3 h-auto rounded-lg;
 }
 
-.btn.btn-primary{
+.btn.btn-primary {
     @apply bg-yellow text-white text-2xl px-10 py-3 h-auto rounded-lg hover:bg-yellow-dark border-0;
 }
 
@@ -47,8 +52,8 @@ html{
     @apply bg-white shadow-md rounded-lg p-4;
 }
 
-.main-container{
-  @apply max-w-8xl lg:w-4/5 w-full m-auto
+.main-container {
+    @apply max-w-8xl lg:w-4/5 w-full m-auto
 }
 
 .speaker-card {
@@ -73,7 +78,8 @@ a:not(.not-colored):hover {
 
 .wheel-rotate-animation {
     animation: spin 26s linear infinite;
-    transform-origin: 16.532217264175415% 48.99247921303165%;/* Calculated using public/assets/vectors/skyline-parts/getcoord.html */
+    transform-origin: 16.532217264175415% 48.99247921303165%;
+    /* Calculated using public/assets/vectors/skyline-parts/getcoord.html */
 }
 
 .wheel-container {
@@ -81,10 +87,15 @@ a:not(.not-colored):hover {
     width: 100%;
     height: 100%;
 }
-        
+
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(-360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg);
+    }
 }
 
 /*------------------------------------
@@ -96,6 +107,7 @@ html.multicolored-bg {
     position: relative;
     background: #181818;
 }
+
 html.multicolored-bg::before,
 html.multicolored-bg::after {
     content: '';
@@ -109,9 +121,10 @@ html.multicolored-bg::after {
     opacity: 0.7;
     filter: blur(0.5vw) saturate(1.2);
 }
+
 html.multicolored-bg::before {
     background:
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.45) 0 12vw, transparent 13vw),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.45) 0 12vw, transparent 13vw),
         radial-gradient(circle at 15% 25%, #34A853 0 18vw, transparent 19vw),
         radial-gradient(circle at 85% 20%, #4285F4 0 22vw, transparent 23vw),
         radial-gradient(circle at 60% 85%, #EA4335 0 28vw, transparent 29vw),
@@ -119,9 +132,10 @@ html.multicolored-bg::before {
     background-blend-mode: screen, screen, screen, screen, screen;
     animation: bg-move-1 12s linear infinite alternate;
 }
+
 html.multicolored-bg::after {
     background:
-        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.25) 0 18vw, transparent 19vw),
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.25) 0 18vw, transparent 19vw),
         radial-gradient(circle at 70% 60%, #00C3FF 0 18vw, transparent 19vw),
         radial-gradient(circle at 40% 80%, #FF61A6 0 14vw, transparent 15vw),
         radial-gradient(circle at 80% 80%, #FFD600 0 12vw, transparent 13vw);
@@ -136,16 +150,19 @@ html.multicolored-bg::after {
         transform: scale(1) rotate(0deg) translateY(0);
         opacity: 0.7;
     }
+
     100% {
         transform: scale(1.15) rotate(12deg) translateY(-3vw);
         opacity: 1;
     }
 }
+
 @keyframes bg-move-2 {
     0% {
         transform: scale(1.1) rotate(0deg) translateX(0);
         opacity: 0.5;
     }
+
     100% {
         transform: scale(1.25) rotate(-10deg) translateX(4vw);
         opacity: 0.8;
@@ -153,22 +170,23 @@ html.multicolored-bg::after {
 }
 
 //Fix mantine on mobile
-:root{
+:root {
     color-scheme: unset !important;
 }
 
 //Fix checkbox colors
-.checkbox{
+.checkbox {
     --chkfg: #dedede;
     --fallback-bc: #1e1e1e;
     border-width: 2px;
 }
 
-.checkbox-white{
+.checkbox-white {
     --chkfg: #1e1e1e;
-    --fallback-bc: #dedede ;
+    --fallback-bc: #dedede;
     border-width: 2px;
 }
+
 .radio {
     --chkfg: #dedede;
     --fallback-bc: #dedede;
@@ -180,28 +198,52 @@ input.no-control::-webkit-outer-spin-button,
 input.no-control::-webkit-inner-spin-button {
     /* display: none; <- Crashes Chrome on hover */
     -webkit-appearance: none;
-    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 input.no-control[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-    appearance: textfield; /* Chrome */
+    -moz-appearance: textfield;
+    /* Firefox */
+    appearance: textfield;
+    /* Chrome */
 }
 
 
 @keyframes materialSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes materialPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.1); opacity: 0.8; }
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
 }
 
 @keyframes materialBounce {
-    0%, 100% { transform: translateY(0) scale(1); }
-    50% { transform: translateY(-4px) scale(1.1); }
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-4px) scale(1.1);
+    }
 }
 
 .material-loader-ring {
@@ -214,4 +256,38 @@ input.no-control[type=number] {
 
 .material-loader-bounce {
     animation: materialBounce 1.8s ease-in-out infinite;
+}
+
+@keyframes pulseGreen {
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+        border-color: rgba(34, 197, 94, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 0 15px rgba(34, 197, 94, 0);
+        border-color: rgba(34, 197, 94, 1);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        border-color: rgba(34, 197, 94, 0.5);
+    }
+}
+
+@keyframes pulseGray {
+    0% {
+        box-shadow: 0 0 0 0 rgba(156, 163, 175, 0.7);
+        border-color: rgba(156, 163, 175, 0.5);
+    }
+
+    50% {
+        box-shadow: 0 0 0 15px rgba(156, 163, 175, 0);
+        border-color: rgba(156, 163, 175, 1);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(156, 163, 175, 0);
+        border-color: rgba(156, 163, 175, 0.5);
+    }
 }
