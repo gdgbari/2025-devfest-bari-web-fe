@@ -68,7 +68,7 @@ export const AppPage = () => {
   // Definisci le pagine con i loro permessi
   const pagesWithPermissions = {
     "verify-email": { component: <EmailVerificationPage user={user!} />, minRole: Role.ATTENDEE },
-    "app": { component: <Dashboard user={this_user.data!} />, minRole: Role.STAFF },
+    "app": { component: this_user.data ? <Dashboard user={this_user.data} /> : <div>Loading...</div>, minRole: Role.STAFF },
     "qrscan": { component: <div />, minRole: Role.STAFF },
     "not-allowed": { component: <div className="text-2xl">You are not allowed to access this page</div>, minRole: Role.ATTENDEE },
   }

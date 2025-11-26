@@ -45,7 +45,7 @@ import { firebase } from "."
 
 const BACKEND_URL = import.meta.env.DEV
     ? "http://127.0.0.1:8080"
-    : "https://devfest-bari-2025-be-service-1025838144406.europe-west1.run.app"
+    : "https://api.bari.devfest.it/"
 
 // ========================
 // Leaderboard (from Firestore)

@@ -1,5 +1,5 @@
-import { Card, Group, Badge, Text, Stack } from "@mantine/core";
-import { IoTrophy } from "react-icons/io5";
+import { Card, Group, Badge, Text, Stack, Tooltip } from "@mantine/core";
+import { IoTrophy, IoPricetag } from "react-icons/io5";
 import { colorConverter } from "../../../utils";
 import type { LeaderBoardUser } from "../../../utils/types";
 
@@ -11,9 +11,10 @@ interface UserCardProps {
     hidePoints?: boolean;
     groupName?: string;
     showAsLoser?: boolean;
+    tags?: { points: number; tag_id: string }[];
 }
 
-export const UserCard = ({ user, position, onClick, isWinner = false, hidePoints = false, groupName, showAsLoser = false }: UserCardProps) => {
+export const UserCard = ({ user, position, onClick, isWinner = false, hidePoints = false, groupName, showAsLoser = false, tags }: UserCardProps) => {
     const groupColor = colorConverter(user.group_color);
 
     return (
@@ -91,6 +92,17 @@ export const UserCard = ({ user, position, onClick, isWinner = false, hidePoints
                             <Text size="sm" c="dimmed">
                                 {groupName ? `Gruppo ${groupName}` : `Gruppo ${user.group_color}`}
                             </Text>
+                            {tags && tags.length > 0 && (
+                                <>
+                                    <Text size="sm" c="dimmed"> • </Text>
+                                    <Tooltip label={`${tags.length} tag${tags.length > 1 ? 's' : ''}`}>
+                                        <Group gap={2} align="center">
+                                            <IoPricetag size={12} color="gray" />
+                                            <Text size="sm" c="dimmed">{tags.length}</Text>
+                                        </Group>
+                                    </Tooltip>
+                                </>
+                            )}
                         </Group>
                     </Stack>
                 </Group>

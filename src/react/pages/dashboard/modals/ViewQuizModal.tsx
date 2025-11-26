@@ -1,5 +1,6 @@
 import { Modal, Stack, Text, Badge, Group, Box, Divider } from "@mantine/core";
 import type { GetQuizWithCorrectResponse } from "../../../utils/types";
+import { useSessionizeSessions } from "../../../utils/query";
 
 interface ViewQuizModalProps {
     opened: boolean;
@@ -35,6 +36,7 @@ const formatDuration = (milliseconds: number): string => {
 };
 
 export function ViewQuizModal({ opened, onClose, quiz }: ViewQuizModalProps) {
+    const { data: sessions } = useSessionizeSessions();
     if (!quiz) return null;
 
     return (
@@ -102,6 +104,16 @@ export function ViewQuizModal({ opened, onClose, quiz }: ViewQuizModalProps) {
                                 punti
                             </Badge>
                         </Group>
+                        {quiz.session_id && (
+                            <Group justify="space-between">
+                                <Text size="sm" c="dimmed">
+                                    Sessione
+                                </Text>
+                                <Text size="sm" style={{ fontFamily: "monospace" }}>
+                                    {sessions?.find(s => s.id === quiz.session_id)?.title || quiz.session_id}
+                                </Text>
+                            </Group>
+                        )}
                     </Stack>
                 </Box>
 

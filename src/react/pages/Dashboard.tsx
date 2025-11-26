@@ -13,7 +13,6 @@ import { IoPersonCircle } from "react-icons/io5"
 import { UsersPanel } from "./dashboard/UsersPanel"
 import { QuizzesPanel } from "./dashboard/QuizzesPanel"
 import { LeaderboardPanel } from "./dashboard/LeaderboardPanel"
-import { WheelPanel } from "./dashboard/WheelPanel"
 import { QRScanPanel } from "./dashboard/QRScanPanel"
 import { TagsPanel } from "./dashboard/TagsPanel"
 
@@ -58,9 +57,6 @@ export const Dashboard = ({ user }: DashboardProps) => {
                     <Tabs.Tab value="leaderboard">
                         Leaderboard
                     </Tabs.Tab>
-                    <Tabs.Tab value="wheel">
-                        Wheel of Fortune
-                    </Tabs.Tab>
                     <Tabs.Tab value="qrscan">
                         QR Scanner
                     </Tabs.Tab>
@@ -79,10 +75,6 @@ export const Dashboard = ({ user }: DashboardProps) => {
 
                 <Tabs.Panel value="leaderboard" py="xl">
                     <LeaderboardPanel />
-                </Tabs.Panel>
-
-                <Tabs.Panel value="wheel" py="xl">
-                    <WheelPanel />
                 </Tabs.Panel>
 
                 <Tabs.Panel value="qrscan" py="xl">

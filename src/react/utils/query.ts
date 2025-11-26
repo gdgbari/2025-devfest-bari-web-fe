@@ -22,6 +22,9 @@ import {
     updateQuizRequest,
     deleteQuizRequest,
     submitQuizRequest,
+    getAllTagsRequest,
+    getSessionizeSessionsRequest,
+    getSessionizeAllRequest,
 } from "./requests"
 import type {
     CreateUserRequest,
@@ -31,6 +34,7 @@ import type {
     CreateQuizRequest,
     UpdateQuizRequest,
     SubmitQuizRequest,
+    SessionizeSession,
 } from "./types"
 
 // ========================
@@ -276,4 +280,31 @@ export const useSubmitQuiz = () => {
     })
 }
 
+
+// ========================
+// Tag Queries
+// ========================
+
+export const useAllTags = () => {
+    return useQuery({
+        queryKey: ["tags"],
+        queryFn: getAllTagsRequest,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    })
+}
+
+// ========================
+// Sessionize Queries
+// ========================
+
+export const useSessionizeSessions = () => {
+    return useQuery({
+        queryKey: ["sessionize-sessions"],
+        queryFn: async () => {
+            const data = await getSessionizeAllRequest()
+            return (data?.sessions || []) as SessionizeSession[]
+        },
+        staleTime: 1000 * 60 * 10, // 10 minutes
+    })
+}
 

@@ -12,9 +12,10 @@ import {
     Card,
     Divider,
     Badge,
+    Select,
 } from "@mantine/core"
 import { IoAdd, IoTrash, IoCheckmark, IoClose } from "react-icons/io5"
-import { useUpdateQuiz } from "../../../utils/query"
+import { useUpdateQuiz, useSessionizeSessions } from "../../../utils/query"
 import type { GetQuizWithCorrectResponse, QuestionSchema } from "../../../utils/types"
 
 // Helper per formattare il tempo in modo dinamico
@@ -52,13 +53,16 @@ interface EditQuizModalProps {
 
 export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => {
     const [title, setTitle] = useState("")
+    const [sessionId, setSessionId] = useState<string | null>(null)
     const [questions, setQuestions] = useState<QuestionSchema[]>([])
 
     const updateQuizMutation = useUpdateQuiz()
+    const { data: sessions } = useSessionizeSessions()
 
     useEffect(() => {
         if (quiz) {
             setTitle(quiz.title)
+            setSessionId(quiz.session_id || null)
             setQuestions(quiz.question_list.map(q => ({
                 text: q.text,
                 answer_list: q.answer_list,
@@ -147,6 +151,7 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
                 data: {
                     title,
                     question_list: questions,
+                    session_id: sessionId,
                 }
             })
             handleClose()
@@ -158,6 +163,7 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
 
     const handleClose = () => {
         setTitle("")
+        setSessionId(null)
         setQuestions([])
         onClose()
     }
@@ -199,6 +205,16 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Inserisci il titolo del quiz"
+                />
+
+                <Select
+                    label="Sessione"
+                    placeholder="Seleziona una sessione"
+                    data={sessions?.filter(s => s.id).map(s => ({ value: String(s.id), label: s.title })) || []}
+                    value={sessionId}
+                    onChange={setSessionId}
+                    searchable
+                    clearable
                 />
 
                 <Divider label="Domande" />

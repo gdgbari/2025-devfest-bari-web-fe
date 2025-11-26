@@ -16,7 +16,7 @@ import {
     Modal,
 } from "@mantine/core"
 import { IoAdd, IoPencil, IoTrash, IoCheckmark, IoClose, IoQrCodeOutline } from "react-icons/io5"
-import { useQuizzes, useDeleteQuiz, useUpdateQuiz } from "../../utils/query"
+import { useQuizzes, useDeleteQuiz, useUpdateQuiz, useSessionizeSessions } from "../../utils/query"
 import type { GetQuizWithCorrectResponse } from "../../utils/types"
 import { CreateQuizModal } from "./modals/CreateQuizModal"
 import { EditQuizModal } from "./modals/EditQuizModal"
@@ -97,6 +97,7 @@ export const QuizzesPanel = () => {
     const { data: quizzesData, isLoading, error } = useQuizzes()
     const deleteQuizMutation = useDeleteQuiz()
     const updateQuizMutation = useUpdateQuiz()
+    const { data: sessions } = useSessionizeSessions()
     const [animatingQuizzes, setAnimatingQuizzes] = useState<Set<string>>(new Set())
     const [selectedQuiz, setSelectedQuiz] = useState<GetQuizWithCorrectResponse | null>(null)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
@@ -350,6 +351,17 @@ export const QuizzesPanel = () => {
                                             {quiz.question_list.reduce((sum, q) => sum + (q.value ?? 10), 0)} pt
                                         </Text>
                                     </Group>
+
+                                    {quiz.session_id && (
+                                        <Group justify="space-between">
+                                            <Text size="xs" fw={500} c="dimmed">
+                                                Sessione:
+                                            </Text>
+                                            <Text size="xs" truncate style={{ maxWidth: 150 }}>
+                                                {sessions?.find(s => s.id === quiz.session_id)?.title || quiz.session_id}
+                                            </Text>
+                                        </Group>
+                                    )}
                                 </Stack>
 
                                 {/* Toggle stato */}

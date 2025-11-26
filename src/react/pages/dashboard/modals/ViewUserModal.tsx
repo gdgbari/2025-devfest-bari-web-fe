@@ -1,6 +1,7 @@
 import { Modal, Stack, Text, Badge, Group, Box } from "@mantine/core";
 import type { GetUserResponse } from "../../../utils/types";
 import { colorConverter } from "../../../utils";
+import { IoPricetag } from "react-icons/io5";
 
 interface ViewUserModalProps {
     opened: boolean;
@@ -64,6 +65,22 @@ export function ViewUserModal({ opened, onClose, user }: ViewUserModalProps) {
                                 }}
                             />
                             <Text size="md">{user.group.name}</Text>
+                        </Group>
+                    </Box>
+                )}
+
+                {/* Tags */}
+                {user.tags && user.tags.length > 0 && (
+                    <Box>
+                        <Text size="xs" c="dimmed" mb={4}>
+                            Tags
+                        </Text>
+                        <Group gap="xs">
+                            {user.tags.map((tag, index) => (
+                                <Badge key={index} variant="light" color="blue" leftSection={<IoPricetag size={12} />}>
+                                    {tag.tag_id} ({tag.points} pt)
+                                </Badge>
+                            ))}
                         </Group>
                     </Box>
                 )}

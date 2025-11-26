@@ -11,9 +11,10 @@ import {
     ActionIcon,
     Card,
     Divider,
+    Select,
 } from "@mantine/core"
 import { IoAdd, IoTrash } from "react-icons/io5"
-import { useCreateQuiz } from "../../../utils/query"
+import { useCreateQuiz, useSessionizeSessions } from "../../../utils/query"
 import type { QuestionSchema, AnswerSchema } from "../../../utils/types"
 
 interface CreateQuizModalProps {
@@ -23,6 +24,7 @@ interface CreateQuizModalProps {
 
 export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
     const [title, setTitle] = useState("")
+    const [sessionId, setSessionId] = useState<string | null>(null)
     const [questions, setQuestions] = useState<QuestionSchema[]>([
         {
             text: "",
@@ -36,6 +38,7 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
     ])
 
     const createQuizMutation = useCreateQuiz()
+    const { data: sessions } = useSessionizeSessions()
 
     const handleAddQuestion = () => {
         setQuestions([
@@ -98,6 +101,11 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
             return
         }
 
+        if (!sessionId) {
+            alert("Seleziona una sessione per il quiz")
+            return
+        }
+
         if (questions.some(q => !q.text.trim())) {
             alert("Tutte le domande devono avere un testo")
             return
@@ -112,6 +120,7 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
             await createQuizMutation.mutateAsync({
                 title,
                 question_list: questions,
+                session_id: sessionId,
             })
             handleClose()
         } catch (error) {
@@ -122,6 +131,7 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
 
     const handleClose = () => {
         setTitle("")
+        setSessionId(null)
         setQuestions([
             {
                 text: "",
@@ -151,6 +161,16 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="Inserisci il titolo del quiz"
+                />
+
+                <Select
+                    label="Sessione"
+                    placeholder="Seleziona una sessione"
+                    data={sessions?.filter(s => s.id).map(s => ({ value: String(s.id), label: s.title })) || []}
+                    value={sessionId}
+                    onChange={setSessionId}
+                    searchable
+                    required
                 />
 
                 <Divider label="Domande" />

@@ -114,6 +114,10 @@ export type GetUserResponse = {
     nickname: string
     uid: string
     group?: GetGroupResponse | null
+    tags?: {
+        points: number
+        tag_id: string
+    }[]
 }
 
 export type GetUserListResponse = {
@@ -184,6 +188,7 @@ export type GetQuizResponse = {
     title: string
     question_list: ReadQuestionSchema[]
     timer_duration: number
+    session_id: string
 }
 
 export type GetQuizWithCorrectResponse = {
@@ -192,6 +197,7 @@ export type GetQuizWithCorrectResponse = {
     question_list: ReadQuestionWithCorrectSchema[]
     is_open: boolean
     timer_duration: number
+    session_id: string
 }
 
 export type GetQuizListWithCorrectResponse = {
@@ -202,11 +208,13 @@ export type GetQuizListWithCorrectResponse = {
 export type CreateQuizRequest = {
     title: string
     question_list: QuestionSchema[]
+    session_id: string
 }
 
 export type CreateQuizResponse = {
     title: string
     question_list: QuestionSchema[]
+    session_id: string
     quiz_id: string
     is_open: boolean
     timer_duration: number
@@ -216,9 +224,17 @@ export type UpdateQuizRequest = {
     title?: string | null
     question_list?: QuestionSchema[] | null
     is_open?: boolean | null
+    session_id?: string | null
 }
 
-export type UpdateQuizResponse = CreateQuizResponse
+export type UpdateQuizResponse = {
+    title: string
+    question_list: QuestionSchema[]
+    session_id: string
+    quiz_id: string
+    is_open: boolean
+    timer_duration: number
+}
 
 export type SubmitQuizRequest = {
     answer_list: string[]

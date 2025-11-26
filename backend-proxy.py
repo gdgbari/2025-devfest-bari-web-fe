@@ -6,7 +6,7 @@ import urllib.parse
 import sys
 
 # --- Configuration ---
-TARGET_BASE_URL = "https://devfest-bari-2025-be-service-1025838144406.europe-west1.run.app"
+TARGET_BASE_URL = "https://api.bari.devfest.it/"
 
 # Network Configuration (User Preference)
 remote_config = { "name": "Remote", "value": ["127.0.0.1", 8080] }
