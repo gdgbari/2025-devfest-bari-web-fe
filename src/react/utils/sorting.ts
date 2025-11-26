@@ -21,7 +21,11 @@ export const compareLeaderboardUsers = (
         return b.score - a.score
     }
 
-    // Latest quiz completed time
+    // 2. Timestamp: Ascending (Earlier is better/higher rank)
+    // User snippet: a.timestamp.compareTo(b.timestamp) => a - b
+    if (b.updated_at !== a.updated_at) {
+        return a.updated_at - b.updated_at
+    }
 
     // 3. Nickname: Ascending (Alphabetical)
     // User snippet: a.nickname.toLowerCase().compareTo(b.nickname.toLowerCase())
