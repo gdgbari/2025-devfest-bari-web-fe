@@ -9,54 +9,7 @@ import { Container } from "@mantine/core";
 import { Dashboard } from "./Dashboard";
 import { Role } from "../utils/types";
 import { canAccessPage, setPagePermissions } from "../utils/permissions";
-//import { QRScan } from "./app/QRScan";
-
-
-// Returns a list of users using the same wrapper format as `this_user`
-export const getMockUsers = () => {
-  return [
-    {
-      data: {
-        uid: "Test",
-        name: "Gabriele",
-        surname: "Dellino",
-        role: Role.STAFF,
-        nickname: "gdellino",
-        group: "group",
-        email: "gdellino37@gmail.com",
-      },
-      isFetched: true,
-      isFetching: false,
-    },
-    {
-      data: {
-        uid: "User2",
-        name: "Mario",
-        surname: "Rossi",
-        role: Role.ATTENDEE,
-        nickname: "mrossi",
-        group: "group-a",
-        email: "mario.rossi@example.com",
-      },
-      isFetched: true,
-      isFetching: false,
-    },
-    {
-      data: {
-        uid: "User3",
-        name: "Lucia",
-        surname: "Bianchi",
-        role: Role.STAFF,
-        nickname: "lbianchi",
-        group: "group-b",
-        email: "lucia.bianchi@example.com",
-      },
-      isFetched: true,
-      isFetching: false,
-    },
-  ]
-}
-
+import { LoadingScreen } from "../components/LoadingScreen";
 
 export const AppPage = () => {
 
@@ -68,7 +21,7 @@ export const AppPage = () => {
   // Definisci le pagine con i loro permessi
   const pagesWithPermissions = {
     "verify-email": { component: <EmailVerificationPage user={user!} />, minRole: Role.ATTENDEE },
-    "app": { component: this_user.data ? <Dashboard user={this_user.data} /> : <div>Loading...</div>, minRole: Role.STAFF },
+    "app": { component: this_user.data ? <Dashboard user={this_user.data} /> : <LoadingScreen message="Caricamento dashboard" showHeader={false} />, minRole: Role.STAFF },
     "qrscan": { component: <div />, minRole: Role.STAFF },
     "not-allowed": { component: <div className="text-2xl">You are not allowed to access this page</div>, minRole: Role.ATTENDEE },
   }
@@ -105,7 +58,7 @@ export const AppPage = () => {
     <div className="text-center mx-5">
       <AppMain>
         <Container size="xl" mt="xl">
-          {this_user.isFetched && (pagesWithPermissions[currentPage]?.component || "Loading...") || "Loading..."}
+          {this_user.isFetched && (pagesWithPermissions[currentPage]?.component || <LoadingScreen message="Caricamento pagina" showHeader={false} />) || <LoadingScreen message="Caricamento" showHeader={false} />}
         </Container>
       </AppMain>
     </div>
