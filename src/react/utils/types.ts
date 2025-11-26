@@ -86,7 +86,6 @@ export type QuestionSchema = {
     text: string
     answer_list: AnswerSchema[]
     correct_answer: string
-    value?: number
 }
 
 export type ReadAnswerSchema = {

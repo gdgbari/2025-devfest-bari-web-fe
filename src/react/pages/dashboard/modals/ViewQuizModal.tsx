@@ -110,7 +110,7 @@ export function ViewQuizModal({ opened, onClose, quiz }: ViewQuizModalProps) {
                                     Sessione
                                 </Text>
                                 <Text size="sm" style={{ fontFamily: "monospace" }}>
-                                    {sessions?.find(s => s.id === quiz.session_id)?.title || quiz.session_id}
+                                    [{quiz.session_id}] {sessions?.find(s => s.id === quiz.session_id)?.title || "**Unknown**"}
                                 </Text>
                             </Group>
                         )}

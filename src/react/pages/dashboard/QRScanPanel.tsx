@@ -139,9 +139,8 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const { data: usersData } = useAllUsers();
 
-    // Track last scan time for each UID to prevent rapid re-scans
-    const lastScanTimes = useRef<Map<string, number>>(new Map());
-    const COOLDOWN_MS = 5000; // 5 seconds cooldown
+    // Usa un ref per tenere traccia degli utenti già scansionati
+    const scannedUidsRef = useRef<Set<string>>(new Set());
 
     const handleScan = (results: any[]) => {
         results.forEach((result) => {
@@ -157,24 +156,11 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
                 return;
             }
 
-            // Check cooldown period
-            const now = Date.now();
-            const lastScanTime = lastScanTimes.current.get(uid);
-
-            if (lastScanTime && (now - lastScanTime) < COOLDOWN_MS) {
-                // Still in cooldown, ignore silently
+            // Usa il ref per verificare se è già stato scansionato
+            if (scannedUidsRef.current.has(uid)) {
+                console.log("Utente già scansionato:", uid, Array.from(scannedUidsRef.current));
                 return;
             }
-
-            const alreadyScanned = scannedUsers.some((u) => u.uid === uid);
-
-            // Se è già stato scansionato, ignora completamente
-            if (alreadyScanned) {
-                return;
-            }
-
-            // Update last scan time
-            lastScanTimes.current.set(uid, now);
 
             // Cerca l'utente nel backend
             const user = usersData?.users.find(u => u.uid === uid);
@@ -192,10 +178,15 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
 
             const userName = `${user.name} ${user.surname} (@${user.nickname})`;
 
+            // Aggiungi l'UID al ref
+            scannedUidsRef.current.add(uid);
+
             setScannedUsers((prev) => [
                 { uid, scannedAt: new Date() },
                 ...prev,
             ]);
+
+            console.log("Utente scansionato aggiunto:", uid, Array.from(scannedUidsRef.current));
 
             // Notifica di successo
             notifications.show({
@@ -208,6 +199,7 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
     };
 
     const handleRemoveUser = (uid: string) => {
+        scannedUidsRef.current.delete(uid);
         setScannedUsers((prev) => prev.filter((u) => u.uid !== uid));
     };
 
@@ -217,6 +209,7 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
     };
 
     const handleClearAll = () => {
+        scannedUidsRef.current.clear();
         setScannedUsers([]);
     };
 

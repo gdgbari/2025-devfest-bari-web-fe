@@ -33,9 +33,30 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
             answer_list: [
                 { id: "0", text: "" },
                 { id: "1", text: "" },
+                { id: "2", text: "" },
+                { id: "3", text: "" },
             ],
             correct_answer: "0",
-            value: 10,
+        },
+        {
+            text: "",
+            answer_list: [
+                { id: "0", text: "" },
+                { id: "1", text: "" },
+                { id: "2", text: "" },
+                { id: "3", text: "" },
+            ],
+            correct_answer: "0",
+        },
+        {
+            text: "",
+            answer_list: [
+                { id: "0", text: "" },
+                { id: "1", text: "" },
+                { id: "2", text: "" },
+                { id: "3", text: "" },
+            ],
+            correct_answer: "0",
         }
     ])
 
@@ -60,9 +81,10 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
                 answer_list: [
                     { id: "0", text: "" },
                     { id: "1", text: "" },
+                    { id: "2", text: "" },
+                    { id: "3", text: "" },
                 ],
                 correct_answer: "0",
-                value: 10,
             }
         ])
     }
@@ -151,9 +173,30 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
                 answer_list: [
                     { id: "0", text: "" },
                     { id: "1", text: "" },
+                    { id: "2", text: "" },
+                    { id: "3", text: "" },
                 ],
                 correct_answer: "0",
-                value: 10,
+            },
+            {
+                text: "",
+                answer_list: [
+                    { id: "0", text: "" },
+                    { id: "1", text: "" },
+                    { id: "2", text: "" },
+                    { id: "3", text: "" },
+                ],
+                correct_answer: "0",
+            },
+            {
+                text: "",
+                answer_list: [
+                    { id: "0", text: "" },
+                    { id: "1", text: "" },
+                    { id: "2", text: "" },
+                    { id: "3", text: "" },
+                ],
+                correct_answer: "0",
             }
         ])
         onClose()
@@ -171,7 +214,7 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
                 <Select
                     label="Sessione"
                     placeholder="Seleziona una sessione"
-                    data={sessions?.filter(s => s.id).map(s => ({ value: String(s.id), label: s.title })) || []}
+                    data={sessions?.filter(s => s.id).map(s => ({ value: String(s.id), label: `[${s.id}] ${s.title}` })) || []}
                     value={sessionId}
                     onChange={setSessionId}
                     searchable
@@ -220,14 +263,6 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
                                 onChange={(e) => handleQuestionChange(qIndex, 'text', e.target.value)}
                                 placeholder="Inserisci la domanda"
                                 minRows={2}
-                            />
-
-                            <NumberInput
-                                label="Punteggio"
-                                value={question.value}
-                                onChange={(v) => handleQuestionChange(qIndex, 'value', v)}
-                                min={1}
-                                max={100}
                             />
 
                             <Text size="xs" fw={500}>Risposte:</Text>

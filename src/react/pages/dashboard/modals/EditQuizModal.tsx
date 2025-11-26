@@ -13,6 +13,7 @@ import {
     Divider,
     Badge,
     Select,
+    Checkbox,
 } from "@mantine/core"
 import { IoAdd, IoTrash, IoCheckmark, IoClose } from "react-icons/io5"
 import { useUpdateQuiz, useSessionizeSessions } from "../../../utils/query"
@@ -54,6 +55,7 @@ interface EditQuizModalProps {
 export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => {
     const [title, setTitle] = useState("")
     const [sessionId, setSessionId] = useState<string | null>(null)
+    const [useCustomTitle, setUseCustomTitle] = useState(false)
     const [questions, setQuestions] = useState<QuestionSchema[]>([])
 
     const updateQuizMutation = useUpdateQuiz()
@@ -63,6 +65,12 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
         if (quiz) {
             setTitle(quiz.title)
             setSessionId(quiz.session_id || null)
+
+            // Verifica se il titolo del quiz è diverso dal nome della sessione
+            const selectedSession = sessions?.find(s => String(s.id) === quiz.session_id)
+            const hasCustomTitle = selectedSession ? quiz.title !== selectedSession.title : true
+            setUseCustomTitle(hasCustomTitle)
+
             setQuestions(quiz.question_list.map(q => ({
                 text: q.text,
                 answer_list: q.answer_list,
@@ -70,7 +78,17 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
                 value: q.value,
             })))
         }
-    }, [quiz])
+    }, [quiz, sessions])
+
+    // Auto-populate title from session when session changes
+    useEffect(() => {
+        if (sessionId && !useCustomTitle) {
+            const selectedSession = sessions?.find(s => String(s.id) === sessionId)
+            if (selectedSession) {
+                setTitle(selectedSession.title)
+            }
+        }
+    }, [sessionId, useCustomTitle, sessions])
 
     const handleAddQuestion = () => {
         setQuestions([
@@ -82,7 +100,6 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
                     { id: "1", text: "" },
                 ],
                 correct_answer: "0",
-                value: 10,
             }
         ])
     }
@@ -164,6 +181,7 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
     const handleClose = () => {
         setTitle("")
         setSessionId(null)
+        setUseCustomTitle(false)
         setQuestions([])
         onClose()
     }
@@ -199,23 +217,31 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
                     </Group>
                 </Card>
 
-                <TextInput
-                    label="Titolo Quiz"
-                    required
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Inserisci il titolo del quiz"
-                />
-
                 <Select
                     label="Sessione"
                     placeholder="Seleziona una sessione"
-                    data={sessions?.filter(s => s.id).map(s => ({ value: String(s.id), label: s.title })) || []}
+                    data={sessions?.filter(s => s.id).map(s => ({ value: String(s.id), label: `[${s.id}] ${s.title}` })) || []}
                     value={sessionId}
                     onChange={setSessionId}
                     searchable
                     clearable
                 />
+
+                <Checkbox
+                    label="Usa titolo personalizzato"
+                    checked={useCustomTitle}
+                    onChange={(e) => setUseCustomTitle(e.currentTarget.checked)}
+                />
+
+                {useCustomTitle && (
+                    <TextInput
+                        label="Titolo Quiz"
+                        required
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        placeholder="Inserisci il titolo del quiz"
+                    />
+                )}
 
                 <Divider label="Domande" />
 
@@ -245,13 +271,6 @@ export const EditQuizModal = ({ quiz, opened, onClose }: EditQuizModalProps) => 
                                 minRows={2}
                             />
 
-                            <NumberInput
-                                label="Punteggio"
-                                value={question.value}
-                                onChange={(v) => handleQuestionChange(qIndex, 'value', v)}
-                                min={1}
-                                max={100}
-                            />
 
                             <Text size="xs" fw={500}>Risposte:</Text>
                             {question.answer_list.map((answer, aIndex) => (
