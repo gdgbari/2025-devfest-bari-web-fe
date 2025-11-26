@@ -314,3 +314,20 @@ export type SessionizeSpeaker = {
 export type SessionizeGridSmart = any // The structure can be complex, using any for now as per request "acquisition"
 
 export type SessionizeSpeakerWall = any
+
+// ========================
+// Remote Config Types
+// ========================
+
+export type RemoteConfig = {
+    check_in_open: boolean
+    draw_open: boolean
+    draw_time: Date
+    info_content: string
+    info_title: string
+    leaderboard_open: boolean
+    quiz_points: number
+    time_per_question: number
+    winner_room: string
+    winner_time: string
+}

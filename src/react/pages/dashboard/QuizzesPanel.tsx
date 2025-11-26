@@ -14,8 +14,9 @@ import {
     Button,
     Switch,
     Modal,
+    TextInput,
 } from "@mantine/core"
-import { IoAdd, IoPencil, IoTrash, IoCheckmark, IoClose, IoQrCodeOutline } from "react-icons/io5"
+import { IoAdd, IoPencil, IoTrash, IoCheckmark, IoClose, IoQrCodeOutline, IoSearch } from "react-icons/io5"
 import { useQuizzes, useDeleteQuiz, useUpdateQuiz, useSessionizeSessions } from "../../utils/query"
 import type { GetQuizWithCorrectResponse } from "../../utils/types"
 import { CreateQuizModal } from "./modals/CreateQuizModal"
@@ -24,32 +25,7 @@ import { ViewQuizModal } from "./modals/ViewQuizModal"
 import { QuizQRCodeModal } from "./modals/QuizQRCodeModal"
 
 
-// Helper per formattare il tempo in modo dinamico
-const formatDuration = (milliseconds: number): string => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-
-    if (totalSeconds < 60) {
-        return `${totalSeconds} sec`;
-    }
-
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-
-    if (minutes < 60) {
-        if (seconds === 0) {
-            return `${minutes} min`;
-        }
-        return `${minutes} min ${seconds} sec`;
-    }
-
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-
-    if (remainingMinutes === 0) {
-        return `${hours} h`;
-    }
-    return `${hours} h ${remainingMinutes} min`;
-};
+import { formatDuration } from "../../utils/formatting"
 
 export const QuizzesPanel = () => {
     const { data: quizzesData, isLoading, error } = useQuizzes()
@@ -64,6 +40,7 @@ export const QuizzesPanel = () => {
     const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [quizToDelete, setQuizToDelete] = useState<string | null>(null)
+    const [query, setQuery] = useState("")
 
     const handleOpenEditModal = (quiz: GetQuizWithCorrectResponse) => {
         setSelectedQuiz(quiz)
@@ -169,28 +146,51 @@ export const QuizzesPanel = () => {
 
     const quizzes = quizzesData?.quizzes ?? []
 
+    // Filter quizzes based on search query
+    const filteredQuizzes = quizzes.filter(quiz => {
+        const q = query.trim().toLowerCase()
+        if (!q) return true
+
+        const sessionTitle = sessions?.find(s => s.id === quiz.session_id)?.title?.toLowerCase() || ''
+
+        return (
+            quiz.title.toLowerCase().includes(q) ||
+            quiz.quiz_id.toLowerCase().includes(q) ||
+            sessionTitle.includes(q) ||
+            quiz.question_list.some(question => question.text.toLowerCase().includes(q))
+        )
+    })
+
     return (
         <Stack gap="lg">
-            {/* Header con pulsante aggiungi */}
-            <Group justify="space-between">
-                <Text size="lg" fw={600}>
-                    Totale quiz: {quizzesData?.total ?? 0}
-                </Text>
-                <Tooltip label="Crea nuovo quiz" withArrow position="left">
+            {/* Search Bar and Add Button */}
+            <Card withBorder radius="md" padding="md">
+                <Group justify="space-between" wrap="wrap" gap="md">
+                    <TextInput
+                        placeholder="Cerca per titolo, sessione o domanda..."
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        size="md"
+                        radius="md"
+                        style={{ flex: 1, minWidth: 250 }}
+                        leftSection={<IoSearch size={18} />}
+                    />
                     <Button
-                        leftSection={<IoAdd size={18} />}
+                        size="md"
+                        radius="md"
                         color="green"
+                        leftSection={<IoAdd size={20} />}
                         onClick={() => setIsCreateModalOpen(true)}
                     >
                         Nuovo Quiz
                     </Button>
-                </Tooltip>
-            </Group>
+                </Group>
+            </Card>
 
             {/* Quiz List */}
-            {quizzes.length > 0 ? (
+            {filteredQuizzes.length > 0 ? (
                 <SimpleGrid cols={{ base: 1, sm: 2, md: 2, lg: 3 }} spacing="lg">
-                    {quizzes.map((quiz) => {
+                    {filteredQuizzes.map((quiz) => {
                         const isAnimating = animatingQuizzes.has(quiz.quiz_id)
                         const animationStyle = isAnimating
                             ? {
@@ -338,18 +338,17 @@ export const QuizzesPanel = () => {
                     })}
                 </SimpleGrid>
             ) : (
-                <Center py="xl">
-                    <Stack align="center" gap="md">
-                        <Text c="dimmed">Nessun quiz disponibile</Text>
-                        <Button
-                            leftSection={<IoAdd size={18} />}
-                            color="green"
-                            onClick={() => setIsCreateModalOpen(true)}
-                        >
-                            Crea il tuo primo quiz
-                        </Button>
-                    </Stack>
-                </Center>
+                <Card withBorder radius="md" padding="xl">
+                    <Center>
+                        <Stack align="center" gap="md">
+                            <IoSearch size={48} style={{ opacity: 0.2 }} />
+                            <Text c="dimmed" size="lg">Nessun quiz trovato</Text>
+                            <Text c="dimmed" size="sm">
+                                {query ? "Prova a modificare i filtri di ricerca" : "Crea un nuovo quiz per iniziare"}
+                            </Text>
+                        </Stack>
+                    </Center>
+                </Card>
             )}
 
             {/* Modals */}

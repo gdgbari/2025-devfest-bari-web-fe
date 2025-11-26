@@ -1,39 +1,13 @@
 import { Modal, Stack, Text, Badge, Group, Box, Divider } from "@mantine/core";
 import type { GetQuizWithCorrectResponse } from "../../../utils/types";
 import { useSessionizeSessions } from "../../../utils/query";
+import { formatDuration } from "../../../utils/formatting";
 
 interface ViewQuizModalProps {
     opened: boolean;
     onClose: () => void;
     quiz: GetQuizWithCorrectResponse | null;
 }
-
-// Helper per formattare il tempo in modo dinamico
-const formatDuration = (milliseconds: number): string => {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-
-    if (totalSeconds < 60) {
-        return `${totalSeconds} second${totalSeconds !== 1 ? 'i' : 'o'}`;
-    }
-
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-
-    if (minutes < 60) {
-        if (seconds === 0) {
-            return `${minutes} minut${minutes !== 1 ? 'i' : 'o'}`;
-        }
-        return `${minutes} min ${seconds} sec`;
-    }
-
-    const hours = Math.floor(minutes / 60);
-    const remainingMinutes = minutes % 60;
-
-    if (remainingMinutes === 0) {
-        return `${hours} or${hours !== 1 ? 'e' : 'a'}`;
-    }
-    return `${hours} h ${remainingMinutes} min`;
-};
 
 export function ViewQuizModal({ opened, onClose, quiz }: ViewQuizModalProps) {
     const { data: sessions } = useSessionizeSessions();

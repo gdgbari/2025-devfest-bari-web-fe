@@ -25,6 +25,8 @@ import {
     getAllTagsRequest,
     getSessionizeSessionsRequest,
     getSessionizeAllRequest,
+    getRemoteConfigRequest,
+    updateRemoteConfigRequest,
 } from "./requests"
 import type {
     CreateUserRequest,
@@ -35,6 +37,7 @@ import type {
     UpdateQuizRequest,
     SubmitQuizRequest,
     SessionizeSession,
+    RemoteConfig,
 } from "./types"
 
 // ========================
@@ -308,3 +311,29 @@ export const useSessionizeSessions = () => {
     })
 }
 
+// ========================
+// Remote Config Queries
+// ========================
+
+export const useRemoteConfig = () => {
+    return useQuery({
+        queryKey: ["remote-config"],
+        queryFn: getRemoteConfigRequest,
+        staleTime: 1000 * 60 * 5, // 5 minutes
+    })
+}
+
+// ========================
+// Remote Config Mutations
+// ========================
+
+export const useUpdateRemoteConfig = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: (data: Partial<RemoteConfig>) => updateRemoteConfigRequest(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["remote-config"] })
+        },
+    })
+}

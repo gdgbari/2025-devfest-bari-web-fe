@@ -39,6 +39,7 @@ import type {
     SessionizeSession,
     SessionizeSpeaker,
     SessionizeSpeakerWall,
+    RemoteConfig,
 } from "./types"
 import { Role } from "./types"
 import { firebase } from "."
@@ -260,4 +261,45 @@ export const getSessionizeSpeakersRequest = async (): Promise<SessionizeSpeaker[
 
 export const getSessionizeSpeakerWallRequest = async (): Promise<SessionizeSpeakerWall> => {
     return await backendRequest("GET", "sessionize/speaker-wall")
+}
+
+// ========================
+// Remote Config Endpoints (Firestore)
+// ========================
+
+export const getRemoteConfigRequest = async (): Promise<RemoteConfig> => {
+    const { getDoc, doc } = await import("firebase/firestore")
+    const configDoc = await getDoc(doc(firebase.firestore, "remote_config", "config"))
+
+    if (!configDoc.exists()) {
+        throw new Error("Remote config not found")
+    }
+
+    const data = configDoc.data()
+
+    // Convert Firestore Timestamp to Date
+    return {
+        check_in_open: data.check_in_open ?? false,
+        draw_open: data.draw_open ?? false,
+        draw_time: data.draw_time?.toDate() ?? new Date(),
+        info_content: data.info_content ?? "",
+        info_title: data.info_title ?? "",
+        leaderboard_open: data.leaderboard_open ?? false,
+        quiz_points: data.quiz_points ?? 0,
+        time_per_question: data.time_per_question ?? 0,
+        winner_room: data.winner_room ?? "",
+        winner_time: data.winner_time ?? "",
+    }
+}
+
+export const updateRemoteConfigRequest = async (data: Partial<RemoteConfig>): Promise<void> => {
+    const { updateDoc, doc, Timestamp } = await import("firebase/firestore")
+
+    // Convert Date to Firestore Timestamp if present
+    const firestoreData: any = { ...data }
+    if (data.draw_time) {
+        firestoreData.draw_time = Timestamp.fromDate(data.draw_time)
+    }
+
+    await updateDoc(doc(firebase.firestore, "remote_config", "config"), firestoreData)
 }

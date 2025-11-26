@@ -16,11 +16,12 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { Scanner } from "@yudiel/react-qr-scanner";
-import { IoCamera, IoTrash, IoEye, IoQrCode } from "react-icons/io5";
+import { IoCamera, IoEye, IoQrCode, IoRemoveCircle } from "react-icons/io5";
 import { FiCameraOff } from "react-icons/fi";
 import { useAllUsers } from "../../utils/query";
 import { colorConverter } from "../../utils";
 import { ViewUserModal } from "./modals/ViewUserModal";
+import { ScannedUsersActionsModal } from "./modals/ScannedUsersActionsModal";
 import type { GetUserResponse } from "../../utils/types";
 
 interface ScannedUser {
@@ -59,7 +60,7 @@ const ScannedUserCard = ({
                         Utente non trovato: {uid}
                     </Text>
                     <ActionIcon color="red" variant="light" onClick={onRemove}>
-                        <IoTrash size={18} />
+                        <IoRemoveCircle size={18} />
                     </ActionIcon>
                 </Group>
             </Card>
@@ -97,8 +98,8 @@ const ScannedUserCard = ({
                     >
                         {user.name?.[0]?.toUpperCase() || "?"}
                     </div>
-                    <div>
-                        <Text fw={600}>
+                    <Box display="flex" style={{ flexDirection: "column", justifyContent: "left" }}>
+                        <Text fw={600} display="flex" >
                             {user.name} {user.surname}
                         </Text>
                         <Group gap={8}>
@@ -109,7 +110,7 @@ const ScannedUserCard = ({
                                 {user.email}
                             </Badge>
                         </Group>
-                    </div>
+                    </Box>
                 </Group>
                 <Group gap="xs">
                     <Tooltip label="Visualizza dettagli">
@@ -121,14 +122,14 @@ const ScannedUserCard = ({
                             <IoEye size={18} />
                         </ActionIcon>
                     </Tooltip>
-                    <Tooltip label="Rimuovi">
+                    <Tooltip label="Deseleziona">
                         <ActionIcon color="red" variant="light" onClick={onRemove}>
-                            <IoTrash size={18} />
+                            <IoRemoveCircle size={18} />
                         </ActionIcon>
                     </Tooltip>
                 </Group>
             </Group>
-        </Card>
+        </Card >
     );
 };
 
@@ -137,6 +138,7 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
     const [scannedUsers, setScannedUsers] = useState<ScannedUser[]>([]);
     const [selectedUser, setSelectedUser] = useState<GetUserResponse | null>(null);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+    const [isActionsModalOpen, setIsActionsModalOpen] = useState(false);
     const { data: usersData } = useAllUsers();
 
     // Usa un ref per tenere traccia degli utenti già scansionati
@@ -292,14 +294,23 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
                             Utenti scansionati ({scannedUsers.length})
                         </Text>
                         {scannedUsers.length > 0 && (
-                            <Button
-                                variant="light"
-                                color="red"
-                                leftSection={<IoTrash size={16} />}
-                                onClick={handleClearAll}
-                            >
-                                Cancella tutto
-                            </Button>
+                            <Group gap="xs">
+                                <Button
+                                    variant="filled"
+                                    color="blue"
+                                    onClick={() => setIsActionsModalOpen(true)}
+                                >
+                                    Gestisci Utenti
+                                </Button>
+                                <Button
+                                    variant="light"
+                                    color="red"
+                                    leftSection={<IoRemoveCircle size={16} />}
+                                    onClick={handleClearAll}
+                                >
+                                    Deseleziona tutto
+                                </Button>
+                            </Group>
                         )}
                     </Group>
 
@@ -339,6 +350,15 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
                     setIsViewModalOpen(false);
                     setSelectedUser(null);
                 }}
+            />
+
+            {/* Scanned Users Actions Modal */}
+            <ScannedUsersActionsModal
+                opened={isActionsModalOpen}
+                onClose={() => setIsActionsModalOpen(false)}
+                scannedUserIds={scannedUsers.map(u => u.uid)}
+                onViewUser={handleViewUser}
+                onRemoveUser={handleRemoveUser}
             />
         </Stack>
     );
