@@ -1,6 +1,6 @@
 ---
 name: "Gaetano Illuzzi"
-tagline: "Team Engagement"
+tagline: "MC track Front-end, Team Engagement member"
 role: "collaborator"
 image: "gaetano.png"
 links:
