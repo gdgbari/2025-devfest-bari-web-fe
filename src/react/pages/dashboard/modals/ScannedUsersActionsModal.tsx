@@ -59,7 +59,6 @@ export function ScannedUsersActionsModal({
                 errorCount++;
                 errors.push(user.nickname);
 
-                // Extract error message
                 let errorMessage = "Errore durante l'assegnazione";
                 if (error instanceof Error) {
                     const match = error.message.match(/Request failed \[\d+\]: (.*)/);

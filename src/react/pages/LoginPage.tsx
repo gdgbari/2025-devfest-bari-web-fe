@@ -107,12 +107,11 @@ export const LoginPage = () => {
                     })
                     signInWithEmailAndPassword(firebase.auth, data.email, data.password)
                         .then((userCredential) => {
-                            const user = userCredential.user;
                             notifications.update({
                                 id: requestId,
                                 loading: false,
                                 title: "Login success",
-                                message: `Welcome ${user.displayName}`,
+                                message: "You have been successfully logged in",
                                 color: "green",
                                 autoClose: true
                             })
