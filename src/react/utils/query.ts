@@ -337,3 +337,21 @@ export const useUpdateRemoteConfig = () => {
         },
     })
 }
+
+// ========================
+// Admin Mutations
+// ========================
+
+export const useResetData = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: () => import("./requests").then(r => r.resetDataRequest()),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["users"] })
+            queryClient.invalidateQueries({ queryKey: ["groups"] })
+            queryClient.invalidateQueries({ queryKey: ["leaderboard"] })
+            queryClient.invalidateQueries({ queryKey: ["tags"] })
+        },
+    })
+}

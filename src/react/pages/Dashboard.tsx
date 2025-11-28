@@ -12,7 +12,7 @@ import {
     ActionIcon,
     Tooltip,
 } from "@mantine/core"
-import { IoPersonCircle, IoSettingsSharp, IoDownload, IoQrCodeOutline } from "react-icons/io5"
+import { IoPersonCircle, IoSettingsSharp, IoDownload, IoQrCodeOutline, IoTrash } from "react-icons/io5"
 import { notifications } from "@mantine/notifications"
 import { UsersPanel } from "./dashboard/UsersPanel"
 import { QuizzesPanel } from "./dashboard/QuizzesPanel"
@@ -20,6 +20,7 @@ import { LeaderboardPanel } from "./dashboard/LeaderboardPanel"
 import { QRScanPanel } from "./dashboard/QRScanPanel"
 import { TagsPanel } from "./dashboard/TagsPanel"
 import { SettingsModal } from "./dashboard/modals/SettingsModal"
+import { ResetDataModal } from "./dashboard/modals/ResetDataModal"
 import { useQuizzes } from "../utils/query"
 
 type DashboardProps = {
@@ -29,6 +30,7 @@ type DashboardProps = {
 export const Dashboard = ({ user }: DashboardProps) => {
     const [activeTab, setActiveTab] = useState<string | null>('users')
     const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
+    const [isResetModalOpen, setIsResetModalOpen] = useState(false)
     const { data: quizzesData } = useQuizzes()
 
     const handleDownloadAllQRCodes = async () => {
@@ -163,6 +165,15 @@ export const Dashboard = ({ user }: DashboardProps) => {
                             >
                                 Scarica tutti i QR Code
                             </Menu.Item>
+                            <Menu.Divider />
+                            <Menu.Label c="red">Zona Pericolosa</Menu.Label>
+                            <Menu.Item
+                                color="red"
+                                leftSection={<IoTrash size={16} />}
+                                onClick={() => setIsResetModalOpen(true)}
+                            >
+                                Reset Dati Evento
+                            </Menu.Item>
                         </Menu.Dropdown>
                     </Menu>
                 </Group>
@@ -224,6 +235,12 @@ export const Dashboard = ({ user }: DashboardProps) => {
             <SettingsModal
                 opened={isSettingsModalOpen}
                 onClose={() => setIsSettingsModalOpen(false)}
+            />
+
+            {/* Reset Data Modal */}
+            <ResetDataModal
+                opened={isResetModalOpen}
+                onClose={() => setIsResetModalOpen(false)}
             />
         </Container>
     )

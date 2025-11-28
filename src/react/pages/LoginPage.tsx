@@ -8,7 +8,6 @@ import { firebase, isEmailValid } from "../utils";
 import { useFirebaseUserInfo } from "../utils/query";
 import { useEffect, useState } from "react";
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
-import { set } from "firebase/database";
 import { LoadingScreen } from "../components/LoadingScreen";
 
 export const LoginPage = () => {

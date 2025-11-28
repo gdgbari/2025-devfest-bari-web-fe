@@ -317,3 +317,11 @@ export const updateRemoteConfigRequest = async (data: Partial<RemoteConfig>): Pr
 
     await updateDoc(doc(firebase.firestore, "remote_config", "config"), firestoreData)
 }
+
+// ========================
+// Admin Endpoints
+// ========================
+
+export const resetDataRequest = async (): Promise<void> => {
+    return await backendRequest("POST", "admin/reset-data")
+}
