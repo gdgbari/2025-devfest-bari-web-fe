@@ -35,6 +35,10 @@ import type {
     CreateTagResponse,
     UpdateTagRequest,
     UpdateTagResponse,
+    AssignTagRequest,
+    AssignTagResponse,
+    AssignTagBySecretRequest,
+    AssignTagBySecretResponse,
     SessionizeGridSmart,
     SessionizeSession,
     SessionizeSpeaker,
@@ -237,6 +241,16 @@ export const updateTagRequest = async (tag_id: string, data: UpdateTagRequest): 
 
 export const deleteTagRequest = async (tag_id: string): Promise<null> => {
     return await backendRequest("DELETE", `tags/${tag_id}`)
+}
+
+export const assignTagRequest = async (data: AssignTagRequest): Promise<AssignTagResponse> => {
+    return await backendRequest("POST", "tags/assign", data)
+}
+
+export const assignTagBySecretRequest = async (
+    data: AssignTagBySecretRequest
+): Promise<AssignTagBySecretResponse> => {
+    return await backendRequest("POST", "tags/assign-secret", data)
 }
 
 // ========================

@@ -249,9 +249,10 @@ export type SubmitQuizResponse = {
 // Tag Types
 // ========================
 
-export type GetTagResponse = {
-    points: number
+export interface GetTagResponse {
     tag_id: string
+    points: number
+    secret: string
 }
 
 export type GetTagListResponse = {
@@ -259,18 +260,45 @@ export type GetTagListResponse = {
     total: number
 }
 
-export type CreateTagRequest = {
+export interface CreateTagRequest {
+    tag_id: string
     points: number
-    tag_id?: string | null
 }
 
-export type CreateTagResponse = GetTagResponse
+export interface CreateTagResponse {
+    tag_id: string
+    points: number
+    secret: string
+}
 
-export type UpdateTagRequest = {
+export interface UpdateTagRequest {
     points?: number | null
 }
 
 export type UpdateTagResponse = GetTagResponse
+
+// Tag Assignment Types
+export interface AssignTagRequest {
+    tag_id: string
+    uid: string
+}
+
+export interface AssignTagResponse {
+    tag_id: string
+    user_id: string
+    points: number
+}
+
+export interface AssignTagBySecretRequest {
+    secret: string
+    // uid is no longer needed - backend assigns to logged-in user
+}
+
+export interface AssignTagBySecretResponse {
+    secret: string
+    user_id: string
+    points: number
+}
 
 // ========================
 // Sessionize Types

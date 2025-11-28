@@ -1,18 +1,91 @@
-import { Modal, Stack, Text, Badge, Group, Box } from "@mantine/core";
+import { Modal, Stack, Text, Badge, Group, Box, Select, Button, Divider, Loader, Center } from "@mantine/core";
 import type { GetUserResponse } from "../../../utils/types";
 import { colorConverter } from "../../../utils";
-import { IoPricetag } from "react-icons/io5";
+import { IoPricetag, IoAdd } from "react-icons/io5";
+import { useState } from "react";
+import { useAllTags, useUser } from "../../../utils/query";
+import { notifications } from "@mantine/notifications";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ViewUserModalProps {
     opened: boolean;
     onClose: () => void;
     user: GetUserResponse | null;
+    onTagAssigned?: () => void;
 }
 
-export function ViewUserModal({ opened, onClose, user }: ViewUserModalProps) {
-    if (!user) return null;
+export function ViewUserModal({ opened, onClose, user: initialUser, onTagAssigned }: ViewUserModalProps) {
+    const [selectedTagId, setSelectedTagId] = useState<string | null>(null);
+    const [assigning, setAssigning] = useState(false);
+    const { data: tagsData } = useAllTags();
+    const queryClient = useQueryClient();
 
-    const groupColor = user.group?.color ? colorConverter(user.group.color) : "#666";
+    // Fetch fresh user data using the user's UID
+    const { data: freshUser, isLoading: isLoadingUser } = useUser(initialUser?.uid || "");
+
+    // Use fresh data if available, otherwise fall back to initial user
+    const user = freshUser || initialUser;
+
+    if (!user && !isLoadingUser) return null;
+
+    const groupColor = user?.group?.color ? colorConverter(user.group.color) : "#666";
+    const assignedTagIds = user?.tags?.map(t => t.tag_id) || [];
+    const availableTags = tagsData?.tags.filter(tag => !assignedTagIds.includes(tag.tag_id)) || [];
+
+    const handleAssignTag = async () => {
+        if (!selectedTagId || !user) return;
+
+        setAssigning(true);
+        try {
+            const { assignTagRequest } = await import("../../../utils/requests");
+            await assignTagRequest({ tag_id: selectedTagId, uid: user.uid });
+
+            notifications.show({
+                title: "✅ Successo",
+                message: "Tag assegnato correttamente",
+                color: "green",
+                autoClose: 2000,
+            });
+
+            // Refetch queries to immediately update user data
+            await Promise.all([
+                queryClient.refetchQueries({ queryKey: ["users"] }),
+                queryClient.refetchQueries({ queryKey: ["user", user.uid] }),
+                queryClient.refetchQueries({ queryKey: ["user-profile"] }),
+            ]);
+
+            setSelectedTagId(null);
+            onTagAssigned?.();
+        } catch (error) {
+            console.error(error);
+            notifications.show({
+                title: "❌ Errore",
+                message: "Impossibile assegnare il tag",
+                color: "red",
+                autoClose: 3000,
+            });
+        } finally {
+            setAssigning(false);
+        }
+    };
+
+    if (isLoadingUser) {
+        return (
+            <Modal
+                opened={opened}
+                onClose={onClose}
+                title="Dettagli Utente"
+                size="md"
+                centered
+            >
+                <Center p="xl">
+                    <Loader size="lg" />
+                </Center>
+            </Modal>
+        );
+    }
+
+    if (!user) return null;
 
     return (
         <Modal
@@ -84,6 +157,40 @@ export function ViewUserModal({ opened, onClose, user }: ViewUserModalProps) {
                         </Group>
                     </Box>
                 )}
+
+                {/* Tag Assignment Section */}
+                <Divider label="Assegna Tag" labelPosition="center" />
+
+                <Box>
+                    <Text size="xs" c="dimmed" mb={8}>
+                        Seleziona un tag da assegnare a questo utente
+                    </Text>
+                    <Stack gap="sm">
+                        <Select
+                            placeholder="Seleziona un tag"
+                            data={availableTags.map(tag => ({
+                                value: tag.tag_id,
+                                label: `${tag.tag_id} (${tag.points} punti)`
+                            }))}
+                            value={selectedTagId}
+                            onChange={setSelectedTagId}
+                            searchable
+                            clearable
+                            nothingFoundMessage="Nessun tag disponibile"
+                            disabled={availableTags.length === 0}
+                        />
+                        <Button
+                            leftSection={<IoAdd size={16} />}
+                            onClick={handleAssignTag}
+                            disabled={!selectedTagId || assigning}
+                            loading={assigning}
+                            color="green"
+                            fullWidth
+                        >
+                            Assegna Tag
+                        </Button>
+                    </Stack>
+                </Box>
 
                 {/* UID */}
                 <Box>
