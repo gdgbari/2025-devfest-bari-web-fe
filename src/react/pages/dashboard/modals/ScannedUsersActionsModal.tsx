@@ -6,6 +6,7 @@ import type { GetUserResponse } from "../../../utils/types";
 import { colorConverter } from "../../../utils";
 import { notifications } from "@mantine/notifications";
 import { useQueryClient } from "@tanstack/react-query";
+import { assignTagRequest } from "../../../utils/requests"
 
 interface ScannedUsersActionsModalProps {
     opened: boolean;
@@ -30,6 +31,7 @@ export function ScannedUsersActionsModal({
     const [selectedTagId, setSelectedTagId] = useState<string | null>(null);
     const [assigning, setAssigning] = useState(false);
     const [assignmentProgress, setAssignmentProgress] = useState(0);
+    const [assignmentErrors, setAssignmentErrors] = useState<Record<string, string>>({});
 
     const scannedUsers = scannedUserIds
         .map(uid => usersData?.users.find(u => u.uid === uid))
@@ -41,7 +43,7 @@ export function ScannedUsersActionsModal({
         setAssigning(true);
         setAssignmentProgress(0);
 
-        const { assignTagRequest } = await import("../../../utils/requests");
+        setAssignmentErrors({});
 
         let successCount = 0;
         let errorCount = 0;
@@ -52,10 +54,38 @@ export function ScannedUsersActionsModal({
             try {
                 await assignTagRequest({ tag_id: selectedTagId, uid: user.uid });
                 successCount++;
-            } catch (error) {
+            } catch (error: any) {
                 console.error(`Failed to assign tag to ${user.nickname}:`, error);
                 errorCount++;
                 errors.push(user.nickname);
+
+                // Extract error message
+                let errorMessage = "Errore durante l'assegnazione";
+                if (error instanceof Error) {
+                    const match = error.message.match(/Request failed \[\d+\]: (.*)/);
+                    if (match && match[1]) {
+                        try {
+                            const errorJson = JSON.parse(match[1]);
+                            if (errorJson.detail) {
+                                errorMessage = errorJson.detail;
+                            } else {
+                                errorMessage = match[1];
+                            }
+                        } catch (e) {
+                            // If not valid JSON, use the raw message
+                            errorMessage = match[1];
+                        }
+                    } else {
+                        errorMessage = error.message;
+                    }
+                } else if (typeof error === "string") {
+                    errorMessage = error;
+                }
+
+                setAssignmentErrors(prev => ({
+                    ...prev,
+                    [user.uid]: errorMessage
+                }));
             }
             setAssignmentProgress(((i + 1) / scannedUsers.length) * 100);
         }
@@ -124,7 +154,8 @@ export function ScannedUsersActionsModal({
                                         radius="md"
                                         withBorder
                                         style={{
-                                            borderLeft: `4px solid ${groupColor}`,
+                                            borderLeft: `4px solid ${assignmentErrors[user.uid] ? "var(--mantine-color-red-6)" : groupColor}`,
+                                            backgroundColor: assignmentErrors[user.uid] ? "rgba(255, 0, 0, 0.05)" : undefined
                                         }}
                                     >
                                         <Group justify="space-between" wrap="nowrap">
@@ -157,6 +188,11 @@ export function ScannedUsersActionsModal({
                                                             {user.email}
                                                         </Badge>
                                                     </Group>
+                                                    {assignmentErrors[user.uid] && (
+                                                        <Text size="xs" c="red" mt={4} fw={500}>
+                                                            ⚠️ {assignmentErrors[user.uid]}
+                                                        </Text>
+                                                    )}
                                                 </div>
                                             </Group>
                                             <Group gap="xs">

@@ -15,12 +15,13 @@ import {
     Modal,
     Button,
 } from "@mantine/core"
-import { IoAdd, IoPencil, IoTrash, IoSearch, IoMail, IoPeople } from "react-icons/io5"
+import { IoAdd, IoPencil, IoTrash, IoSearch, IoMail, IoPeople, IoQrCode } from "react-icons/io5"
 import { useAllUsers, useDeleteUser } from "../../utils/query"
 import type { GetUserResponse } from "../../utils/types"
 import { EditUserModal } from "./modals/EditUserModal"
 import { CreateUserModal } from "./modals/CreateUserModal"
 import { ViewUserModal } from "./modals/ViewUserModal"
+import { UserQRCodeModal } from "./modals/UserQRCodeModal"
 
 export const UsersPanel = () => {
     const [query, setQuery] = useState("")
@@ -28,6 +29,7 @@ export const UsersPanel = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
     const [isViewModalOpen, setIsViewModalOpen] = useState(false)
+    const [isQRCodeModalOpen, setIsQRCodeModalOpen] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [userToDelete, setUserToDelete] = useState<{ uid: string; name: string } | null>(null)
 
@@ -51,6 +53,16 @@ export const UsersPanel = () => {
 
     const handleCloseViewModal = () => {
         setIsViewModalOpen(false)
+        setSelectedUser(null)
+    }
+
+    const handleOpenQRCodeModal = (user: GetUserResponse) => {
+        setSelectedUser(user)
+        setIsQRCodeModalOpen(true)
+    }
+
+    const handleCloseQRCodeModal = () => {
+        setIsQRCodeModalOpen(false)
         setSelectedUser(null)
     }
 
@@ -195,6 +207,15 @@ export const UsersPanel = () => {
                                         >
                                             Modifica
                                         </Menu.Item>
+                                        <Menu.Item
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                handleOpenQRCodeModal(u)
+                                            }}
+                                            leftSection={<IoQrCode size={16} />}
+                                        >
+                                            Mostra QR Code
+                                        </Menu.Item>
                                         <Menu.Divider />
                                         <Menu.Item
                                             color="red"
@@ -303,6 +324,11 @@ export const UsersPanel = () => {
             <CreateUserModal
                 opened={isCreateModalOpen}
                 onClose={() => setIsCreateModalOpen(false)}
+            />
+            <UserQRCodeModal
+                user={selectedUser}
+                opened={isQRCodeModalOpen}
+                onClose={handleCloseQRCodeModal}
             />
 
             {/* Delete Confirmation Modal */}
