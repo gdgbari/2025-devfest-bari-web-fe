@@ -23,41 +23,32 @@ interface CreateQuizModalProps {
     onClose: () => void
 }
 
+const generateId = () => crypto.randomUUID()
+
 export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
     const [title, setTitle] = useState("")
     const [sessionId, setSessionId] = useState<string | null>(null)
     const [useCustomTitle, setUseCustomTitle] = useState(false)
-    const [questions, setQuestions] = useState<QuestionSchema[]>([
-        {
+
+    // Helper to create a default question with random IDs
+    const createDefaultQuestion = (): QuestionSchema => {
+        const answers = [
+            { id: generateId(), text: "" },
+            { id: generateId(), text: "" },
+            { id: generateId(), text: "" },
+            { id: generateId(), text: "" },
+        ]
+        return {
             text: "",
-            answer_list: [
-                { id: "0", text: "" },
-                { id: "1", text: "" },
-                { id: "2", text: "" },
-                { id: "3", text: "" },
-            ],
-            correct_answer: "0",
-        },
-        {
-            text: "",
-            answer_list: [
-                { id: "0", text: "" },
-                { id: "1", text: "" },
-                { id: "2", text: "" },
-                { id: "3", text: "" },
-            ],
-            correct_answer: "0",
-        },
-        {
-            text: "",
-            answer_list: [
-                { id: "0", text: "" },
-                { id: "1", text: "" },
-                { id: "2", text: "" },
-                { id: "3", text: "" },
-            ],
-            correct_answer: "0",
+            answer_list: answers,
+            correct_answer: answers[0].id,
         }
+    }
+
+    const [questions, setQuestions] = useState<QuestionSchema[]>([
+        createDefaultQuestion(),
+        createDefaultQuestion(),
+        createDefaultQuestion()
     ])
 
     const createQuizMutation = useCreateQuiz()
@@ -76,16 +67,7 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
     const handleAddQuestion = () => {
         setQuestions([
             ...questions,
-            {
-                text: "",
-                answer_list: [
-                    { id: "0", text: "" },
-                    { id: "1", text: "" },
-                    { id: "2", text: "" },
-                    { id: "3", text: "" },
-                ],
-                correct_answer: "0",
-            }
+            createDefaultQuestion()
         ])
     }
 
@@ -107,7 +89,7 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
 
     const handleAddAnswer = (qIndex: number) => {
         const newQuestions = [...questions]
-        const newId = newQuestions[qIndex].answer_list.length.toString()
+        const newId = generateId()
         newQuestions[qIndex].answer_list.push({ id: newId, text: "" })
         setQuestions(newQuestions)
     }
@@ -115,15 +97,12 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
     const handleRemoveAnswer = (qIndex: number, aIndex: number) => {
         const newQuestions = [...questions]
         if (newQuestions[qIndex].answer_list.length > 2) {
+            const removedAnswer = newQuestions[qIndex].answer_list[aIndex]
             newQuestions[qIndex].answer_list.splice(aIndex, 1)
-            // Rigenera gli ID
-            newQuestions[qIndex].answer_list = newQuestions[qIndex].answer_list.map((a, i) => ({
-                ...a,
-                id: i.toString()
-            }))
-            // Aggiusta correct_answer se necessario
-            if (parseInt(newQuestions[qIndex].correct_answer) >= newQuestions[qIndex].answer_list.length) {
-                newQuestions[qIndex].correct_answer = "0"
+
+            // Se la risposta rimossa era quella corretta, imposta la prima disponibile come corretta
+            if (newQuestions[qIndex].correct_answer === removedAnswer.id) {
+                newQuestions[qIndex].correct_answer = newQuestions[qIndex].answer_list[0].id
             }
             setQuestions(newQuestions)
         }
@@ -168,36 +147,9 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
         setSessionId(null)
         setUseCustomTitle(false)
         setQuestions([
-            {
-                text: "",
-                answer_list: [
-                    { id: "0", text: "" },
-                    { id: "1", text: "" },
-                    { id: "2", text: "" },
-                    { id: "3", text: "" },
-                ],
-                correct_answer: "0",
-            },
-            {
-                text: "",
-                answer_list: [
-                    { id: "0", text: "" },
-                    { id: "1", text: "" },
-                    { id: "2", text: "" },
-                    { id: "3", text: "" },
-                ],
-                correct_answer: "0",
-            },
-            {
-                text: "",
-                answer_list: [
-                    { id: "0", text: "" },
-                    { id: "1", text: "" },
-                    { id: "2", text: "" },
-                    { id: "3", text: "" },
-                ],
-                correct_answer: "0",
-            }
+            createDefaultQuestion(),
+            createDefaultQuestion(),
+            createDefaultQuestion()
         ])
         onClose()
     }
@@ -274,16 +226,16 @@ export const CreateQuizModal = ({ opened, onClose }: CreateQuizModalProps) => {
                                         value={answer.text}
                                         onChange={(e) => handleAnswerChange(qIndex, aIndex, e.target.value)}
                                         rightSection={
-                                            question.correct_answer === aIndex.toString() && (
+                                            question.correct_answer === answer.id && (
                                                 <Text size="xs" c="green" fw={600}>✓</Text>
                                             )
                                         }
                                     />
                                     <Button
                                         size="xs"
-                                        variant={question.correct_answer === aIndex.toString() ? "filled" : "light"}
+                                        variant={question.correct_answer === answer.id ? "filled" : "light"}
                                         color="green"
-                                        onClick={() => handleQuestionChange(qIndex, 'correct_answer', aIndex.toString())}
+                                        onClick={() => handleQuestionChange(qIndex, 'correct_answer', answer.id)}
                                     >
                                         Corretta
                                     </Button>

@@ -82,10 +82,19 @@ export type AnswerSchema = {
     text: string
 }
 
+export type UpdateQuestionSchema = {
+    text: string
+    answer_list: AnswerSchema[]
+    correct_answer: string
+    question_id?: string | null
+}
+
 export type QuestionSchema = {
     text: string
     answer_list: AnswerSchema[]
     correct_answer: string
+    value?: number | null
+    question_id?: string | null
 }
 
 export type ReadAnswerSchema = {
@@ -97,6 +106,7 @@ export type ReadQuestionSchema = {
     text: string
     answer_list: ReadAnswerSchema[]
     value?: number
+    question_id?: string | null
 }
 
 export type ReadQuestionWithCorrectSchema = {
@@ -104,6 +114,7 @@ export type ReadQuestionWithCorrectSchema = {
     answer_list: ReadAnswerSchema[]
     correct_answer: string
     value?: number
+    question_id?: string | null
 }
 
 export type GetUserResponse = {
@@ -216,12 +227,11 @@ export type CreateQuizResponse = {
     session_id: string
     quiz_id: string
     is_open: boolean
-    timer_duration: number
 }
 
 export type UpdateQuizRequest = {
     title?: string | null
-    question_list?: QuestionSchema[] | null
+    question_list?: UpdateQuestionSchema[] | null
     is_open?: boolean | null
     session_id?: string | null
 }
@@ -232,7 +242,6 @@ export type UpdateQuizResponse = {
     session_id: string
     quiz_id: string
     is_open: boolean
-    timer_duration: number
 }
 
 export type SubmitQuizRequest = {
@@ -291,7 +300,6 @@ export interface AssignTagResponse {
 
 export interface AssignTagBySecretRequest {
     secret: string
-    // uid is no longer needed - backend assigns to logged-in user
 }
 
 export interface AssignTagBySecretResponse {
