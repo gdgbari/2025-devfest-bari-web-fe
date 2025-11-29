@@ -70,7 +70,7 @@ export class WebsiteConfig {
     public static readonly DEBUG_FORCE_EVENT_TODAY = false;
 
     // Offset in minutes to shift the entire schedule (positive or negative)
-    public static readonly OFFSET_SCHEDULE_MINUTES: number = 30;
+    public static readonly OFFSET_SCHEDULE_MINUTES: number = 40;
 
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional

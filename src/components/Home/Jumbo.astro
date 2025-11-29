@@ -1,9 +1,14 @@
 ---
 import { WebsiteConfig } from "../../config";
-import { getLangFromUrl, useTranslations } from "../../i18n/utils";
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from "../../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const getPath = useTranslatedPath(lang);
 ---
 
 <div
@@ -30,14 +35,22 @@ const t = useTranslations(lang);
         }
       </p>
       <p class="text-2xl md:text-4xl font-semibold">{t("info.locationName")}</p>
-      <div class="mt-12 flex gap-4 justify-center flex-col md:flex-row">
+      <div
+        class="mt-12 flex gap-4 justify-center flex-col md:flex-row flex-wrap"
+      >
         {
           /*
-          <a class="not-colored btn-content text-xl" target="_blank" onclick="document.getElementById('gallery').scrollIntoView();location.hash='#gallery'">
-            <img src="/assets/vectors/camera.svg" class="h-7 mr-2" />
-            {t("hero.photoAvailable")}
-            <div class="ml-1" />
-          </a>
+          (
+            <a
+              class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
+              target="_blank"
+              onclick="document.getElementById('gallery').scrollIntoView();location.hash='#gallery'"
+            >
+              <img src="/assets/vectors/camera.svg" class="h-9 mr-2" />
+              {t("hero.photoAvailable")}
+              <div class="ml-1" />
+            </a>
+          )
         */
         }
         <a
@@ -47,6 +60,25 @@ const t = useTranslations(lang);
         >
           <img src="/assets/vectors/ticket.svg" class="h-9 mr-2" />
           {t("hero.ticketsAvailable")}
+          <div class="ml-1"></div>
+        </a>
+
+        <a
+          class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
+          href="https://app.bari.devfest.it"
+          target="_blank"
+        >
+          <img src="/assets/vectors/web_logo_black.svg" class="h-9 mr-2" />
+          {t("hero.webApp")}
+          <div class="ml-1"></div>
+        </a>
+
+        <a
+          class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
+          href={getPath("/qrcode", lang)}
+        >
+          <img src="/assets/vectors/logo_compact.svg" class="h-9 mr-2" />
+          {t("hero.qrCode")}
           <div class="ml-1"></div>
         </a>
       </div>

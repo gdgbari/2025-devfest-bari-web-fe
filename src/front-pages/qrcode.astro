@@ -1,0 +1,43 @@
+---
+import Footer from "../components/Common/Footer.astro";
+import Navbar from "../components/Common/Navbar.astro";
+import PageHead from "../components/Common/PageHead.astro";
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<html lang={lang} class="scroll-smooth flex flex-col min-h-screen">
+    <PageHead />
+    <body class="flex flex-col flex-1">
+        <Navbar />
+
+        <main
+            class="flex flex-col flex-1 items-center justify-center p-4 min-h-[60vh]"
+        >
+            <div class="text-center">
+                <h1 class="text-4xl font-bold mb-8 text-white">
+                    {t("hero.qrCode")}
+                </h1>
+                <div
+                    class="bg-white p-4 rounded-lg shadow-lg inline-block border-4 border-yellow"
+                >
+                    <img
+                        src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=tag:190748792cc1131bdcbd78caaee74ffe"
+                        alt="QR Code for Web App"
+                        class="w-64 h-64"
+                    />
+                </div>
+                <p class="mt-8 text-xl font-medium">Scan to open the Web App</p>
+                <a
+                    href="https://app.bari.devfest.it"
+                    class="text-blue-600 hover:underline mt-2 block"
+                    >app.bari.devfest.it</a
+                >
+            </div>
+        </main>
+
+        <Footer />
+    </body>
+</html>
