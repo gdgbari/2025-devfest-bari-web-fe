@@ -69,6 +69,9 @@ export class WebsiteConfig {
     // Set to true to force events to appear as happening today (for testing past events hiding)
     public static readonly DEBUG_FORCE_EVENT_TODAY = false;
 
+    // Offset in minutes to shift the entire schedule (positive or negative)
+    public static readonly OFFSET_SCHEDULE_MINUTES: number = 30;
+
     // Your web app's Firebase configuration
     // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     public static readonly FIREBASE_CONFIG = {

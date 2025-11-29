@@ -4,6 +4,19 @@ import type { ScheduleDay, SessionInfo, Speaker } from "../types/sessionize";
 
 const defaultProfileImage = "/assets/vectors/user_circle.svg"
 
+function addOffset(dateWithTimezone: string) {
+    // Se non c'è offset configurato, ritorniamo la data con timezone
+    if (WebsiteConfig.OFFSET_SCHEDULE_MINUTES === 0) {
+        return dateWithTimezone;
+    }
+
+    // Altrimenti applichiamo l'offset configurato
+    const dateObj = new Date(dateWithTimezone);
+    dateObj.setMinutes(dateObj.getMinutes() + WebsiteConfig.OFFSET_SCHEDULE_MINUTES);
+
+    return dateObj.toISOString();
+}
+
 /**
  * Normalizza le stringhe di date da Sessionize aggiungendo il timezone se manca
  */
@@ -12,12 +25,12 @@ function normalizeSessionizeDate(dateString: string): string {
 
     // Se termina già con 'Z' o ha un offset timezone, non modificare
     if (dateString.endsWith('Z') || /[+-]\d{2}:\d{2}$/.test(dateString)) {
-        return dateString;
+        return addOffset(dateString);
     }
 
     // Se il timezone configurato è UTC, basta aggiungere 'Z'
     if (WebsiteConfig.EVENT_TIMEZONE === 'UTC') {
-        return dateString + 'Z';
+        return addOffset(dateString + 'Z');
     }
 
     // Per altri timezone, calcoliamo l'offset rispetto a UTC
@@ -35,8 +48,7 @@ function normalizeSessionizeDate(dateString: string): string {
     const sign = offsetMinutes >= 0 ? '+' : '-';
     const offsetString = `${sign}${String(offsetHours).padStart(2, '0')}:${String(offsetMins).padStart(2, '0')}`;
 
-    // Aggiungiamo l'offset alla stringa originale
-    return dateString + offsetString;
+    return addOffset(dateString + offsetString);
 }
 /**
  * Debug helper: Forces a date to today while preserving the original time
