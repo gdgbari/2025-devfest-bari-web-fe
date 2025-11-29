@@ -14,6 +14,7 @@ import {
     Loader,
     Modal,
     Button,
+    Badge,
 } from "@mantine/core"
 import { IoAdd, IoPencil, IoTrash, IoSearch, IoMail, IoPeople, IoQrCode } from "react-icons/io5"
 import { useAllUsers, useDeleteUser } from "../../utils/query"
@@ -149,154 +150,169 @@ export const UsersPanel = () => {
             {/* Users List */}
             {filteredUsers.length > 0 ? (
                 <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 3 }} spacing="lg">
-                    {filteredUsers.map((u) => (
-                        <Card
-                            key={u.uid}
-                            padding="lg"
-                            radius="md"
-                            withBorder
-                            shadow="sm"
-                            className="hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer"
-                            onClick={() => handleOpenViewModal(u)}
-                            style={{ overflow: 'hidden' }}
-                        >
-                            {/* Colored Top Border */}
-                            {u.group && (
-                                <div
-                                    style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        right: 0,
-                                        height: 4,
-                                        backgroundColor: u.group.color,
-                                    }}
-                                />
-                            )}
+                    {filteredUsers.map((u) => {
+                        const groupColor = u.group ? u.group.color : "gray"
+                        return (
+                            <Card
+                                key={u.uid}
+                                padding="lg"
+                                radius="md"
+                                withBorder
+                                shadow="sm"
+                                className="hover:shadow-lg transition-all hover:-translate-y-1 cursor-pointer"
+                                onClick={() => handleOpenViewModal(u)}
+                                style={{
+                                    overflow: 'hidden',
+                                    borderLeft: `4px solid ${groupColor}`
+                                }}
+                            >
+                                <Group justify="space-between" mb="md" wrap="nowrap" align="flex-start">
+                                    <Group gap="md">
+                                        <div
+                                            style={{
+                                                width: 48,
+                                                height: 48,
+                                                borderRadius: "50%",
+                                                backgroundColor: groupColor,
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "center",
+                                                color: "white",
+                                                fontWeight: "bold",
+                                                fontSize: "20px",
+                                            }}
+                                        >
+                                            {u.name?.[0]?.toUpperCase() || "?"}
+                                        </div>
+                                        <Stack gap={2} style={{ flex: 1, minWidth: 0, alignItems: "flex-start" }}>
+                                            <Group gap="xs">
+                                                <Text fw={700} size="lg" truncate>
+                                                    {u.name} {u.surname}
+                                                </Text>
+                                                {u.role && (
+                                                    <Badge
+                                                        size="sm"
+                                                        variant="light"
+                                                        color={
+                                                            u.role === 'admin' ? 'red' :
+                                                                u.role === 'staff' ? 'orange' :
+                                                                    u.role === 'speaker' ? 'blue' : 'gray'
+                                                        }
+                                                    >
+                                                        {u.role}
+                                                    </Badge>
+                                                )}
+                                            </Group>
+                                            <Text size="sm" c="dimmed" fw={500} truncate>
+                                                @{u.nickname}
+                                            </Text>
+                                        </Stack>
+                                    </Group>
 
-                            {/* Header con nome e tasti azioni */}
-                            <Group justify="space-between" mb="md" wrap="nowrap" align="flex-start">
-                                <Stack gap={2} style={{ flex: 1, minWidth: 0 }}>
-                                    <Text fw={700} size="lg" truncate>
-                                        {u.name} {u.surname}
-                                    </Text>
-                                    <Text size="sm" c="dimmed" fw={500} truncate>
-                                        @{u.nickname}
-                                    </Text>
+                                    <Menu shadow="md" width={140} position="bottom-end">
+                                        <Menu.Target>
+                                            <ActionIcon
+                                                variant="subtle"
+                                                color="gray"
+                                                size="md"
+                                                radius="md"
+                                                aria-label="Altre azioni"
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                ⋮
+                                            </ActionIcon>
+                                        </Menu.Target>
+                                        <Menu.Dropdown>
+                                            <Menu.Item
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    handleOpenEditModal(u)
+                                                }}
+                                                leftSection={<IoPencil size={16} />}
+                                            >
+                                                Modifica
+                                            </Menu.Item>
+                                            <Menu.Item
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    handleOpenQRCodeModal(u)
+                                                }}
+                                                leftSection={<IoQrCode size={16} />}
+                                            >
+                                                Mostra QR Code
+                                            </Menu.Item>
+                                            <Menu.Divider />
+                                            <Menu.Item
+                                                color="red"
+                                                onClick={(e) => {
+                                                    e.stopPropagation()
+                                                    handleDeleteUser(u.uid, `${u.name} ${u.surname}`)
+                                                }}
+                                                leftSection={<IoTrash size={16} />}
+                                            >
+                                                Elimina
+                                            </Menu.Item>
+                                        </Menu.Dropdown>
+                                    </Menu>
+                                </Group>
+
+                                {/* Dettagli */}
+                                <Stack gap="sm" mb="md">
+                                    <Group gap="xs" wrap="nowrap">
+                                        <IoMail size={16} style={{ opacity: 0.5 }} />
+                                        <CopyButton value={u.email}>
+                                            {({ copied, copy }) => (
+                                                <Tooltip label={copied ? "Copiato!" : "Copia"} withArrow position="right">
+                                                    <Text
+                                                        size="sm"
+                                                        c={copied ? "green" : "dimmed"}
+                                                        className="cursor-pointer hover:text-blue-500 truncate"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            copy()
+                                                        }}
+                                                    >
+                                                        {u.email}
+                                                    </Text>
+                                                </Tooltip>
+                                            )}
+                                        </CopyButton>
+                                    </Group>
+
+                                    {u.group && (
+                                        <Group gap="xs" wrap="nowrap">
+                                            <IoPeople size={16} style={{ opacity: 0.5 }} />
+                                            <Text size="sm" c="dimmed">
+                                                {u.group.name}
+                                            </Text>
+                                        </Group>
+                                    )}
                                 </Stack>
-                                <Menu shadow="md" width={140} position="bottom-end">
-                                    <Menu.Target>
-                                        <ActionIcon
-                                            variant="subtle"
-                                            color="gray"
-                                            size="md"
-                                            radius="md"
-                                            aria-label="Altre azioni"
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            ⋮
-                                        </ActionIcon>
-                                    </Menu.Target>
-                                    <Menu.Dropdown>
-                                        <Menu.Item
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                handleOpenEditModal(u)
-                                            }}
-                                            leftSection={<IoPencil size={16} />}
-                                        >
-                                            Modifica
-                                        </Menu.Item>
-                                        <Menu.Item
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                handleOpenQRCodeModal(u)
-                                            }}
-                                            leftSection={<IoQrCode size={16} />}
-                                        >
-                                            Mostra QR Code
-                                        </Menu.Item>
-                                        <Menu.Divider />
-                                        <Menu.Item
-                                            color="red"
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                handleDeleteUser(u.uid, `${u.name} ${u.surname}`)
-                                            }}
-                                            leftSection={<IoTrash size={16} />}
-                                        >
-                                            Elimina
-                                        </Menu.Item>
-                                    </Menu.Dropdown>
-                                </Menu>
-                            </Group>
 
-                            {/* Dettagli */}
-                            <Stack gap="sm" mb="md">
-                                <Group gap="xs" wrap="nowrap">
-                                    <IoMail size={16} style={{ opacity: 0.5 }} />
-                                    <CopyButton value={u.email}>
+                                {/* Footer con ID */}
+                                <Group justify="space-between" pt="md" style={{ borderTop: "1px solid var(--mantine-color-gray-2)" }}>
+                                    <CopyButton value={u.uid}>
                                         {({ copied, copy }) => (
-                                            <Tooltip label={copied ? "Copiato!" : "Copia"} withArrow position="right">
+                                            <Tooltip label={copied ? "Copiato!" : "Copia ID"} withArrow position="bottom">
                                                 <Text
-                                                    size="sm"
-                                                    c={copied ? "green" : "dimmed"}
+                                                    size="xs"
+                                                    c="dimmed"
                                                     className="cursor-pointer hover:text-blue-500 truncate"
+                                                    style={{ fontFamily: 'monospace' }}
                                                     onClick={(e) => {
                                                         e.stopPropagation()
                                                         copy()
                                                     }}
                                                 >
-                                                    {u.email}
+                                                    ID: {u.uid}
                                                 </Text>
                                             </Tooltip>
                                         )}
                                     </CopyButton>
                                 </Group>
-
-                                {u.group && (
-                                    <Group gap="xs" wrap="nowrap">
-                                        <IoPeople size={16} style={{ opacity: 0.5 }} />
-                                        <Group gap={6} wrap="nowrap">
-                                            <div
-                                                style={{
-                                                    width: 8,
-                                                    height: 8,
-                                                    borderRadius: '50%',
-                                                    backgroundColor: u.group.color,
-                                                }}
-                                            />
-                                            <Text size="sm" c="dimmed">
-                                                {u.group.name}
-                                            </Text>
-                                        </Group>
-                                    </Group>
-                                )}
-                            </Stack>
-
-                            {/* Footer con ID */}
-                            <Group justify="space-between" pt="md" style={{ borderTop: "1px solid var(--mantine-color-gray-2)" }}>
-                                <CopyButton value={u.uid}>
-                                    {({ copied, copy }) => (
-                                        <Tooltip label={copied ? "Copiato!" : "Copia ID"} withArrow position="bottom">
-                                            <Text
-                                                size="xs"
-                                                c="dimmed"
-                                                className="cursor-pointer hover:text-blue-500 truncate"
-                                                style={{ fontFamily: 'monospace' }}
-                                                onClick={(e) => {
-                                                    e.stopPropagation()
-                                                    copy()
-                                                }}
-                                            >
-                                                ID: {u.uid}
-                                            </Text>
-                                        </Tooltip>
-                                    )}
-                                </CopyButton>
-                            </Group>
-                        </Card>
-                    ))}
+                            </Card>
+                        )
+                    })}
                 </SimpleGrid>
             ) : (
                 <Card withBorder radius="md" padding="xl">

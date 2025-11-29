@@ -10,6 +10,7 @@ import {
     updateUserRequest,
     deleteUserRequest,
     checkInRequest,
+    getUserQuizResultsRequest,
     getAllGroupsRequest,
     getGroupRequest,
     createGroupRequest,
@@ -85,6 +86,15 @@ export const useUser = (uid: string) => {
         queryFn: () => getUserRequest(uid),
         enabled: !!uid,
         staleTime: 1000 * 60 * 5, // 5 minutes
+    })
+}
+
+export const useUserQuizResults = (uid: string) => {
+    return useQuery({
+        queryKey: ["user-quiz-results", uid],
+        queryFn: () => getUserQuizResultsRequest(uid),
+        enabled: !!uid,
+        staleTime: 1000 * 60 * 2, // 2 minutes
     })
 }
 

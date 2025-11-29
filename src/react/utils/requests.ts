@@ -29,6 +29,7 @@ import type {
     UpdateQuizResponse,
     SubmitQuizRequest,
     SubmitQuizResponse,
+    UserQuizResultListResponse,
     GetTagListResponse,
     GetTagResponse,
     CreateTagRequest,
@@ -129,9 +130,8 @@ export const backendRequest = async (method: string, path: string, body?: any) =
 export const getCurrentUserRequest = async (): Promise<GetUserResponse & { role: Role }> => {
     const userData = await backendRequest("GET", "users/me") as GetUserResponse
 
-    // Estrai il ruolo dal token Firebase Auth
-    const idTokenResult = await firebase.auth.currentUser?.getIdTokenResult()
-    const role = (idTokenResult?.claims?.user_role as Role) ?? Role.ATTENDEE
+    // Role and checked_in are now returned by the API
+    const role = (userData.role as Role) ?? Role.ATTENDEE
 
     return {
         ...userData,
@@ -161,6 +161,10 @@ export const deleteUserRequest = async (uid: string): Promise<null> => {
 
 export const checkInRequest = async (): Promise<CheckInResponse> => {
     return await backendRequest("POST", "users/check-in")
+}
+
+export const getUserQuizResultsRequest = async (uid: string): Promise<UserQuizResultListResponse> => {
+    return await backendRequest("GET", `users/${uid}/quiz-results`)
 }
 
 // ========================

@@ -3,7 +3,8 @@ import type { GetUserResponse } from "../../../utils/types";
 import { colorConverter } from "../../../utils";
 import { IoPricetag, IoAdd } from "react-icons/io5";
 import { useState } from "react";
-import { useAllTags, useUser } from "../../../utils/query";
+import { useAllTags, useUser, useUserQuizResults, useUserProfile } from "../../../utils/query";
+import { Role } from "../../../utils/types";
 import { notifications } from "@mantine/notifications";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -122,6 +123,26 @@ export function ViewUserModal({ opened, onClose, user: initialUser, onTagAssigne
                     </Text>
                 </Box>
 
+                {/* Ruolo */}
+                {user.role && (
+                    <Box>
+                        <Text size="xs" c="dimmed" mb={4}>
+                            Ruolo
+                        </Text>
+                        <Badge
+                            size="md"
+                            variant="light"
+                            color={
+                                user.role === 'admin' ? 'red' :
+                                    user.role === 'staff' ? 'orange' :
+                                        user.role === 'speaker' ? 'blue' : 'gray'
+                            }
+                        >
+                            {user.role}
+                        </Badge>
+                    </Box>
+                )}
+
                 {/* Gruppo */}
                 {user.group && (
                     <Box>
@@ -201,7 +222,59 @@ export function ViewUserModal({ opened, onClose, user: initialUser, onTagAssigne
                         {user.uid}
                     </Text>
                 </Box>
+
+                {/* Quiz Results Section (Staff Only) */}
+                <QuizResultsSection uid={user.uid} />
             </Stack>
         </Modal>
+    );
+}
+
+function QuizResultsSection({ uid }: { uid: string }) {
+    const { data: currentUser } = useUserProfile();
+    const { data: quizResults, isLoading } = useUserQuizResults(uid);
+
+    // Only show for staff and above
+    const isStaff = currentUser?.role === Role.STAFF || currentUser?.role === Role.ADMIN;
+
+    if (!isStaff) return null;
+
+    return (
+        <>
+            <Divider label="Risultati Quiz" labelPosition="center" />
+            <Box>
+                {isLoading ? (
+                    <Center>
+                        <Loader size="sm" />
+                    </Center>
+                ) : !quizResults?.results || quizResults.results.length === 0 ? (
+                    <Text size="sm" c="dimmed" ta="center">
+                        Nessun quiz completato
+                    </Text>
+                ) : (
+                    <Stack gap="xs">
+                        {quizResults.results.map((result, index) => (
+                            <Group key={index} justify="space-between" p="xs" wrap="nowrap" style={{ border: "1px solid #e0e0e0", borderRadius: 8 }}>
+                                <Box style={{ flex: 1, minWidth: 0 }}>
+                                    <Text size="sm" fw={500} truncate>
+                                        {result.quiz_title}
+                                    </Text>
+                                    <Text size="xs" c="dimmed">
+                                        {new Date(result.submitted_at).toLocaleString()}
+                                    </Text>
+                                </Box>
+                                <Badge
+                                    color={result.score === result.max_score ? "green" : "blue"}
+                                    variant="light"
+                                    style={{ flexShrink: 0 }}
+                                >
+                                    {result.score}/{result.max_score} pt
+                                </Badge>
+                            </Group>
+                        ))}
+                    </Stack>
+                )}
+            </Box>
+        </>
     );
 }

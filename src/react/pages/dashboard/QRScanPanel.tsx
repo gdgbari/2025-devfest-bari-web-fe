@@ -140,7 +140,7 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
     const [selectedUser, setSelectedUser] = useState<GetUserResponse | null>(null);
     const [isViewModalOpen, setIsViewModalOpen] = useState(false);
     const [isActionsModalOpen, setIsActionsModalOpen] = useState(false);
-    const { data: usersData } = useAllUsers();
+    const { data: usersData, isLoading } = useAllUsers();
     const queryClient = useQueryClient();
 
     // Usa un ref per tenere traccia degli utenti già scansionati
@@ -288,7 +288,18 @@ export const QRScanPanel = ({ isActive = false }: { isActive?: boolean }) => {
 
                     <Center>
                         <Box style={{ maxWidth: 400, width: "100%" }}>
-                            {cameraEnabled && isActive ? (
+                            {isLoading ? (
+                                <Center p="xl">
+                                    <Stack align="center" gap="md">
+                                        <Loader size="lg" />
+                                        <Text c="dimmed" size="sm" ta="center">
+                                            Caricamento utenti...
+                                            <br />
+                                            Attendi il completamento del download
+                                        </Text>
+                                    </Stack>
+                                </Center>
+                            ) : cameraEnabled && isActive ? (
                                 <Scanner
                                     onScan={handleScan}
                                     allowMultiple

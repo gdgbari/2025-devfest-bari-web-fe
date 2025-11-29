@@ -8,8 +8,10 @@ import {
     Text,
     Card,
     CopyButton,
+    Select,
 } from "@mantine/core"
 import { useUpdateUser } from "../../../utils/query"
+import { Role } from "../../../utils/types"
 import type { GetUserResponse } from "../../../utils/types"
 
 interface EditUserModalProps {
@@ -23,6 +25,7 @@ export const EditUserModal = ({ user, opened, onClose }: EditUserModalProps) => 
         name: "",
         surname: "",
         email: "",
+        role: Role.ATTENDEE,
     })
 
     const updateUserMutation = useUpdateUser()
@@ -33,6 +36,7 @@ export const EditUserModal = ({ user, opened, onClose }: EditUserModalProps) => 
                 name: user.name || "",
                 surname: user.surname || "",
                 email: user.email || "",
+                role: user.role || Role.ATTENDEE,
             })
         }
     }, [user])
@@ -47,6 +51,7 @@ export const EditUserModal = ({ user, opened, onClose }: EditUserModalProps) => 
                     name: editedUser.name,
                     surname: editedUser.surname,
                     email: editedUser.email,
+                    role: editedUser.role,
                 }
             })
             onClose()
@@ -61,6 +66,7 @@ export const EditUserModal = ({ user, opened, onClose }: EditUserModalProps) => 
             name: "",
             surname: "",
             email: "",
+            role: Role.ATTENDEE,
         })
         onClose()
     }
@@ -136,6 +142,13 @@ export const EditUserModal = ({ user, opened, onClose }: EditUserModalProps) => 
                     value={editedUser.email}
                     onChange={(e) => setEditedUser({ ...editedUser, email: e.target.value })}
                     placeholder="Inserisci l'email"
+                />
+                <Select
+                    label="Ruolo"
+                    data={Object.values(Role)}
+                    value={editedUser.role}
+                    onChange={(value) => setEditedUser({ ...editedUser, role: value as Role })}
+                    allowDeselect={false}
                 />
 
                 {/* Pulsanti azione */}

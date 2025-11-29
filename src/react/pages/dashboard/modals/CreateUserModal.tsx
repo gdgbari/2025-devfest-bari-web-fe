@@ -6,8 +6,10 @@ import {
     Button,
     Group,
     Text,
+    Select,
 } from "@mantine/core"
 import { useCreateUser } from "../../../utils/query"
+import { Role } from "../../../utils/types"
 
 interface CreateUserModalProps {
     opened: boolean
@@ -21,6 +23,7 @@ export const CreateUserModal = ({ opened, onClose }: CreateUserModalProps) => {
         email: "",
         nickname: "",
         password: "",
+        role: Role.ATTENDEE,
     })
 
     const createUserMutation = useCreateUser()
@@ -38,6 +41,7 @@ export const CreateUserModal = ({ opened, onClose }: CreateUserModalProps) => {
                 email: newUser.email,
                 nickname: newUser.nickname,
                 password: newUser.password,
+                role: newUser.role,
             })
             handleClose()
         } catch (error) {
@@ -53,6 +57,7 @@ export const CreateUserModal = ({ opened, onClose }: CreateUserModalProps) => {
             email: "",
             nickname: "",
             password: "",
+            role: Role.ATTENDEE,
         })
         onClose()
     }
@@ -102,6 +107,14 @@ export const CreateUserModal = ({ opened, onClose }: CreateUserModalProps) => {
                     value={newUser.password}
                     onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                     placeholder="Inserisci la password"
+                />
+                <Select
+                    label="Ruolo"
+                    required
+                    data={Object.values(Role)}
+                    value={newUser.role}
+                    onChange={(value) => setNewUser({ ...newUser, role: value as Role })}
+                    allowDeselect={false}
                 />
 
                 {/* Pulsanti azione */}

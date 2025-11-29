@@ -64,7 +64,8 @@ export type UserProfile = {
     name: string,
     surname: string,
     group?: GetGroupResponse | null,
-    role: Role
+    role: Role,
+    checked_in: boolean
 }
 
 export type AddPointRequest = {
@@ -128,6 +129,8 @@ export type GetUserResponse = {
         points: number
         tag_id: string
     }[]
+    checked_in: boolean
+    role?: Role
 }
 
 export type GetUserListResponse = {
@@ -141,6 +144,7 @@ export type CreateUserRequest = {
     surname: string
     nickname: string
     password: string
+    role: Role
 }
 
 export type CreateUserResponse = {
@@ -155,13 +159,12 @@ export type UpdateUserRequest = {
     email?: string | null
     name?: string | null
     surname?: string | null
+    role?: Role | null
 }
 
 export type UpdateUserResponse = GetUserResponse
 
-export type CheckInResponse = {
-    group: GetGroupResponse
-}
+export type CheckInResponse = GetUserResponse
 
 export type GetGroupResponse = {
     name: string
@@ -221,13 +224,7 @@ export type CreateQuizRequest = {
     session_id: string
 }
 
-export type CreateQuizResponse = {
-    title: string
-    question_list: QuestionSchema[]
-    session_id: string
-    quiz_id: string
-    is_open: boolean
-}
+export type CreateQuizResponse = GetQuizResponse
 
 export type UpdateQuizRequest = {
     title?: string | null
@@ -236,13 +233,7 @@ export type UpdateQuizRequest = {
     session_id?: string | null
 }
 
-export type UpdateQuizResponse = {
-    title: string
-    question_list: QuestionSchema[]
-    session_id: string
-    quiz_id: string
-    is_open: boolean
-}
+export type UpdateQuizResponse = GetQuizResponse
 
 export type SubmitQuizRequest = {
     answer_list: string[]
@@ -251,6 +242,17 @@ export type SubmitQuizRequest = {
 export type SubmitQuizResponse = {
     score: number
     max_score: number
+}
+
+export type QuizResult = {
+    score: number
+    max_score: number
+    quiz_title: string
+    submitted_at: number
+}
+
+export type UserQuizResultListResponse = {
+    results: QuizResult[]
 }
 
 
@@ -274,11 +276,7 @@ export interface CreateTagRequest {
     points: number
 }
 
-export interface CreateTagResponse {
-    tag_id: string
-    points: number
-    secret: string
-}
+export type CreateTagResponse = GetTagResponse
 
 export interface UpdateTagRequest {
     points?: number | null
