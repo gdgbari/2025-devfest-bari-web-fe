@@ -39,8 +39,27 @@ const getPath = useTranslatedPath(lang);
         class="mt-12 flex gap-4 justify-center flex-col md:flex-row flex-wrap"
       >
         {
+          WebsiteConfig.SHOW_EVENT_TICKETS && (
+            <a
+              class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
+              target="_blank"
+              onclick="document.getElementById('tickets').scrollIntoView();location.hash='#tickets'"
+            >
+              <img src="/assets/vectors/ticket.svg" class="h-9 mr-2" />
+              {t("hero.ticketsAvailable")}
+              <div class="ml-1" />
+            </a>
+          )
+        }
+        {
+          WebsiteConfig.THANKS_TO_ALL_TEXT && (
+            <p class="text-2xl md:text-4xl font-semibold mt-8">
+              {t("hero.thankYou")}
+            </p>
+          )
+        }
+        {
           /*
-          (
             <a
               class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
               target="_blank"
@@ -50,20 +69,6 @@ const getPath = useTranslatedPath(lang);
               {t("hero.photoAvailable")}
               <div class="ml-1" />
             </a>
-          )
-        */
-        }
-        <a
-          class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
-          target="_blank"
-          onclick="document.getElementById('tickets').scrollIntoView();location.hash='#tickets'"
-        >
-          <img src="/assets/vectors/ticket.svg" class="h-9 mr-2" />
-          {t("hero.ticketsAvailable")}
-          <div class="ml-1"></div>
-        </a>
-        {
-          /*
         <a
           class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
           href="https://app.bari.devfest.it"

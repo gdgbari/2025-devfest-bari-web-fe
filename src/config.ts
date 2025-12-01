@@ -17,6 +17,8 @@ export class WebsiteConfig {
         "gdg.community.dev"
     ]
     public static readonly SHOW_EVENT_TALKS: boolean = true;
+    public static readonly SHOW_EVENT_TICKETS: boolean = false;
+    public static readonly THANKS_TO_ALL_TEXT: boolean = true;
     public static readonly DEVFEST_THEME_COLOR: string = '#f59e0b';
 
     /*--------------------------------------------

@@ -1,5 +1,4 @@
 ---
-
 import Footer from "../components/Common/Footer.astro";
 import Navbar from "../components/Common/Navbar.astro";
 import PageHead from "../components/Common/PageHead.astro";
@@ -12,7 +11,11 @@ import SpeakerPreview from "../components/Home/SpeakerPreview.astro";
 import SponsorSection from "../components/Home/SponsorSection.astro";
 import ReasonsToJoin from "../components/Home/ReasonsToJoin.astro";
 import TicketSection from "../components/Home/TicketSection.astro";
-import { getLangFromUrl, useTranslatedPath, useTranslations } from "../i18n/utils";
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  useTranslations,
+} from "../i18n/utils";
 import { WebsiteConfig } from "../config";
 
 const lang = getLangFromUrl(Astro.url);
@@ -29,53 +32,72 @@ const t = useTranslations(lang);
       <Jumbo />
 
       <InfoContainer>
-        <span slot="info-title"><Fragment set:html={t("home.whatIsDevfestBariTitle")} /></span>
-        <span slot="info-body"><Fragment set:html={t("home.whatIsDevfestBari")} /></span>
+        <span slot="info-title"
+          ><Fragment set:html={t("home.whatIsDevfestBariTitle")} /></span
+        >
+        <span slot="info-body"
+          ><Fragment set:html={t("home.whatIsDevfestBari")} /></span
+        >
       </InfoContainer>
-
-      <TicketSection>
-        <div slot="ticket-desc">
-          <p>
-            {t("ticket.description")}
-          </p>
-          <Fragment set:html={t("ticket.schools")} />
-          <p class="mt-10">
-            {t("ticket.checkFAQFirstPart")} <a href={getPath("/faq", lang)}>FAQ</a> {t("ticket.checkFAQSecondPart")}
-          </p>
-        </div>
-      </TicketSection>
-
+      {
+        WebsiteConfig.SHOW_EVENT_TICKETS && (
+          <TicketSection>
+            <div slot="ticket-desc">
+              <p>{t("ticket.description")}</p>
+              <Fragment set:html={t("ticket.schools")} />
+              <p class="mt-10">
+                {t("ticket.checkFAQFirstPart")}{" "}
+                <a href={getPath("/faq", lang)}>FAQ</a>{" "}
+                {t("ticket.checkFAQSecondPart")}
+              </p>
+            </div>
+          </TicketSection>
+        )
+      }
       <Gallery>
         <p slot="join-photos-text">{t("home.photosTitle")}</p>
 
         <a
           slot="join-photos-btn"
           class="not-colored btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto mr-2"
-          href="https://photos.app.goo.gl/AfzLSMGbazxceF2K7">
+          href="https://photos.app.goo.gl/AfzLSMGbazxceF2K7"
+        >
           {t("home.officialPhotos")}
           <img src="/assets/vectors/camera.svg" class="h-6 ml-2" />
         </a>
         <a
           slot="join-photos-btn"
           class="not-colored btn btn-ghost border-2 border-black/20 text-xl px-8 py-2 h-auto"
-          href="https://photos.app.goo.gl/gLHnJxHhpBuUrBdaA">
-            {t("home.communityPhotos")} <img src="/assets/vectors/community.svg" class="h-6 ml-2" />
+          href="https://photos.app.goo.gl/gLHnJxHhpBuUrBdaA"
+        >
+          {t("home.communityPhotos")}
+          <img src="/assets/vectors/community.svg" class="h-6 ml-2" />
         </a>
       </Gallery>
 
-      { WebsiteConfig.SHOW_EVENT_TALKS && <SpeakerPreview /> }
+      {WebsiteConfig.SHOW_EVENT_TALKS && <SpeakerPreview />}
 
       <ReasonsToJoin>
         <span slot="reasons-title">{t("home.whyPartecipateTitle")}</span>
-        <span slot="reason-learning-title">{t("home.whyPartecipateLearningTitle")}</span>
-        <span slot="reason-learning-desc">{t("home.whyPartecipateLearningDesc")}</span>
-        <span slot="reason-workshops-title">{t("home.whyPartecipateWorkshopsTitle")}</span>
-        <span slot="reason-workshops-desc">{t("home.whyPartecipateWorkshopsDesc")}</span>
-        <span slot="reason-networking-title">{t("home.whyPartecipateNetworkingTitle")}</span>
-        <span slot="reason-networking-desc">{t("home.whyPartecipateNetworkingDesc")}</span>
+        <span slot="reason-learning-title"
+          >{t("home.whyPartecipateLearningTitle")}</span
+        >
+        <span slot="reason-learning-desc"
+          >{t("home.whyPartecipateLearningDesc")}</span
+        >
+        <span slot="reason-workshops-title"
+          >{t("home.whyPartecipateWorkshopsTitle")}</span
+        >
+        <span slot="reason-workshops-desc"
+          >{t("home.whyPartecipateWorkshopsDesc")}</span
+        >
+        <span slot="reason-networking-title"
+          >{t("home.whyPartecipateNetworkingTitle")}</span
+        >
+        <span slot="reason-networking-desc"
+          >{t("home.whyPartecipateNetworkingDesc")}</span
+        >
       </ReasonsToJoin>
-
-      
 
       <Location>
         <span slot="location-title">{t("home.theVenue")}</span>
@@ -93,6 +115,5 @@ const t = useTranslations(lang);
     </main>
 
     <Footer />
-    
   </body>
 </html>
