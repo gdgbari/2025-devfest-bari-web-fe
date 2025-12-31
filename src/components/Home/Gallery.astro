@@ -1,35 +1,45 @@
+---
+import crypto from "crypto";
+import { WebsiteConfig } from "../../config";
+
+const imageHash = crypto
+  .createHash("md5")
+  .update(WebsiteConfig.DEVFEST_NAME)
+  .digest("hex");
+---
+
 <div class="grid md:grid-cols-5 grid-cols-3 gap-2 p-2" id="gallery">
   <div class={`md:col-span-2 h-56`}>
     <img
-      src="/assets/images/gallery/01.avif"
+      src={`/assets/images/gallery/01.avif?${imageHash}`}
       class="w-full h-full object-center object-cover"
       alt=""
     />
   </div>
   <div class={`col-span-2 h-56`}>
     <img
-      src="/assets/images/gallery/02.avif"
+      src={`/assets/images/gallery/02.avif?${imageHash}`}
       class="w-full h-full object-center object-cover"
       alt=""
     />
   </div>
   <div class={`row-span-2 `}>
     <img
-      src="/assets/images/gallery/03.avif"
+      src={`/assets/images/gallery/03.avif?${imageHash}`}
       class="w-full h-full object-center object-cover"
       alt=""
     />
   </div>
   <div class={``}>
     <img
-      src="/assets/images/gallery/04.avif"
+      src={`/assets/images/gallery/04.avif?${imageHash}`}
       class="w-full h-full object-center object-cover"
       alt=""
     />
   </div>
   <div class={``}>
     <img
-      src="/assets/images/gallery/05.avif"
+      src={`/assets/images/gallery/05.avif?${imageHash}`}
       class="w-full h-full object-center object-cover"
       alt=""
     />
@@ -46,21 +56,21 @@
   </div>
   <div class={`h-56 col-span-2 `}>
     <img
-      src="/assets/images/gallery/08.avif"
+      src={`/assets/images/gallery/08.avif?${imageHash}`}
       class="w-full h-full object-center object-cover"
       alt=""
     />
   </div>
   <div class={`h-56`}>
     <img
-      src="/assets/images/gallery/06.avif"
+      src={`/assets/images/gallery/06.avif?${imageHash}`}
       class="w-full h-full object-center object-cover"
       alt=""
     />
   </div>
-  <div class={`h-56 col-span-2 `}>
+  <div class={`h-56 col-span-2`}>
     <img
-      src="/assets/images/gallery/07.avif"
+      src={`/assets/images/gallery/07.avif?${imageHash}`}
       class="w-full h-full object-center object-cover"
       alt=""
     />
