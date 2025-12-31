@@ -18,7 +18,8 @@ export class WebsiteConfig {
     ]
     public static readonly SHOW_EVENT_TALKS: boolean = true;
     public static readonly SHOW_EVENT_TICKETS: boolean = false;
-    public static readonly THANKS_TO_ALL_TEXT: boolean = true;
+    public static readonly SHOW_PHOTO_BUTTON: boolean = true;
+    public static readonly THANKS_TO_ALL_TEXT: boolean = false;
     public static readonly DEVFEST_THEME_COLOR: string = '#f59e0b';
 
     /*--------------------------------------------

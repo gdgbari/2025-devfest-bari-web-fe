@@ -116,7 +116,7 @@ export const ui = {
             inspiration, learning, and networking. Participants will be able to explore
             the latest technological innovations, with a focus on Android, Web and
             Cloud technologies, AI, among others.`,
-        'home.photosTitle': 'Photos of DevFest Bari 2024',
+        'home.photosTitle': 'Photos of DevFest Bari 2025',
         'home.officialPhotos': 'Officials',
         'home.communityPhotos': 'Community',
         'ticket.description': `
@@ -311,7 +311,7 @@ export const ui = {
             di ispirazione, apprendimento e networking. I partecipanti potranno esplorare
             le ultime innovazioni tecnologiche, con un focus su Android, Web e Cloud
             technologies, AI, tra le altre.`,
-        'home.photosTitle': 'Foto della DevFest Bari 2024',
+        'home.photosTitle': 'Foto della DevFest Bari 2025',
         'home.officialPhotos': 'Ufficiali',
         'home.communityPhotos': 'Community',
         'ticket.description': `

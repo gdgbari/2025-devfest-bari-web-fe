@@ -58,8 +58,9 @@ const getPath = useTranslatedPath(lang);
             </p>
           )
         }
+
         {
-          /*
+          WebsiteConfig.SHOW_PHOTO_BUTTON && (
             <a
               class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
               target="_blank"
@@ -69,6 +70,10 @@ const getPath = useTranslatedPath(lang);
               {t("hero.photoAvailable")}
               <div class="ml-1" />
             </a>
+          )
+        }
+        {
+          /*
         <a
           class="not-colored bg-white btn text-xl sm:p-6 p-8 sm:px-8 px-16 flex flex-col content-center"
           href="https://app.bari.devfest.it"
